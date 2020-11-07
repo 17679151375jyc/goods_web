@@ -13,12 +13,12 @@
           @select="butClick"
           class="el-menu-demo"
         >
-          <el-menu-item index="0">口红</el-menu-item>
-          <el-menu-item index="1">护肤品</el-menu-item>
-          <el-menu-item index="2">化妆品</el-menu-item>
-          <el-menu-item index="3">鞋子</el-menu-item>
-          <el-menu-item index="4">衣服</el-menu-item>
-          <el-menu-item index="5">裤子</el-menu-item>
+          <el-menu-item
+            :index="item.value"
+            v-for="(item, index) in leftList"
+            :key="index"
+            >{{ item.title }}</el-menu-item
+          >
         </el-menu>
       </div>
       <div class="rigth_css">
@@ -80,9 +80,8 @@
           </el-form>
         </div>
         <div class="dis_row_between_center form_box_css">
-          <el-button type="primary" plain>账号管理</el-button
-          >
-          <h3>口红</h3>
+          <el-button type="primary" plain>账号管理</el-button>
+          <h2>{{ leftName }}</h2>
           <el-button type="primary" icon="el-icon-plus" @click="addClick"
             >添加商品</el-button
           >
@@ -137,15 +136,23 @@
               align="center"
             ></el-table-column>
             <el-table-column
-              width="250px"
+              width="200px"
               prop="name"
-              label="货物图片"
+              label="货品图片"
               align="center"
             >
               <template>
-                <div class="dis_row_center_center">
-                  <img class="img_tupian" :src="require('@/img/1.jpg')" />
-                  <img class="img_tupian" :src="require('@/img/1.jpg')" />
+                <div>
+                  <el-image
+                    class="img_tupian"
+                    :src="require('@/img/2.jpg')"
+                    :preview-src-list="[
+                      require('@/img/2.jpg'),
+                      require('@/img/1.jpg'),
+                      require('@/img/3.jpg'),
+                    ]"
+                  >
+                  </el-image>
                   <span class="dian_css">...</span>
                 </div>
               </template></el-table-column
@@ -218,15 +225,51 @@ export default {
   data() {
     return {
       indexval: "0",
-      form: {
-        name: "",
-      },
-      data: [
+      leftList: [
         {
-          name: "1",
+          title: "口红",
+          value: "0",
+        },
+        {
+          title: "护肤品",
+          value: "1",
+        },
+        {
+          title: "化妆品",
+          value: "2",
+        },
+        {
+          title: "包包",
+          value: "3",
+        },
+        {
+          title: "手表",
+          value: "4",
+        },
+        {
+          title: "鞋子",
+          value: "5",
+        },
+        {
+          title: "衣服",
+          value: "6",
+        },
+        {
+          title: "裤子",
+          value: "7",
+        },
+        {
+          title: "其他",
+          value: "8",
         },
       ],
-      tableLoading: false,
+      data: [
+        // {
+        //   name: "1",
+        // },
+      ],
+      leftName: "口红类货品列表",
+      title: "编辑货品",
       pagination: {
         page: 1,
         size: 10,
@@ -234,12 +277,16 @@ export default {
       },
       detailShow: false,
       addShow: false,
-      title: "编辑货物",
+      tableLoading: false,
+      form: {
+        name: "",
+      },
     };
   },
   methods: {
     //侧边导航
     butClick(index) {
+      this.leftName = this.leftList[index].title+ "类货品列表";
       this.indexval = index;
     },
     //详情关闭按钮
@@ -256,23 +303,29 @@ export default {
     },
     //点击编辑按钮
     editClick() {
-      this.title = "编辑货物";
+      this.title = "编辑货品";
       this.addShow = true;
     },
     //点击添加按钮
     addClick() {
-      this.title = "添加货物";
+      this.title = "添加货品";
       this.addShow = true;
     },
+    //搜索
     onSubmit() {},
+    //重置
     resetForm() {},
+    //翻页
     handleCurrentChange(page) {
       this.pagination.page = page;
     },
+    //一页多条
     handleCurrentChange1(size) {
       this.pagination.size = size;
     },
+    //确认删除
     delConfirm() {},
+    //取消删除
     delCancel() {},
   },
 };
@@ -280,6 +333,9 @@ export default {
 <style scoped>
 >>> .el-menu-item.is-active {
   border-right: 2px solid #38f;
+}
+>>> .el-image-viewer__close {
+  color: #ffffff;
 }
 .header_box {
   position: fixed;
