@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+/* 横向盒布局 */
+.dis_row{
+    display: flex;
+    flex-direction: row;
+}
+/* 横向排版垂直居中 */
+.dis_row_default_center{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+/* 横向排版水平居中 */
+.dis_row_start_center{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.dis_row_end_center{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;    
+    align-items: center;
+}
+.dis_row_between_center{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;    
+    align-items: center;
+}
+.dis_row_around_center{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;    
+    align-items: center;
+}
+.dis_row_center_center{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;    
+    align-items: center;
+}
+.dis_column_center_center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.dis_column_around_center{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.dis_column_default{
+    display: flex;
+    flex-direction: column;
+}
