@@ -63,15 +63,21 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="color" label="颜色代码：">
-          <el-input
-            clearable
-            maxlength="7"
-            style="width: 200px"
-            v-model="form.color"
-            placeholder="请输入颜色"
-            size="small"
-            @focus="colorClick"
-          ></el-input>
+          <div class="dis_row_between_center" style="width: 200px">
+            <el-input
+              clearable
+              maxlength="7"
+              style="width: 150px"
+              v-model="form.color"
+              placeholder="请输入颜色"
+              size="small"
+              @focus="colorClick"
+            ></el-input>
+            <span
+              class="span_color"
+              :style="{ 'background-color': form.color }"
+            ></span>
+          </div>
         </el-form-item>
         <el-form-item prop="purchasePrice" label="进货价：">
           <el-input
@@ -188,19 +194,23 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="货品图片：">
-          <div class="myimgbox">
-            <el-upload
-              :limit="9"
-              style="width: 80px"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              list-type="picture-card"
-              accept="image/gif, image/jpeg, image/png, image/jpg"
-              :on-preview="handlePictureCardPreview"
-              :on-success="suFun"
-              :on-remove="handleRemove"
-            >
-              <i class="el-icon-plus"></i>
-            </el-upload>
+          <div style="width:540px">
+            <div 
+              class="img_tupian"
+              v-for="(item, index) in form.goodsImg"
+              :key="index">
+              <el-image                
+                ref="img_tupian"
+                style="width:100%;height:100%"
+                :src="item"
+                :preview-src-list="form.goodsImg"
+              ></el-image>
+              <i class="el-icon-circle-close del_css" @click="delImgClick(index)"></i>
+            </div>
+            <div class="img_tupian">
+              <i class="el-icon-plus addimg_css" @click="updateClick"></i>
+              <input ref="res_imginput" @change="fileChange" type="file" style="display:none" accept="image/gif, image/jpeg, image/png, image/jpg">
+            </div>
           </div>
         </el-form-item>
       </el-form>
@@ -242,8 +252,6 @@ export default {
         goodsRemark: "max小辣椒，库存充足",
         goodsImg: [
           "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-          "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
-          "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
         ],
       },
     };
@@ -262,15 +270,15 @@ export default {
     },
   },
   methods: {
-    suFun(response, file, fileList) {
-      console.log(file);
+    updateClick(){
+      this.$refs.res_imginput.click()
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    fileChange(e){
+      let file = e.target.files[0]
+      console.log(file)
     },
-    handlePictureCardPreview(file) {
-      console.log("file", file);
-      this.form.imgList = file.url;
+    delImgClick(index){
+      this.form.goodsImg.splice(index,1)
     },
     getData() {},
     //关闭按钮
@@ -289,7 +297,7 @@ export default {
     },
     //颜色
     colorClick(e) {
-      console.log(e)
+      console.log(e);
     },
   },
 };
@@ -316,5 +324,30 @@ export default {
 }
 >>> .el-form-item {
   margin-bottom: 15px;
+}
+.img_tupian {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  float: left;
+  margin-bottom: 10px;
+  position: relative;
+  background-color: #fafafa;
+  cursor: pointer;
+}
+.del_css{
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 20px;
+  color: red;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.addimg_css{
+  font-size: 80px;
+  width: 100%;
+  color: #C7C6C5;
+  cursor: pointer;
 }
 </style>
