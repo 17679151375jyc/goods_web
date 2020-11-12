@@ -2,7 +2,7 @@
   <div>
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL微商货源管理系统 </span>
-      <div @click.stop="logouts" style="width: 80px; cursor: pointer">
+      <div @click.stop="logouts" style="width: 100px; cursor: pointer">
         退出系统
       </div>
     </div>
@@ -31,45 +31,72 @@
           >
             <el-form-item label="品牌：">
               <el-input
-                v-model="form.name"
+                clearable
+                v-model="form.brandName"
                 placeholder="请输入品牌名称"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="型号名称：">
+            <el-form-item label="型号：">
               <el-input
-                v-model="form.name"
+                clearable
+                v-model="form.modelName"
                 placeholder="请输入型号名称"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="拿货价：">
+            <el-form-item label="拿货价(元)：">
               <el-input
-                v-model="form.name"
+                clearable
+                type="number"
+                :maxlength="4"
+                v-model="form.purchasePrice"
                 placeholder="请输入拿货价"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="市场价：">
+            <el-form-item label="市场价(元)：">
               <el-input
-                v-model="form.name"
+                clearable
+                type="number"
+                v-model="form.marketPrice"
                 placeholder="请输入市场价"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="出手价：">
-              <el-input
-                v-model="form.name"
-                placeholder="请输入出手价"
-                size="small"
-              ></el-input>
+            <el-form-item label="价格出售范围(元)：">
+              <div>
+                <el-input
+                  clearable
+                  type="number"
+                  style="width: 130px"
+                  v-model="form.minPrice"
+                  placeholder="最低出售价"
+                  size="small"
+                ></el-input>
+                <span style="margin: 0 10px">—</span>
+                <el-input
+                  clearable
+                  type="number"
+                  style="width: 130px"
+                  v-model="form.maxPrice"
+                  placeholder="最高出售价"
+                  size="small"
+                ></el-input>
+              </div>
             </el-form-item>
             <el-form-item label="操作时间：">
-              <el-input
-                v-model="form.name"
-                placeholder="请输入操作时间"
-                size="small"
-              ></el-input>
+              <el-date-picker
+                clearable
+                v-model="form.operationTime"
+                type="datetimerange"
+                :picker-options="pickerOptions"
+                range-separator="至"
+                start-placeholder="请选择开始日期"
+                end-placeholder="请选择结束日期"
+                align="right"
+              >
+              </el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit" size="small"
@@ -80,7 +107,7 @@
           </el-form>
         </div>
         <div class="dis_row_between_center form_box_css">
-          <el-button type="primary" plain>账号管理</el-button>
+          <el-button type="primary" plain @click="adminShow = true">账号管理</el-button>
           <h2>{{ leftName }}</h2>
           <el-button type="primary" icon="el-icon-plus" @click="addClick"
             >添加商品</el-button
@@ -98,91 +125,151 @@
               label="序号"
               type="index"
               align="center"
+              width="50px"
+              :index="indexMethod"
+            ></el-table-column>
+            <el-table-column
+              prop="brandName"
+              label="品牌"
+              align="center"
               width="100px"
             ></el-table-column>
             <el-table-column
-              prop="name"
-              label="品牌"
-              align="center"
-              width="150px"
-            ></el-table-column>
-            <el-table-column
-              prop="name"
+              prop="modelName"
               label="型号"
               align="center"
-              width="150px"
+              width="100px"
             ></el-table-column>
             <el-table-column
-              label="拿货价(元/件)"
-              prop="name"
+              prop="specifications"
+              label="规格"
               align="center"
-              width="150px"
+              width="100px"
             ></el-table-column>
             <el-table-column
-              label="市场价(元/件)"
-              prop="name"
+              prop="color"
+              label="颜色"
               align="center"
-              width="150px"
-            ></el-table-column>
-            <el-table-column
-              prop="name"
-              label="出手价范围(元/件)"
-              align="center"
-              width="200px"
-            ></el-table-column>
-            <el-table-column
-              prop="name"
-              label="描述"
-              align="center"
-            ></el-table-column>
-            <el-table-column
-              width="200px"
-              prop="name"
-              label="货品图片"
-              align="center"
+              width="100px"
             >
-              <template>
+              
+              <template slot-scope="scope">
+                <div class="dis_row_center_center wid">
+                  <span :style="{'background-color': scope.row.color}"></span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="价格出售范围"
+              align="center"
+              width="110px"
+            >
+              <template slot-scope="scope">
+                <div>{{ scope.row.minPrice }} ~ {{ scope.row.maxPrice }}</div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="进货价"
+              prop="purchasePrice"
+              align="center"
+              width="100px"
+            ></el-table-column>
+            <el-table-column
+              label="市场价"
+              prop="marketPrice"
+              align="center"
+              width="100px"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="expressPrice"
+              label="一件代发邮费"
+              align="center"
+              width="110px"
+            ></el-table-column>
+            <el-table-column
+              prop="buyerName"
+              label="进货商家名称"
+              align="center"
+              width="110px"
+            ></el-table-column>
+            <!-- <el-table-column
+              prop="stockNum"
+              label="库存"
+              align="center"
+              width="100px"
+            ></el-table-column> -->
+            <!-- <el-table-column
+              label="已售数量"
+              prop="soldNum"
+              align="center"
+              width="100px">
+            </el-table-column> -->
+            <!-- <el-table-column
+              label="样品拿货价"
+              prop="samplePrice"
+              align="center"
+              width="95px">
+            </el-table-column> -->
+            <!-- <el-table-column
+              label="样品规格"
+              prop="sampleSpecifications"
+              align="center"
+              width="100px">
+            </el-table-column> -->
+            <el-table-column
+              prop="goodsRemark"
+              label="货品描述"
+              align="center"
+            ></el-table-column>
+            <el-table-column width="100px" label="货品图片" align="center">
+              <template slot-scope="scope">
                 <div>
                   <el-image
+                  ref="img_tupian"
+                    v-if="scope.row.goodsImg.length > 0"
                     class="img_tupian"
-                    :src="require('@/img/2.jpg')"
-                    :preview-src-list="[
-                      require('@/img/2.jpg'),
-                      require('@/img/1.jpg'),
-                      require('@/img/3.jpg'),
-                    ]"
+                    :src="scope.row.goodsImg[0]"
+                    :preview-src-list="scope.row.goodsImg"
                   >
                   </el-image>
-                  <span class="dian_css">...</span>
+                  <span class="dian_css" v-if="scope.row.goodsImg.length > 1"
+                    >...</span
+                  >
                 </div>
-              </template></el-table-column
-            >
+              </template></el-table-column>
             <el-table-column
-              type="index"
+              prop="operationTime"
+              label="添加时间"
+              align="center"
+              width="100px"
+            ></el-table-column>
+            <!-- <el-table-column
+              prop="updateTime"
+              label="更新时间"
+              align="center"
+              width="100px"
+            ></el-table-column> -->
+            <!-- <el-table-column
+              prop="updateName"
+              label="最后操作人"
+              align="center"
+              width="100px"
+            ></el-table-column> -->
+            <el-table-column
               label="操作"
               align="center"
               width="220px"
             >
-              <template>
+              <template slot-scope="scope">
                 <div class="dis_row_around_center">
-                  <el-button type="primary" size="mini" @click="editClick"
+                  <el-button type="primary" size="mini" @click="editClick(scope.row)"
                     >编辑</el-button
                   >
-                  <el-popconfirm
-                    title="确定删除该商品吗？"
-                    @confirm="delConfirm"
-                  >
-                    <el-button
-                      slot="reference"
-                      type="danger"
-                      size="mini"
-                      @cancel="delCancel"
-                      >删除</el-button
-                    >
-                  </el-popconfirm>
+                  <el-button type="danger" size="mini" @click="delConfirm(scope.row)">删除</el-button>
                   <el-button
                     type="success"
-                    @click="detailShow = true"
+                    @click="detailClick(scope)"
                     size="mini"
                     >详情</el-button
                   >
@@ -207,11 +294,12 @@
     </div>
     <detail @handleClose="handleClose" :show="detailShow" />
     <addOrEdit
-      @addComfirm="addComfirm"
+      @comfirm="addComfirm"
       @handleClose="addHandleClose"
       :show="addShow"
       :title="title"
     />
+    <admin :show="adminShow" @handleClose="adminHandleClose"/>
   </div>
 </template>
 
@@ -221,53 +309,11 @@ export default {
   components: {
     detail: () => import("./detail"),
     addOrEdit: () => import("./addOrEdit"),
+    admin: () => import("./admin"),
   },
   data() {
     return {
       indexval: "0",
-      leftList: [
-        {
-          title: "口红",
-          value: "0",
-        },
-        {
-          title: "护肤品",
-          value: "1",
-        },
-        {
-          title: "化妆品",
-          value: "2",
-        },
-        {
-          title: "包包",
-          value: "3",
-        },
-        {
-          title: "手表",
-          value: "4",
-        },
-        {
-          title: "鞋子",
-          value: "5",
-        },
-        {
-          title: "衣服",
-          value: "6",
-        },
-        {
-          title: "裤子",
-          value: "7",
-        },
-        {
-          title: "其他",
-          value: "8",
-        },
-      ],
-      data: [
-        // {
-        //   name: "1",
-        // },
-      ],
       leftName: "口红类货品列表",
       title: "编辑货品",
       pagination: {
@@ -277,23 +323,59 @@ export default {
       },
       detailShow: false,
       addShow: false,
+      adminShow: false,
       tableLoading: false,
       form: {
-        name: "",
+        brandName: "",
+        modelName: "",
+        expressPrice: "",
+        purchasePrice: "",
+        marketPrice: "",
+        minPrice: "",
+        maxPrice: "",
+        operationTime: "",
       },
+      data: [
+        {
+          goodsId: "commodity000001",//货品编号
+          goodsStatus: "0",//货品类型
+          brandName: "mac", //品牌名称
+          modelName: "小辣椒",//品牌型号
+          specifications: "200g",//货品规格
+          color: "#3388ff",//货品颜色
+          stockNum: "99",//库存
+          expressPrice: "10",//一件代发邮费
+          buyerName: "彩妆店",//进货商家名称
+          purchasePrice: "150",//进货价
+          marketPrice: "189",//市场价
+          minPrice: "170",  //最低出售价
+          maxPrice: "180",//最高出售价
+          samplePrice: "12",//样品拿货价
+          soldNum: 8,//已售数量
+          sampleSpecifications: "15g",//样品规格
+          goodsRemark: "max小辣椒，库存充足",//货品描述
+          operationTime: "2020-11-08 15:00",//创建时间
+          updateTime: "2020-11-11 15:00",//更新时间
+          updateName: "蒋雨成", //操作人
+          goodsImg: [
+            "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
+            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
+            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
+          ],//商品图片
+        },
+      ],
     };
   },
   methods: {
+    adminHandleClose(){
+      this.adminShow = false
+    },
     //侧边导航
     butClick(index) {
-      this.leftName = this.leftList[index].title+ "类货品列表";
+      this.leftName = this.leftList[index].title + "类货品列表";
       this.indexval = index;
     },
-    //详情关闭按钮
-    handleClose() {
-      this.detailShow = false;
-    },
-    //新增关闭按钮
+    //关闭新增
     addHandleClose() {
       this.addShow = false;
     },
@@ -311,6 +393,47 @@ export default {
       this.title = "添加货品";
       this.addShow = true;
     },
+    //确认删除
+    delConfirm(row) {
+      console.log(row)
+      let that = this
+      that.$confirm('確定要删除该商品吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          that.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {});
+    },
+    logouts(){
+      let that = this
+      that.$confirm('確定要退出系统吗吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          that.$router.push({path: "/login"})
+          that.$message({
+            type: 'success',
+            message: '退出成功!'
+          });
+        }).catch(() => {});
+    },
+    //详情按钮
+    detailClick(row){
+      this.detailShow = true
+    },
+    //关闭详情
+    handleClose() {
+      this.detailShow = false;
+    },
+    //自定义序号
+    indexMethod(index) {
+      return index + 1 + (this.pagination.page - 1) * this.pagination.size;
+    },
     //搜索
     onSubmit() {},
     //重置
@@ -323,10 +446,6 @@ export default {
     handleCurrentChange1(size) {
       this.pagination.size = size;
     },
-    //确认删除
-    delConfirm() {},
-    //取消删除
-    delCancel() {},
   },
 };
 </script>
@@ -352,7 +471,6 @@ export default {
   margin-left: 15px;
   font-weight: bold;
   color: #ffffff;
-  cursor: pointer;
 }
 .left_box {
   width: 200px;
