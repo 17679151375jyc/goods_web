@@ -92,21 +92,27 @@
           width="120px"
         ></el-table-column>
 
-        <el-table-column
+        <!-- <el-table-column
           label="操作时间"
           prop="operationTime"
           align="center"
           width="100px"
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           prop="remark"
           label="备注"
           align="center"
         ></el-table-column>
-        <el-table-column label="操作" align="center" width="130px">
+        <el-table-column label="操作" align="center" width="200px">
           <template slot-scope="scope">
             <div class="dis_row_around_center">
               <el-button v-if="scope.row.status === '0'" type="success" size="mini" @click="enableConfirm(scope.row)">启用</el-button>
+              <el-button
+                type="primary"
+                size="mini"
+                @click="detailClick(scope.row)"
+                >编辑</el-button
+              >
               <el-button
                  v-if="scope.row.status === '1'"
                 type="warning"
@@ -193,6 +199,9 @@ export default {
     },
   },
   methods: {
+    detailClick(row){
+      this.addAdminShow = true;
+    },
     //确认添加
     addAdminHandleClose() {
       this.addAdminShow = false;
