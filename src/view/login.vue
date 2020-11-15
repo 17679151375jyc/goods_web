@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { login, setCode } from "@/axios/api"
 export default {
   name: "",
   data() {
@@ -47,6 +48,9 @@ export default {
   },
   methods: {
     onSubmit() {
+      login().then(res=>{
+
+      })
       this.$router.push({ path: "/index" });
       this.$message({
         type: "success",
@@ -54,6 +58,11 @@ export default {
       });
     },
   },
+  created(){
+    setCode().then(res=>{
+      console.log(res)
+    })
+  }
 };
 </script>
 <style scoped>

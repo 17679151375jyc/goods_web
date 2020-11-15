@@ -67,3 +67,39 @@ Vue.prototype.rules = {
         }
     ]
 }
+Vue.prototype.addrules = {
+    level: [{
+        required: true,
+        message: "账号身份不能为空！",
+        trigger: "change",
+    }],
+    account: [{
+        required: true,
+        message: "账号不能为空！",
+        trigger: "blur",
+    }],
+    password: [{
+        required: true,
+        message: "账号密码不能为空！",
+        trigger: "blur",
+    }],
+    accountName: [{
+        required: true,
+        message: "账号持有者不能为空！",
+        trigger: "blur",
+    }],
+    phone: [{
+        required: true,
+        message: "持有者电话不能为空！",
+        trigger: "blur",
+    }, {
+        validator: (rule, value, callback) => {
+            let err = [];
+            let reg = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+            if (!reg.test(value)) {
+                err = "电话格式错误！";
+            }
+            callback(err);
+        },
+    }],
+}

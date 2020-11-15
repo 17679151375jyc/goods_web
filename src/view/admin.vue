@@ -3,7 +3,7 @@
     <el-dialog
       title="账号管理"
       :visible.sync="show"
-      width="900px"
+      width="1000px"
       top="50px"
       :close-on-click-modal="false"
       :before-close="handleClose"
@@ -16,7 +16,7 @@
       >
         <el-form-item label="账号：">
           <el-input
-            style="width:180px"
+            style="width: 180px"
             clearable
             v-model="form.account"
             placeholder="请输入账号"
@@ -25,9 +25,9 @@
         </el-form-item>
         <el-form-item label="手机号：">
           <el-input
-            style="width:180px"
+            style="width: 180px"
             clearable
-            v-model="form.phone"
+            v-model="form.account_phone"
             placeholder="请输入手机号"
             size="small"
           ></el-input>
@@ -40,7 +40,13 @@
         </el-form-item>
       </el-form>
       <div class="dis_row_end_center but_box_css">
-        <el-button size="small" icon="el-icon-plus" type="primary" @click="addAdminShow = true">添加账号</el-button>
+        <el-button
+          size="small"
+          icon="el-icon-plus"
+          type="primary"
+          @click="addAdminShow = true"
+          >添加账号</el-button
+        >
       </div>
       <el-table
         ref="multipleTable"
@@ -58,14 +64,14 @@
           label="账号身份"
           prop="level"
           align="center"
-          width="120px"
+          width="100px"
         >
         </el-table-column>
         <el-table-column
           prop="account"
           label="账号"
           align="center"
-          width="120px"
+          width="130px"
         ></el-table-column>
         <el-table-column
           label="密码"
@@ -74,22 +80,35 @@
           width="120px"
         ></el-table-column>
         <el-table-column
+          label="持有者"
+          prop="accountName"
+          align="center"
+          width="100px"
+        ></el-table-column>
+        <el-table-column
           label="手机号"
-          prop="phone"
+          prop="account_phone"
           align="center"
           width="120px"
         ></el-table-column>
-        
+
         <el-table-column
           label="操作时间"
           prop="operationTime"
           align="center"
+          width="100px"
         ></el-table-column>
-        <el-table-column label="操作" align="center" width="140px">
+        <el-table-column
+          prop="remark"
+          label="备注"
+          align="center"
+        ></el-table-column>
+        <el-table-column label="操作" align="center" width="130px">
           <template slot-scope="scope">
             <div class="dis_row_around_center">
-              <!-- <el-button type="success" size="mini" @click="enableConfirm(scope.row)">启用</el-button> -->
+              <el-button v-if="scope.row.status === '0'" type="success" size="mini" @click="enableConfirm(scope.row)">启用</el-button>
               <el-button
+                 v-if="scope.row.status === '1'"
                 type="warning"
                 size="mini"
                 @click="disConfirm(scope.row)"
@@ -141,7 +160,7 @@ export default {
       addAdminShow: false,
       form: {
         account: "",
-        phone: "",
+        account_phone: "",
       },
       pagination: {
         page: 1,
@@ -152,10 +171,12 @@ export default {
         {
           status: "1",
           level: "超级管理员",
-          account: "jyc123",
+          account: "jyc17679151375",
           password: "q123456",
-          phone: "17679151375",
-          operationTime: "2020-11-08 15:00"
+          accountName: "蒋雨成",
+          account_phone: "17679151375",
+          remark: "无",
+          operationTime: "2020-11-08 15:00",
         },
       ],
       tableLoading: false,

@@ -3,13 +3,14 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 const service = axios.create({
     timeout: 30000, // 请求超时时间
+    baseURL: "http://tp8che.natappfree.cc",
+    headers:{
+        // 'Authorization': 'Bearer'+"xnjabj"
+    }
 });
 //添加请求拦截器
 service.interceptors.request.use(request => {
-    //在发送请求之前做某事，比如说 设置loading动画显示
-    // if (getToken() !== null) {
-    //     request.headers.token = getToken();
-    // }
+    console.log(request)
     return request
 }, error => {
     //请求错误时做些事
