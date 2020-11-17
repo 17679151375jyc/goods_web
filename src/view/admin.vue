@@ -44,7 +44,9 @@
           size="small"
           icon="el-icon-plus"
           type="primary"
-          @click="addAdminShow = true"
+          @click="
+            addAdminShow = true;
+            title = '添加账号';"
           >添加账号</el-button
         >
       </div>
@@ -106,7 +108,13 @@
         <el-table-column label="操作" align="center" width="200px">
           <template slot-scope="scope">
             <div class="dis_row_around_center">
-              <el-button v-if="scope.row.status === '0'" type="success" size="mini" @click="enableConfirm(scope.row)">启用</el-button>
+              <el-button
+                v-if="scope.row.status === '0'"
+                type="success"
+                size="mini"
+                @click="enableConfirm(scope.row)"
+                >启用</el-button
+              >
               <el-button
                 type="primary"
                 size="mini"
@@ -114,7 +122,7 @@
                 >编辑</el-button
               >
               <el-button
-                 v-if="scope.row.status === '1'"
+                v-if="scope.row.status === '1'"
                 type="warning"
                 size="mini"
                 @click="disConfirm(scope.row)"
@@ -148,6 +156,7 @@
       </span>
     </el-dialog>
     <add
+      :title="title"
       :show="addAdminShow"
       @handleClose="addAdminHandleClose"
       @comfirm="addAdminComfirm"
@@ -163,6 +172,7 @@ export default {
   },
   data() {
     return {
+      title: "添加账号",
       addAdminShow: false,
       form: {
         account: "",
@@ -199,7 +209,8 @@ export default {
     },
   },
   methods: {
-    detailClick(row){
+    detailClick(row) {
+      this.title = "编辑账号";
       this.addAdminShow = true;
     },
     //确认添加

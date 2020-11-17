@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="添加账号"
+      :title="title"
       :visible.sync="show"
       width="500px"
       top="50px"
@@ -108,12 +108,13 @@ export default {
         password: "",
         accountName: "",
         phone: "",
-        remark: ""
+        remark: "",
       },
     };
   },
   props: {
     show: { default: false },
+    title: { default: "添加账号" },
   },
   watch: {
     show: function (val, oldVal) {
