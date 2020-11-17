@@ -13,11 +13,20 @@
           @select="butClick"
           class="el-menu-demo"
         >
+        <div class="dis_row_end_center but_addsplb_css">
+          <el-button type="primary" size="mini" @click="addLbClick">添加类别</el-button>
+          <el-button type="danger" size="mini" @click="delLbShow = !delLbShow">删除类别</el-button>
+        </div>
           <el-menu-item
             :index="item.value"
             v-for="(item, index) in leftList"
             :key="index"
-            >{{ item.title }}</el-menu-item
+            >
+            <div class="dis_row_between_center">
+              <span>{{ item.title }}</span>
+              <i v-if="delLbShow && index+1 != leftList.length"  class="el-icon-error" style="color:red" @click="delLbClick(index, item.title)"></i>
+            </div>
+            </el-menu-item
           >
         </el-menu>
       </div>
@@ -107,7 +116,7 @@
           </el-form>
         </div>
         <div class="dis_row_between_center form_box_css">
-          <el-button type="primary" plain @click="adminShow = true">账号管理</el-button>
+          <el-button type="primary" plain @click="adminShow = true;delLbShow = false">账号管理</el-button>
           <h2>{{ leftName }}</h2>
           <el-button type="primary" icon="el-icon-plus" @click="addClick"
             >添加商品</el-button
@@ -313,6 +322,7 @@ export default {
   },
   data() {
     return {
+      delLbShow: false,
       indexval: "0",
       leftName: "口红类货品列表",
       title: "编辑货品",
@@ -367,11 +377,45 @@ export default {
     };
   },
   methods: {
+    delLbClick(index, title){
+      console.log(index)
+      let that = this
+      that.$confirm(`删除【${title}】类后该类别里的所有商品都将转入【其他】类别，是否继续该操作?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          that.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          location.reload()
+        }).catch(() => {
+          this.delLbShow = true
+        });
+    },
+    //添加类别弹窗
+    addLbClick(){
+        this.delLbShow = false
+        this.$prompt('请输入类别名称', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          closeOnClickModal: false,
+          inputPattern: /^[\u4e00-\u9fa5]{1,4}$/,
+          inputErrorMessage: '类别名称为1到4个汉字！'
+        }).then(({ value }) => {
+          this.$message({
+            type: 'success',
+            message: '添加类别成功！'
+          });
+        }).catch(() => {});
+    },
     adminHandleClose(){
       this.adminShow = false
     },
     //侧边导航
     butClick(index) {
+      this.delLbShow = false;
       this.leftName = this.leftList[index].title + "类货品列表";
       this.indexval = index;
     },
@@ -385,17 +429,19 @@ export default {
     },
     //点击编辑按钮
     editClick() {
+      this.delLbShow = false
       this.title = "编辑货品";
       this.addShow = true;
     },
     //点击添加按钮
     addClick() {
+      this.delLbShow = false
       this.title = "添加货品";
       this.addShow = true;
     },
     //确认删除
     delConfirm(row) {
-      console.log(row)
+      this.delLbShow = false
       let that = this
       that.$confirm('確定要删除该商品吗？', '提示', {
           confirmButtonText: '确定',
@@ -410,6 +456,7 @@ export default {
     },
     logouts(){
       let that = this
+      this.delLbShow = false
       that.$confirm('確定要退出系统吗吗？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -424,6 +471,7 @@ export default {
     },
     //详情按钮
     detailClick(row){
+      this.delLbShow = false
       this.detailShow = true
     },
     //关闭详情
@@ -435,15 +483,21 @@ export default {
       return index + 1 + (this.pagination.page - 1) * this.pagination.size;
     },
     //搜索
-    onSubmit() {},
+    onSubmit() {
+      this.delLbShow = false
+    },
     //重置
-    resetForm() {},
+    resetForm() {
+      this.delLbShow = false
+    },
     //翻页
     handleCurrentChange(page) {
+      this.delLbShow = false
       this.pagination.page = page;
     },
     //一页多条
     handleCurrentChange1(size) {
+      this.delLbShow = false
       this.pagination.size = size;
     },
   },
@@ -506,5 +560,10 @@ export default {
   margin-left: 5px;
   font-size: 18px;
   font-weight: bold;
+}
+.but_addsplb_css{
+  height: 30px;
+  padding: 5%;
+  border-bottom: 1px solid#E6E6E6;
 }
 </style>

@@ -1,15 +1,25 @@
 //axios封装
 import axios from 'axios';
 import { Message } from 'element-ui';
+import Qs from "qs";
 const service = axios.create({
     timeout: 30000, // 请求超时时间
-    baseURL: "http://tp8che.natappfree.cc",
+    // baseURL: "/api",
+    baseURL: "http://979nvb.natappfree.cc",
     headers:{
-        // 'Authorization': 'Bearer'+"xnjabj"
+        "Content-Type": "application/x-www-form-urlencoded",
+        // "Connection": "keep-alive",
+        // "Content-Type": 'application/json',
+        
+        // 'Cache-Control': 'no-cache', 'Pragma': 'no-cache',
+        
     }
 });
 //添加请求拦截器
 service.interceptors.request.use(request => {
+    if(request.headers["Content-Type"] === "application/x-www-form-urlencoded"){
+        request.data = Qs.stringify(request.data)
+    }
     console.log(request)
     return request
 }, error => {

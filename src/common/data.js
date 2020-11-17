@@ -64,8 +64,12 @@ Vue.prototype.leftList = [
         value: "7",
     },
     {
-        title: "其他",
+        title: "玩具",
         value: "8",
+    },
+    {
+        title: "其他",
+        value: "9",
     },
 ]
 Vue.prototype.levelList = [{
@@ -81,6 +85,6 @@ Vue.prototype.levelList = [{
     name: '二级管理员',
     level: "3"
 },{
-    name: '代理成员',
+    name: '成员',
     level: "4"
 }]

@@ -80,7 +80,7 @@ Vue.prototype.addrules = {
     }],
     password: [{
         required: true,
-        message: "账号密码不能为空！",
+        message: "密码不能为空！",
         trigger: "blur",
     }],
     accountName: [{
