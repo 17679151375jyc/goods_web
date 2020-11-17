@@ -186,6 +186,7 @@
             clearable
             rows="4"
             show-word-limit
+            resize="none"
             style="width: 540px"
             maxlength="35"
             v-model="form.goodsRemark"

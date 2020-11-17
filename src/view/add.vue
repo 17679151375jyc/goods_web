@@ -77,6 +77,7 @@
           <el-input
             clearable
             rows="4"
+            resize="none"
             show-word-limit
             style="width: 220px"
             maxlength="35"
