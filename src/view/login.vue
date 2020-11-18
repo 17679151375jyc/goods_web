@@ -43,6 +43,7 @@
 
 <script>
 import { login } from "@/axios/api";
+import { storage_set } from "@/common/storage.js"
 export default {
   name: "",
   data() {
@@ -57,25 +58,30 @@ export default {
   methods: {
     onSubmit() {
       let that = this;
-      this.$refs["form"].validate(async (valid) => {
+      that.$refs["form"].validate(async (valid) => {
         if (valid) {
           let data = {
-            account: this.form.account,
-            password: this.form.password,
+            account: that.form.account,
+            password: that.form.password,
           };
-          this.loading = true;
+          that.loading = true;
           login(data)
             .then((res) => {     
-              this.$router.push({ path: "/index" });
-              this.$message({
-                type: "success",
-                message: "登录成功!",
-              });
+              if(res.code === 0){
+                // storage_set('data', "iwonefinei")
+                that.$router.push({ path: "/index" });
+                that.$message({
+                  type: "success",
+                  message: "登录成功!",
+                });
+              }else{
+                that.loading = false;
+                that.$message.error(res.msg);
+              }
             })
             .catch((err) => {
               this.loading = false;
               this.$message.error("登陆失败！");
-              this.$router.push({ path: "/index" });
             });
         }
       });

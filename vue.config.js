@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 module.exports = {
     //打包配置
-    publicPath:'',
+    publicPath:'/',
     outputDir: './dist/goods_web',
     assetsDir:'static',
 
@@ -14,10 +14,16 @@ module.exports = {
         open: true,  
         // host: '192.168.2.13',  
         // host: 'localhost',
-        port: 8080,  
+        // port: 8080,  
         https: false,  
         hotOnly: false,  
-        proxy: null,
+        proxy: {
+            '/': {    // search为转发路径
+                target: 'http://ipzdmx.natappfree.cc/',  // 目标地址
+                ws: true, // 是否代理websockets
+                changeOrigin: true   // 设置同源  默认false
+            }
+        }
     },
     // 自动打开
     lintOnSave: true,

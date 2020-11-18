@@ -4,15 +4,10 @@ import { Message } from 'element-ui';
 import Qs from "qs";
 const service = axios.create({
     timeout: 30000, // 请求超时时间
-    // baseURL: "/api",
-    baseURL: "http://979nvb.natappfree.cc",
+    // baseURL: "http://ipzdmx.natappfree.cc",
+    baseURL: "/",
     headers:{
-        "Content-Type": "application/x-www-form-urlencoded",
-        // "Connection": "keep-alive",
-        // "Content-Type": 'application/json',
-        
-        // 'Cache-Control': 'no-cache', 'Pragma': 'no-cache',
-        
+        "Content-Type": "application/x-www-form-urlencoded",        
     }
 });
 //添加请求拦截器

@@ -2,8 +2,10 @@
   <div>
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL微商货源管理系统 </span>
-      <div @click.stop="logouts" style="width: 100px; cursor: pointer">
-        退出系统
+      <div @click.stop="logouts" class="dis_row_between_center out_box_css">
+        <span><i class="iconfont icongerenmingpian"></i> 超级管理员</span>
+        <span class="phone_css">蒋雨成 / 17679151375</span>
+        <el-button type="primary" size="mini" plain>退出系统</el-button>
       </div>
     </div>
     <div class="dis_row_between_center">
@@ -565,5 +567,15 @@ export default {
   height: 30px;
   padding: 5%;
   border-bottom: 1px solid#E6E6E6;
+}
+.out_box_css{
+  min-width: 200px;
+  margin-right: 15px;
+}
+.out_box_css .phone_css{
+  font-size: 12px;
+  margin:0 10px;
+  display: block;
+  line-height: 20px;
 }
 </style>
