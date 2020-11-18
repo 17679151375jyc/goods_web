@@ -2,10 +2,10 @@
   <div>
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL微商货源管理系统 </span>
-      <div @click.stop="logouts" class="dis_row_between_center out_box_css">
-        <span><i class="iconfont icongerenmingpian"></i> 超级管理员</span>
-        <span class="phone_css">蒋雨成 / 17679151375</span>
-        <el-button type="primary" size="mini" plain>退出系统</el-button>
+      <div class="dis_row_between_center out_box_css">
+        <span><i class="iconfont icongerenmingpian"></i> {{getLevel(userData.level)}}</span>
+        <span class="phone_css">{{userData.accountName}} / {{userData.accountPhone}}</span>
+        <el-button type="primary" @click.stop="logouts" size="mini" plain>退出系统</el-button>
       </div>
     </div>
     <div class="dis_row_between_center">
@@ -315,6 +315,7 @@
 </template>
 
 <script>
+import { storage_get, storage_remove } from "@/common/storage.js"
 export default {
   name: "",
   components: {
@@ -324,6 +325,11 @@ export default {
   },
   data() {
     return {
+      userData: {
+        accountName: null,
+        level: null,
+        accountPhone: null
+      },
       delLbShow: false,
       indexval: "0",
       leftName: "口红类货品列表",
@@ -464,11 +470,12 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          that.$router.push({path: "/login"})
+          storage_remove('userdata')
+          that.$router.replace({path: "/login"})
           that.$message({
             type: 'success',
             message: '退出成功!'
-          });
+          })
         }).catch(() => {});
     },
     //详情按钮
@@ -503,6 +510,12 @@ export default {
       this.pagination.size = size;
     },
   },
+  created(){
+    if(!storage_get('userdata').accountId){
+      this.$router.replace({path: "/login"})
+    }    
+    this.userData = storage_get('userdata');
+  }
 };
 </script>
 <style scoped>

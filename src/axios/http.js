@@ -4,7 +4,6 @@ import { Message } from 'element-ui';
 import Qs from "qs";
 const service = axios.create({
     timeout: 30000, // 请求超时时间
-    // baseURL: "http://ipzdmx.natappfree.cc",
     baseURL: "/",
     headers:{
         "Content-Type": "application/x-www-form-urlencoded",        
@@ -15,7 +14,6 @@ service.interceptors.request.use(request => {
     if(request.headers["Content-Type"] === "application/x-www-form-urlencoded"){
         request.data = Qs.stringify(request.data)
     }
-    console.log(request)
     return request
 }, error => {
     //请求错误时做些事

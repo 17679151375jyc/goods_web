@@ -68,7 +68,7 @@ export default {
           login(data)
             .then((res) => {     
               if(res.code === 0){
-                // storage_set('data', "iwonefinei")
+                storage_set('userdata', res.data);
                 that.$router.push({ path: "/index" });
                 that.$message({
                   type: "success",
