@@ -206,6 +206,10 @@ export default {
 };
 </script>
 <style scoped>
+>>>.el-message{
+  min-width: 70vw!important;
+  top: 60vh!important;
+}
 >>> .el-tabs__header {
   margin: 0;
 }

@@ -170,6 +170,10 @@ export default {
 };
 </script>
 <style scoped>
+>>>.el-message{
+  min-width: 70vw!important;
+  top: 60vh!important;
+}
 >>> .el-image-viewer__close {
   color: #fff;
   top: 10px;

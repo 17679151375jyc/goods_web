@@ -88,6 +88,10 @@ export default {
 };
 </script>
 <style scoped>
+>>>.el-message{
+  min-width: 70vw!important;
+  top: 60vh!important;
+}
 >>> .el-input__inner{
   height: 10vw;
   line-height: 10vw;
