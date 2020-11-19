@@ -4,6 +4,7 @@ import App from './App.vue'
 import '@/style/style.css'
 import '@/style/flewStyle.css'
 import '@/style/common.css'
+import '@/style/transfrom.css'
 
 import router from './router/router'
 
@@ -11,6 +12,7 @@ import router from './router/router'
 import '@/axios/http.js'
 import '@/common/data.js'
 import '@/common/verification.js'
+import '@/common/tool.js'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

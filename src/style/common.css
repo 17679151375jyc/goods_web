@@ -8,3 +8,7 @@
   height: 30px;
   border-radius: 3px;
 }
+.el-message{
+  min-width: 70vw!important;
+  top: 60vh!important;
+}

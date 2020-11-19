@@ -11,7 +11,8 @@ module.exports = {
 
     // 本地启动配置
     devServer: {
-        open: true,  
+        // 自动打开
+        open: false,  
         // host: '192.168.2.13',  
         // host: 'localhost',
         // port: 8080,  
@@ -26,6 +27,5 @@ module.exports = {
             }
         }
     },
-    // 自动打开
     lintOnSave: true,
 }

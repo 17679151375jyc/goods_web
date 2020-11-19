@@ -181,7 +181,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="描述：">
+        <el-form-item label="文案：">
           <el-input
             clearable
             rows="4"
@@ -190,7 +190,7 @@
             style="width: 540px"
             maxlength="35"
             v-model="form.goodsRemark"
-            placeholder="请输入描述"
+            placeholder="请输入文案"
             type="textarea"
           ></el-input>
         </el-form-item>

@@ -66,7 +66,7 @@
         <el-form-item label="库存数量：">
           <div class="div_width">{{ form.soldNum }}（件）</div>
         </el-form-item>
-        <el-form-item label="操作时间：">
+        <el-form-item label="添加时间：">
           <div class="div_width">{{ form.operationTime }}</div>
         </el-form-item>
         <el-form-item label="更新时间：">
@@ -75,7 +75,7 @@
         <el-form-item label="最后更新人：">
           <div class="div_width">{{ form.updateName }}</div>
         </el-form-item>
-        <el-form-item label="描述：">
+        <el-form-item label="文案：">
           <div class="myimgbox">{{ form.goodsRemark }}</div>
         </el-form-item>
         <el-form-item label="货品图片：">

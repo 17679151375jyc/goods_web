@@ -230,7 +230,7 @@
             </el-table-column> -->
             <el-table-column
               prop="goodsRemark"
-              label="货品描述"
+              label="货品文案"
               align="center"
             ></el-table-column>
             <el-table-column width="100px" label="货品图片" align="center">
@@ -371,7 +371,7 @@ export default {
           samplePrice: "12",//样品拿货价
           soldNum: 8,//已售数量
           sampleSpecifications: "15g",//样品规格
-          goodsRemark: "max小辣椒，库存充足",//货品描述
+          goodsRemark: "max小辣椒，库存充足",//货品文案
           operationTime: "2020-11-08 15:00",//创建时间
           updateTime: "2020-11-11 15:00",//更新时间
           updateName: "蒋雨成", //操作人
@@ -449,9 +449,10 @@ export default {
     },
     //确认删除
     delConfirm(row) {
+      console.log(row)
       this.delLbShow = false
       let that = this
-      that.$confirm('確定要删除该商品吗？', '提示', {
+      that.$confirm( `確定要删除${row.brandName}/${row.modelName}吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -533,6 +534,7 @@ export default {
   height: 50px;
   background-color: #2658ed;
   color: #ffffff;
+  z-index: 100;
 }
 .color_text {
   min-width: 260px;
