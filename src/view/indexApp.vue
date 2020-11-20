@@ -230,7 +230,6 @@ export default {
 }
 >>> .el-tabs__header {
   margin: 0;
-  margin-top:-1px;
 }
 >>> .el-tabs__nav-scroll {
   margin: 0 4vw;
@@ -246,6 +245,10 @@ export default {
   width: 10vw;
   text-align: center;
   font-weight: bold;
+  z-index: 100;
+}
+>>>.el-tabs--border-card{
+  border: 0;
 }
 >>> .el-tabs__item.is-active {
   font-weight: bold;
