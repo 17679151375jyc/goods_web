@@ -230,6 +230,7 @@ export default {
 }
 >>> .el-tabs__header {
   margin: 0;
+  margin-top:-1px;
 }
 >>> .el-tabs__nav-scroll {
   margin: 0 4vw;
@@ -240,10 +241,11 @@ export default {
 >>> .el-tabs__nav-prev,
 >>> .el-tabs__nav-next {
   line-height: 10vw;
-  background-color: #fafafa;
-  color: #000000;
+  background-color: #000;
+  color: #fff;
   width: 10vw;
   text-align: center;
+  font-weight: bold;
 }
 >>> .el-tabs__item.is-active {
   font-weight: bold;

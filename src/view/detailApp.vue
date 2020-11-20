@@ -78,10 +78,9 @@
         </div>
         <div class="dis_row_between_center box_css">
           <span>文案：</span>
-          <!-- <input type="hidden" :value="form.goodsRemark" id="remark"> -->
           <span id="remark">{{ form.goodsRemark }}</span>
         </div>
-        <div class="dis_row_between_center box_css">
+        <div class="dis_row_between_center box_css" style="margin-bottom:15vw">
           <span>货品图片：</span>
           <div class="myimgbox">
             <div
