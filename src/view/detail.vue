@@ -5,6 +5,7 @@
       :visible.sync="show"
       width="800px"
       top="50px"
+      :append-to-body="true"
       :before-close="handleClose"
     >
       <el-form

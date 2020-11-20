@@ -5,6 +5,7 @@
       :visible.sync="show"
       width="1000px"
       top="50px"
+      :append-to-body="true"
       :close-on-click-modal="false"
       :before-close="handleClose"
     >
