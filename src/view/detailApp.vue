@@ -146,21 +146,27 @@ export default {
   },
   methods: {
     wenanClick() {
-        if(this.form.goodsRemark){
-            var val = document.getElementById('remark');
-            window.getSelection().selectAllChildren(val);
-            document.execCommand("Copy");
-             this.$message({
-                message: '文案已复制到剪切板!',
-                type: 'success'
-            });
-        };
-        if(!this.form.goodsRemark){
-            this.$message('文案是空的哦！');
-            return;
-        }
+      if (this.form.goodsRemark) {
+        var val = document.getElementById("remark");
+        window.getSelection().selectAllChildren(val);
+        document.execCommand("Copy");
+        this.$message({
+          message: "文案已复制到剪切板!",
+          type: "success",
+          duration: 1000,
+          customClass: "myalert_css1",
+        });
+      }
+      if (!this.form.goodsRemark) {
+        this.$message({
+          message: "文案是空的哦！",
+          type: "error",
+          duration: 1000,
+          customClass: "myalert_css1",
+        });
+        return;
+      }
     },
-    
   },
   mounted() {
     this.show = true;
@@ -170,9 +176,9 @@ export default {
 };
 </script>
 <style scoped>
->>>.el-message{
-  min-width: 70vw!important;
-  top: 60vh!important;
+>>> .el-message {
+  min-width: 70vw !important;
+  top: 60vh !important;
 }
 >>> .el-image-viewer__close {
   color: #fff;

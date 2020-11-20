@@ -50,8 +50,8 @@ export default {
     return {
       loading: false,
       form: {
-        account: "jyc123",
-        password: "q123456",
+        account: "",
+        password: "",
       },
     };
   },

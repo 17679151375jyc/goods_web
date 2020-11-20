@@ -4,7 +4,7 @@ import fetch from '@/axios/http.js'
 
 export function login(data) {
   return fetch({
-    url: "/login",
+    url: "/user/login",
     method: "post",
     data,
   });

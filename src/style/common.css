@@ -8,3 +8,11 @@
   height: 30px;
   border-radius: 3px;
 }
+.myalert_css{
+  min-width: 22vw!important;
+  top: 60vh!important;
+}
+.myalert_css1{
+  min-width: 55vw!important;
+  top: 60vh!important;
+}

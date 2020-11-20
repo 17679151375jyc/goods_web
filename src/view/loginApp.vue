@@ -41,14 +41,14 @@
 
 <script>
 import { login } from "@/axios/api";
-import { storage_set } from "@/common/storage.js";
+import { storage_set, storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
     return {
       form: {
-        account: "jyc123",
-        password: "q123456",
+        account: "",
+        password: "",
       },
       loading: false,
     };
@@ -56,7 +56,7 @@ export default {
   methods: {
     onSubmit() {
       let that = this;
-      that.$refs["form"].validate(async (valid) => {
+      this.$refs["form"].validate(async (valid) => {
         if (valid) {
           let data = {
             account: that.form.account,
@@ -67,10 +67,13 @@ export default {
             .then((res) => {
               if (res.code === 0) {
                 storage_set("userdata", res.data);
+                storage_set("accountinfo", data);
                 that.$router.push({ path: "/indexApp" });
                 that.$message({
                   type: "success",
                   message: "登录成功!",
+                  duration: 1000,
+                  customClass: 'myalert_css'
                 });
               } else {
                 that.loading = false;
@@ -85,13 +88,17 @@ export default {
       });
     },
   },
+  created(){
+    if(storage_get('accountinfo')){
+      this.form = {
+        account: storage_get('accountinfo').account,
+        password: storage_get('accountinfo').password,
+      }
+    }    
+  }
 };
 </script>
 <style scoped>
->>>.el-message{
-  min-width: 70vw!important;
-  top: 60vh!important;
-}
 >>> .el-input__inner{
   height: 10vw;
   line-height: 10vw;

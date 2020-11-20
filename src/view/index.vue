@@ -3,7 +3,7 @@
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL微商货源管理系统 </span>
       <div class="dis_row_between_center out_box_css">
-        <span><i class="iconfont icongerenmingpian"></i> {{getLevel(userData.level)}}</span>
+        <span><i class="iconfont icongerenmingpian"></i> {{getLevel(userData.userType)}}</span>
         <span class="phone_css">{{userData.accountName}} / {{userData.accountPhone}}</span>
         <el-button type="primary" @click.stop="logouts" size="mini" plain>退出系统</el-button>
       </div>
@@ -327,7 +327,7 @@ export default {
     return {
       userData: {
         accountName: null,
-        level: null,
+        userType: null,
         accountPhone: null
       },
       delLbShow: false,

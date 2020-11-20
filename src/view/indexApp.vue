@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="dis_row_between_center my_box">
+      <span
+        ><i class="iconfont icongerenmingpian"></i>
+        {{ getLevel(userData.userType) }}</span
+      >
+      <span class="phone_css"
+        >{{ userData.accountName }} / {{ userData.accountPhone }}</span
+      >
+    </div>
     <el-tabs
       v-model="form.goodsStatus"
       @tab-click="handleClick"
@@ -17,9 +26,12 @@
               @click="searchShow = true"
               v-if="form.brandName || form.modelName || form.purchasePrice"
             >
-                <span v-if="form.brandName">{{ form.brandName }}-</span>
-                <span v-if="form.modelName">{{ form.modelName }} <span v-if="form.purchasePrice">-</span></span>
-                <span v-if="form.purchasePrice">{{ form.purchasePrice }}</span>
+              <span v-if="form.brandName">{{ form.brandName }}-</span>
+              <span v-if="form.modelName"
+                >{{ form.modelName }}
+                <span v-if="form.purchasePrice">-</span></span
+              >
+              <span v-if="form.purchasePrice">{{ form.purchasePrice }}</span>
             </div>
             <span v-else @click="searchShow = true">点击搜索</span>
           </div>
@@ -104,18 +116,20 @@
         >
       </div>
     </div>
-        <div class="dis_row_between_center but_box_css">
-          <span @click="$router.back()">返回</span>
-          <span class="active" @click="$router.push({path:'/myInfo'})">账号信息</span>
-        </div>
   </div>
 </template>
 
 <script>
+import { storage_get, storage_remove } from "@/common/storage.js";
 export default {
   name: "",
   data() {
     return {
+      userData: {
+        accountName: null,
+        userType: null,
+        accountPhone: null,
+      },
       searchShow: false,
       loading: false,
       pagination: {
@@ -166,9 +180,8 @@ export default {
     };
   },
   methods: {
-    myInfo(){
-
-    },
+    myInfo() {},
+    move(e) {},
     //点击搜索
     search() {
       this.form.brandName = this.dataForm.brandName;
@@ -203,12 +216,18 @@ export default {
       this.getData();
     },
   },
+  created() {
+    if(!storage_get('userdata')){
+      this.$router.replace({path: "/loginApp"})
+    }    
+    this.userData = storage_get("userdata");
+  },
 };
 </script>
 <style scoped>
->>>.el-message{
-  min-width: 70vw!important;
-  top: 60vh!important;
+>>> .el-message {
+  min-width: 70vw !important;
+  top: 60vh !important;
 }
 >>> .el-tabs__header {
   margin: 0;
@@ -291,31 +310,16 @@ export default {
   margin: 0 auto;
   margin-bottom: 3vw;
 }
-.but_box_css {
-  position: fixed;
-  bottom: 0;
-  height: 15vw;
-  width: 92vw;
-  padding: 0 4vw;
-  background-color: #fafafa;
-  z-index: 10000;
-  border-top: 1px solid #e7e7e8;
+.my_box {
+  width: 94vw;
+  height: 6vw;
+  background-color: #000;
+  padding: 3vw;
+  text-align: right;
   font-size: 3.74vw;
-}
-.but_box_css span {
-  width: 40vw;
-  height: 10vw;
-  border-radius: 10vw;
-  display: block;
-  line-height: 10vw;
-  text-align: center;
-  background-color: #fff;
-  color: #888;
-  border: 1px solid #888;
-}
-.but_box_css .active {
-  border: 0;
-  background-color: #3388ff;
   color: #fff;
+}
+.my_box span:last-child{
+  margin-left: 5vw;
 }
 </style>
