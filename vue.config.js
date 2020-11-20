@@ -18,14 +18,14 @@ module.exports = {
         // port: 8080,  
         https: false,  
         hotOnly: false,  
-        // proxy: {
-        //     '/': {    // search为转发路径
-        //         // target: 'http://ipzdmx.natappfree.cc/',  // 目标地址
-        //         target: "http://49.234.22.146:8077/",
-        //         ws: true, // 是否代理websockets
-        //         changeOrigin: true   // 设置同源  默认false
-        //     }
-        // }
+        proxy: {
+            '/': {    // search为转发路径
+                // target: 'http://iugt5x.natappfree.cc/',  // 目标地址
+                target: "http://2876562h4j.wicp.vip/",
+                ws: true, // 是否代理websockets
+                changeOrigin: true   // 设置同源  默认false
+            }
+        }
     },
     lintOnSave: true,
 }

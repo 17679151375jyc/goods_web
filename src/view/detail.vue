@@ -125,8 +125,6 @@ export default {
         purchasePrice2: "170", //三级进货价
         purchasePrice3: "180", //四级进货价
         marketPrice: "189", //市场价
-        minPrice: "170", //最低出售价
-        maxPrice: "180", //最高出售价
         samplePrice: "12", //样品拿货价
         soldNum: 8, //已售数量
         sampleSpecifications: "15g", //样品规格

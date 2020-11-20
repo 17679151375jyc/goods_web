@@ -10,3 +10,11 @@ export function login(data) {
   });
 }
 
+
+export function getList(data) {
+  return fetch({
+    url: "/Commodity/CommodityList",
+    method: "get",
+    params: data
+  });
+}

@@ -130,27 +130,6 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="价格出售范围：" prop="minPrice">
-          <div>
-            <el-input
-              clearable
-              type="number"
-              style="width: 92px"
-              v-model="form.minPrice"
-              placeholder="最低价"
-              size="small"
-            ></el-input>
-            <span style="margin: 0 5px">-</span>
-            <el-input
-              clearable
-              type="number"
-              style="width: 93px"
-              v-model="form.maxPrice"
-              placeholder="最高价"
-              size="small"
-            ></el-input>
-          </div>
-        </el-form-item>
         <el-form-item label="一件代发邮费：">
           <el-input
             clearable
@@ -287,8 +266,6 @@ export default {
         purchasePrice2: "170", //三级进货价
         purchasePrice3: "180", //四级进货价
         marketPrice: "189", //市场价
-        minPrice: "170", //最低出售价
-        maxPrice: "180", //最高出售价
         samplePrice: "12", //样品拿货价
         soldNum: 8, //已售数量
         sampleSpecifications: "15g", //样品规格

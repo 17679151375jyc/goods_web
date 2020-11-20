@@ -11,7 +11,7 @@
     <div class="dis_row_between_center">
       <div class="left_box">
         <el-menu
-          :default-active="indexval"
+          :default-active="form.statusid"
           @select="butClick"
           class="el-menu-demo"
         >
@@ -20,13 +20,13 @@
           <el-button type="danger" size="mini" @click="delLbShow = !delLbShow">删除类别</el-button>
         </div>
           <el-menu-item
-            :index="item.value"
+            :index="item.statuaid"
             v-for="(item, index) in leftList"
             :key="index"
             >
             <div class="dis_row_between_center">
-              <span>{{ item.title }}</span>
-              <i v-if="delLbShow && index+1 != leftList.length"  class="el-icon-error" style="color:red" @click="delLbClick(index, item.title)"></i>
+              <span>{{ item.statusname }}</span>
+              <i v-if="delLbShow && index+1 != leftList.length"  class="el-icon-error" style="color:red" @click="delLbClick(index, item.statusname)"></i>
             </div>
             </el-menu-item
           >
@@ -43,6 +43,7 @@
             <el-form-item label="品牌：">
               <el-input
                 clearable
+                @keyup.enter.native="onSubmit"
                 v-model="form.brandName"
                 placeholder="请输入品牌名称"
                 size="small"
@@ -51,14 +52,26 @@
             <el-form-item label="型号：">
               <el-input
                 clearable
+                @keyup.enter.native="onSubmit"
                 v-model="form.modelName"
                 placeholder="请输入型号名称"
+                size="small"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="货品名称：">
+              <el-input
+                clearable
+                @keyup.enter.native="onSubmit"
+                type="number"
+                v-model="form.goodsName"
+                placeholder="请输入货品名称"
                 size="small"
               ></el-input>
             </el-form-item>
             <el-form-item label="进货价(元)：">
               <el-input
                 clearable
+                @keyup.enter.native="onSubmit"
                 type="number"
                 :maxlength="4"
                 v-model="form.purchasePrice"
@@ -69,37 +82,17 @@
             <el-form-item label="市场价(元)：">
               <el-input
                 clearable
+                @keyup.enter.native="onSubmit"
                 type="number"
                 v-model="form.marketPrice"
                 placeholder="请输入市场价"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="价格出售范围(元)：">
-              <div>
-                <el-input
-                  clearable
-                  type="number"
-                  style="width: 130px"
-                  v-model="form.minPrice"
-                  placeholder="最低出售价"
-                  size="small"
-                ></el-input>
-                <span style="margin: 0 10px">—</span>
-                <el-input
-                  clearable
-                  type="number"
-                  style="width: 130px"
-                  v-model="form.maxPrice"
-                  placeholder="最高出售价"
-                  size="small"
-                ></el-input>
-              </div>
-            </el-form-item>
-            <el-form-item label="操作时间：">
+            <el-form-item label="添加时间：">
               <el-date-picker
                 clearable
-                v-model="form.operationTime"
+                v-model="form.createTime"
                 type="datetimerange"
                 :picker-options="pickerOptions"
                 range-separator="至"
@@ -129,6 +122,7 @@
             ref="multipleTable"
             :data="data"
             stripe
+            height="53vh"
             border
             v-loading="tableLoading"
           >
@@ -171,14 +165,11 @@
               </template>
             </el-table-column>
             <el-table-column
-              label="价格出售范围"
+              prop="goodsName"
+              label="货品名称"
               align="center"
               width="110px"
-            >
-              <template slot-scope="scope">
-                <div>{{ scope.row.minPrice }} ~ {{ scope.row.maxPrice }}</div>
-              </template>
-            </el-table-column>
+            ></el-table-column>
             <el-table-column
               label="进货价"
               :prop="`purchasePrice${userData.userType}`"
@@ -192,12 +183,6 @@
               width="100px"
             >
             </el-table-column>
-            <el-table-column
-              prop="goodsName"
-              label="货品名称"
-              align="center"
-              width="110px"
-            ></el-table-column>
             <el-table-column
               prop="buyerName"
               label="进货商家名称"
@@ -250,7 +235,7 @@
                 </div>
               </template></el-table-column>
             <el-table-column
-              prop="operationTime"
+              prop="createTime"
               label="添加时间"
               align="center"
               width="100px"
@@ -316,6 +301,7 @@
 
 <script>
 import { storage_get, storage_remove } from "@/common/storage.js"
+import { getList } from "@/axios/api";
 export default {
   name: "",
   components: {
@@ -331,7 +317,6 @@ export default {
         accountPhone: null
       },
       delLbShow: false,
-      indexval: "0",
       leftName: "口红类货品列表",
       title: "编辑货品",
       pagination: {
@@ -344,53 +329,69 @@ export default {
       adminShow: false,
       tableLoading: false,
       form: {
+        statusid: "0",
         brandName: "",
         modelName: "",
         expressPrice: "",
         purchasePrice0: "",
         marketPrice: "",
-        minPrice: "",
-        maxPrice: "",
-        operationTime: "",
+        startTime: "",
+        endTime: "",
       },
       data: [
-        {
-          goodsId: "commodity000001",//货品编号
-          goodsStatus: "0",//货品类型
-          brandName: "mac", //品牌名称
-          modelName: "小辣椒",//品牌型号
-          goodsName: "mac口红",//货品名称
-          specifications: "200g",//货品规格
-          color: "#3388ff",//货品颜色
-          stockNum: "99",//库存
-          expressPrice: "10",//一件代发邮费
-          buyerName: "彩妆店",//进货商家名称
-          purchasePrice0: "150",//进货价
-          purchasePrice1: "160",//进货价
-          purchasePrice2: "170",//进货价
-          purchasePrice3: "180",//进货价
-          marketPrice: "189",//市场价
-          minPrice: "170",  //最低出售价
-          maxPrice: "180",//最高出售价
-          samplePrice: "12",//样品拿货价
-          soldNum: 8,//已售数量
-          sampleSpecifications: "15g",//样品规格
-          goodsRemark: "max小辣椒，库存充足",//货品文案
-          operationTime: "2020-11-08 15:00",//创建时间
-          updateTime: "2020-11-11 15:00",//更新时间
-          updateName: "蒋雨成", //操作人
-          goodsImg: [
-            "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
-          ],//商品图片
-        },
+        // {
+        //   goodsId: "000001",//货品编号
+        //   goodsStatus: "0",//货品类型
+        //   brandName: "mac", //品牌名称
+        //   modelName: "小辣椒",//品牌型号
+        //   goodsName: "mac口红",//货品名称
+        //   specifications: "200g",//货品规格
+        //   color: "#3388ff",//货品颜色
+        //   stockNum: "99",//库存
+        //   expressPrice: "10",//一件代发邮费
+        //   buyerName: "彩妆店",//进货商家名称
+        //   purchasePrice0: "150",//进货价
+        //   purchasePrice1: "160",//进货价
+        //   purchasePrice2: "170",//进货价
+        //   purchasePrice3: "180",//进货价
+        //   marketPrice: "189",//市场价
+        //   samplePrice: "12",//样品拿货价
+        //   soldNum: 8,//已售数量
+        //   sampleSpecifications: "15g",//样品规格
+        //   goodsRemark: "max小辣椒，库存充足",//货品文案
+        //   createTime: "2020-11-08 15:00",//创建时间
+        //   updateTime: "2020-11-11 15:00",//更新时间
+        //   updateName: "蒋雨成", //操作人
+        //   goodsImg: [
+        //     "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
+        //     "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
+        //     "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
+        //   ],//商品图片
+        // },
       ],
     };
   },
   methods: {
+    //获取列表
+    getData(){
+      this.tableLoading = true
+      getList(this.form).then(res=>{
+        this.tableLoading = false
+        if(res.code === 0){
+          if(res.data.length === 0){
+            this.data = [];
+            return;
+          }
+          res.data.forEach(item=>{
+            item.goodsImg = item.goodsImg.split(' ')
+          })
+          this.data = res.data
+        }
+      })
+    },
+    //删除类别
     delLbClick(index, title){
-      console.log(index)
+      console.log(index, title)
       let that = this
       that.$confirm(`删除【${title}】类后该类别里的所有商品都将转入【其他】类别，是否继续该操作?`, '提示', {
           confirmButtonText: '确定',
@@ -420,16 +421,19 @@ export default {
             type: 'success',
             message: '添加类别成功！'
           });
+          location.reload()
         }).catch(() => {});
     },
+    //关闭账号弹窗
     adminHandleClose(){
       this.adminShow = false
     },
     //侧边导航
     butClick(index) {
       this.delLbShow = false;
-      this.leftName = this.leftList[index].title + "类货品列表";
-      this.indexval = index;
+      this.leftName = this.leftList[index].statusname + "类货品列表";
+      this.form.statusid = index;
+      this.getData();
     },
     //关闭新增
     addHandleClose() {
@@ -438,6 +442,7 @@ export default {
     //新增确定
     addComfirm() {
       this.addShow = false;
+      this.getData();
     },
     //点击编辑按钮
     editClick() {
@@ -451,12 +456,11 @@ export default {
       this.title = "添加货品";
       this.addShow = true;
     },
-    //确认删除
+    //删除货品
     delConfirm(row) {
-      console.log(row)
       this.delLbShow = false
       let that = this
-      that.$confirm( `確定要删除${row.brandName}/${row.modelName}吗？`, '提示', {
+      that.$confirm( `確定要删除货品【${row.brandName}/${row.modelName}】吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -465,8 +469,10 @@ export default {
             type: 'success',
             message: '删除成功!'
           });
+          location.reload();
         }).catch(() => {});
     },
+    //退出
     logouts(){
       let that = this
       this.delLbShow = false
@@ -498,21 +504,34 @@ export default {
     },
     //搜索
     onSubmit() {
-      this.delLbShow = false
+      this.delLbShow = false;
+      this.getData();
     },
     //重置
     resetForm() {
-      this.delLbShow = false
+      this.delLbShow = false;
+      this.pagination.page = 1;
+      this.pagination.size = 10;
+      this.form.brandName = "";
+      this.form.brandName = "";
+      this.form.modelName = "";
+      this.form.expressPrice = "";
+      this.form.marketPrice = "";
+      this.form.startTime = "";
+      this.form.endTime = "";
+      this.getData();
     },
     //翻页
     handleCurrentChange(page) {
       this.delLbShow = false
       this.pagination.page = page;
+      this.getData();
     },
     //一页多条
     handleCurrentChange1(size) {
       this.delLbShow = false
       this.pagination.size = size;
+      this.getData();
     },
   },
   created(){
@@ -520,6 +539,7 @@ export default {
       this.$router.replace({path: "/login"})
     }    
     this.userData = storage_get('userdata');
+    this.getData();
   }
 };
 </script>
@@ -565,7 +585,7 @@ export default {
 }
 .table_height_css {
   width: calc(100vw - 250px);
-  height: 56vh;
+  height: 53vh;
 }
 .footer {
   padding: 15px 20px 10px 30px;

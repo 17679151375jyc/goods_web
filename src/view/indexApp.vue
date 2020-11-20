@@ -10,13 +10,13 @@
       >
     </div>
     <el-tabs
-      v-model="form.goodsStatus"
+      v-model="form.statusid"
       @tab-click="handleClick"
       type="border-card"
     >
       <el-tab-pane
-        :label="item.title"
-        :name="item.value"
+        :label="item.statusname"
+        :name="item.statuaid"
         v-for="(item, index) in leftList"
         :key="index"
       >
@@ -24,16 +24,15 @@
           <div class="sousuo_css">
             <div
               @click="searchShow = true"
-              v-if="form.brandName || form.modelName || form.purchasePrice"
+              v-if="form.brandName || form.modelName"
             >
-              <span v-if="form.brandName">{{ form.brandName }}-</span>
-              <span v-if="form.modelName"
-                >{{ form.modelName }}
-                <span v-if="form.purchasePrice">-</span></span
-              >
-              <span v-if="form.purchasePrice">{{ form.purchasePrice }}</span>
+              <span v-if="form.brandName">{{ form.brandName }}</span>
+              <span v-if="form.brandName && form.modelName">-</span>
+              <span v-if="form.modelName">{{ form.modelName }}</span>
             </div>
-            <span v-else @click="searchShow = true">点击搜索</span>
+            <span v-else @click="searchShow = true"
+              >点击搜索</span
+            >
           </div>
           <table class="table_width_css">
             <tr>
@@ -43,22 +42,24 @@
               <td style="width: 12vw">颜色</td>
               <td style="width: 15vw">拿货价</td>
             </tr>
-            <tr
-              v-for="(item, index) in data"
-              :key="index"
-              @click="detailClick(item)"
-            >
-              <td>{{ index + 1 }}</td>
-              <td>{{ item.brandName }}</td>
-              <td>{{ item.modelName }}</td>
-              <td>
-                <span :style="{ 'background-color': item.color }"></span>
-              </td>
-              <td>{{ item[`purchasePrice${userData.userType}`] }}</td>
-            </tr>
-            <tr v-if="data.length === 0" && !loading>
+            <tr v-if="data.length === 0 && !loading">
               <td colspan="5">暂无数据</td>
             </tr>
+            <tbody v-if="data.length > 0">
+              <tr
+                v-for="(item, index) in data"
+                :key="index"
+                @click="detailClick(item)"
+              >
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.brandName }}</td>
+                <td>{{ item.modelName }}</td>
+                <td>
+                  <span :style="{ 'background-color': item.color }"></span>
+                </td>
+                <td>{{ item[`purchasePrice${userData.userType}`] }}</td>
+              </tr>
+            </tbody>
             <tr v-if="loading">
               <td colspan="5">加载中...</td>
             </tr>
@@ -97,16 +98,6 @@
               size="small"
             ></el-input>
           </el-form-item>
-          <el-form-item label="拿货价：">
-            <el-input
-              clearable
-              type="number"
-              :maxlength="4"
-              v-model="dataForm.purchasePrice"
-              placeholder="请输入拿货价"
-              size="small"
-            ></el-input>
-          </el-form-item>
         </el-form>
         <el-button type="primary" class="button_css" @click="search"
           >确认搜索</el-button
@@ -121,6 +112,7 @@
 
 <script>
 import { storage_get } from "@/common/storage.js";
+import { getList } from "@/axios/api";
 export default {
   name: "",
   data() {
@@ -140,56 +132,36 @@ export default {
       dataForm: {
         brandName: "",
         modelName: "",
-        purchasePrice: "",
       },
       form: {
         brandName: "",
         modelName: "",
-        purchasePrice: "",
-        goodsStatus: "0",
+        statusid: "0",
       },
       data: [
-        {
-          goodsId: "commodity000001", //货品编号
-          goodsStatus: "0", //货品类型
-          brandName: "mac", //品牌名称
-          modelName: "小辣椒", //品牌型号
-          goodsName: "",//货品名称
-          specifications: "200g", //货品规格
-          color: "#3388ff", //货品颜色
-          stockNum: "99", //库存
-          expressPrice: "10", //一件代发邮费
-          buyerName: "彩妆店", //进货商家名称
-          purchasePrice0: "150",//进货价
-          purchasePrice1: "160",//进货价
-          purchasePrice2: "170",//进货价
-          purchasePrice3: "180",//进货价
-          marketPrice: "189", //市场价
-          minPrice: "170", //最低出售价
-          maxPrice: "180", //最高出售价
-          samplePrice: "12", //样品拿货价
-          soldNum: 8, //已售数量
-          sampleSpecifications: "15g", //样品规格
-          goodsRemark: "max小辣椒，库存充足", //货品文案
-          operationTime: "2020-11-08 15:00", //创建时间
-          updateTime: "2020-11-11 15:00", //更新时间
-          updateName: "蒋雨成", //操作人
-          goodsImg: [
-            "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
-            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
-          ], //商品图片
-        },
+        // {
+        // statusid: "0", //货品类型
+        // brandName: "mac", //品牌名称
+        // modelName: "小辣椒", //品牌型号
+        // color: "#3388ff", //货品颜色
+        // purchasePrice0: "150", //进货价
+        // purchasePrice1: "160", //进货价
+        // purchasePrice2: "170", //进货价
+        // purchasePrice3: "180", //进货价
+        // },
       ],
     };
   },
   methods: {
     //点击搜索
     search() {
+      this.searchShow = false;
       this.form.brandName = this.dataForm.brandName;
       this.form.modelName = this.dataForm.modelName;
-      this.form.purchasePrice = this.dataForm.purchasePrice;
-      this.searchShow = false;
+      this.pagination.page = 1;
+      this.pagination.size = 10;
+      this.data = [];
+      this.getData();
     },
     //弹出搜索条件
     handleClose() {
@@ -208,26 +180,38 @@ export default {
     getData() {
       let that = this;
       that.loading = true;
-      setTimeout(() => {
+      getList(this.form).then((res) => {
         that.loading = false;
-      }, 2000);
+        if (res.code === 0) {
+          if (res.data.length > 0) {
+            res.data.forEach((item) => {
+              item.goodsImg = item.goodsImg.split(" ");
+            });
+            this.data = res.data;
+          } else {
+            this.data = [];
+          }
+        }
+      });
     },
     //tab页切换
     handleClick(tab) {
-      this.form.goodsStatus = tab.name;
+      this.data = [];
+      this.form.statusid = tab.name;
       this.getData();
     },
   },
   created() {
-    if(!storage_get('userdata')){
-      this.$router.replace({path: "/loginApp"})
-    }    
+    if (!storage_get("userdata")) {
+      this.$router.replace({ path: "/loginApp" });
+    }
     this.userData = storage_get("userdata");
+    this.getData();
   },
 };
 </script>
 <style scoped>
->>>.el-form-item__label{
+>>> .el-form-item__label {
   font-size: 3.74vw;
 }
 >>> .el-message {
@@ -241,11 +225,11 @@ export default {
   margin: 0 4vw;
 }
 >>> .el-tabs__item {
-  line-height: 10vw;
+  line-height: 12vw;
 }
 >>> .el-tabs__nav-prev,
 >>> .el-tabs__nav-next {
-  line-height: 10vw;
+  line-height: 12vw;
   background-color: #000;
   color: #fff;
   width: 10vw;
@@ -253,7 +237,7 @@ export default {
   font-weight: bold;
   z-index: 100;
 }
->>>.el-tabs--border-card{
+>>> .el-tabs--border-card {
   border: 0;
 }
 >>> .el-tabs__item.is-active {
@@ -262,8 +246,11 @@ export default {
 >>> .el-tabs__content {
   padding: 0;
 }
->>>.el-input--small .el-input__inner{
+>>> .el-input--small .el-input__inner {
   width: 56vw;
+}
+>>> .el-form-item {
+  margin-bottom: 2vw;
 }
 .table_width_css {
   width: calc(100vw - 15px);
@@ -304,11 +291,11 @@ export default {
 }
 .neirong_box_css {
   width: 80vw;
-  height: 110vw;
+  height: 80vw;
   background-color: #fff;
   margin: 0 auto;
   padding: 2vw;
-  border-radius: 2vw;
+  border-radius: 4vw;
 }
 .cha_css {
   width: 100%;
@@ -319,9 +306,11 @@ export default {
   text-align: center;
 }
 .button_css {
-  width: 78vw;
-  margin: 0 auto;
+  width: 72vw;
+  margin: 1vw 4vw;
   margin-bottom: 3vw;
+  border-radius: 10vw;
+  font-size: 3.74vw;
 }
 .my_box {
   width: 94vw;
@@ -332,7 +321,7 @@ export default {
   font-size: 3.74vw;
   color: #fff;
 }
-.my_box span:last-child{
+.my_box span:last-child {
   margin-left: 5vw;
 }
 </style>

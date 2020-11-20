@@ -2,11 +2,10 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 import Qs from "qs";
-import { storage_get } from "@/common/storage.js"
 const service = axios.create({
     timeout: 30000, // 请求超时时间
-    // baseURL: "/",
-    baseURL: "http://49.234.22.146:8077/",
+    baseURL: "/",
+    // baseURL: "http://49.234.22.146:8077/",
     headers:{
         "Content-Type": "application/x-www-form-urlencoded",        
     }
@@ -15,11 +14,6 @@ const service = axios.create({
 service.interceptors.request.use(request => {
     if(request.headers["Content-Type"] === "application/x-www-form-urlencoded"){
         request.data = Qs.stringify(request.data)
-    }
-    if(request.url !== "/user/login"){
-        request.headers.token = storage_get('userdata').account
-    }else{
-        
     }
     return request
 }, error => {

@@ -17,6 +17,7 @@
       >
         <el-form-item label="账号：">
           <el-input
+            @keyup.enter.native="onSubmit"
             style="width: 180px"
             clearable
             v-model="form.account"
@@ -26,6 +27,7 @@
         </el-form-item>
         <el-form-item label="手机号：">
           <el-input
+            @keyup.enter.native="onSubmit"
             style="width: 180px"
             clearable
             v-model="form.account_phone"
@@ -47,7 +49,8 @@
           type="primary"
           @click="
             addAdminShow = true;
-            title = '添加账号';"
+            title = '添加账号';
+          "
           >添加账号</el-button
         >
       </div>
@@ -205,7 +208,7 @@ export default {
   watch: {
     show: function (val, oldVal) {
       if (val) {
-        this.getData();
+        this.resetForm();
       }
     },
   },
@@ -223,9 +226,17 @@ export default {
       this.addAdminShow = false;
     },
     //查询
-    onSubmit() {},
+    onSubmit() {
+      this.getData();
+    },
     //重置
-    resetForm() {},
+    resetForm() {
+      this.pagination.page = 1
+      this.pagination.size = 10
+      this.form.account = "";
+      this.form.account_phone = "";
+      this.getData();
+    },
     //翻页
     handleCurrentChange(page) {
       this.pagination.page = page;

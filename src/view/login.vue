@@ -8,6 +8,7 @@
         </el-form-item>
         <el-form-item label="账号：" prop="account">
           <el-input
+            @keyup.enter.native="onSubmit"
             clearable
             maxlength="12"
             style="width: 250px"
@@ -19,6 +20,7 @@
         <el-form-item label="密码：" prop="password">
           <el-input
             clearable
+            @keyup.enter.native="onSubmit"
             type="password"
             maxlength="12"
             placeholder="请输入密码"

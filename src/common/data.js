@@ -32,44 +32,44 @@ Vue.prototype.pickerOptions = {
 };
 Vue.prototype.leftList = [
     {
-        title: "口红",
-        value: "0",
+        statusname: "口红",
+        statuaid: "0",
     },
     {
-        title: "化妆品",
-        value: "1",
+        statusname: "化妆品",
+        statuaid: "1",
     },
     {
-        title: "护肤品",
-        value: "2",
+        statusname: "护肤品",
+        statuaid: "2",
     },
     {
-        title: "包包",
-        value: "3",
+        statusname: "包包",
+        statuaid: "3",
     },
     {
-        title: "手表",
-        value: "4",
+        statusname: "手表",
+        statuaid: "4",
     },
     {
-        title: "鞋子",
-        value: "5",
+        statusname: "鞋子",
+        statuaid: "5",
     },
     {
-        title: "衣服",
-        value: "6",
+        statusname: "衣服",
+        statuaid: "6",
     },
     {
-        title: "裤子",
-        value: "7",
+        statusname: "裤子",
+        statuaid: "7",
     },
     {
-        title: "玩具",
-        value: "8",
+        statusname: "玩具",
+        statuaid: "8",
     },
     {
-        title: "其他",
-        value: "9",
+        statusname: "其他",
+        statuaid: "999",
     },
 ]
 Vue.prototype.levelList = [{
