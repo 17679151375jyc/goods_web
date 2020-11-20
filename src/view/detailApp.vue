@@ -44,10 +44,14 @@
           <span>货品名称：</span>
           <span>{{ form.goodsName }}</span>
         </div>
-        <!-- <div class="dis_row_between_center box_css">
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
+          <span>一件代发邮费：</span>
+          <span>{{ form.expressPrice }}</span>
+        </div>
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
           <span>进货商家名称：</span>
           <span>{{ form.buyerName }}</span>
-        </div> -->
+        </div>
         <div class="dis_row_between_center box_css">
           <span>样品拿货价：</span>
           <span>{{ form.samplePrice }}（元/件）</span>
@@ -56,10 +60,10 @@
           <span>样品规格：</span>
           <span>{{ form.sampleSpecifications }}</span>
         </div>
-        <!-- <div class="dis_row_between_center box_css">
-          <span>已售数量：</span>
+        <div class="dis_row_between_center box_css">
+          <span>库存数量：</span>
           <span>{{ form.stockNum }}（件）</span>
-        </div> -->
+        </div>
         <div class="dis_row_between_center box_css">
           <span>库存数量：</span>
           <span>{{ form.soldNum }}（件）</span>
@@ -106,17 +110,23 @@
 </template>
 
 <script>
+import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
     return {
+      userData: {
+        accountName: null,
+        userType: null,
+        accountPhone: null
+      },
       show: false,
       form: {
         goodsId: "000001", //货品编号
         goodsStatus: "0", //货品类型
         brandName: "mac", //品牌名称
         modelName: "小辣椒", //品牌型号
-        goodsName: "",  //  商品名称
+        goodsName: "mac口红",  //  商品名称
         specifications: "200g", //货品规格
         color: "#3388ff", //货品颜色
         stockNum: "99", //库存
@@ -170,6 +180,7 @@ export default {
   },
   mounted() {
     this.show = true;
+    this.userData = storage_get("userdata");
     let demol = document.getElementsByClassName("el-image-viewer__canvas");
     console.log(demol);
   },
