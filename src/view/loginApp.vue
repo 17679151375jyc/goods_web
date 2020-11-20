@@ -2,6 +2,7 @@
   <div>
     <div class="dis_column_center_center box_loginPage_css">
       <img class="logo_css" :src="require('@/img/logo.png')" alt="" />
+      <div class="title_css">JYCYL货源管理系统</div>
       <div class="dis_column_center_center input_box_css">
         <el-form ref="form" :model="form" label-width="21vw" :rules="addrules">
           <el-form-item label="账号：" prop="account">
@@ -133,5 +134,13 @@ export default {
 .but_box_css {
   width: 81vw;
   margin: 10vw auto;
+}
+.title_css{
+  width: 100%;
+  font-size: 5vw;
+  font-weight: bold;
+  color: #38f;
+  text-align: center;
+  margin-top: 3vw;
 }
 </style>

@@ -15,7 +15,7 @@
           @select="butClick"
           class="el-menu-demo"
         >
-        <div class="dis_row_end_center but_addsplb_css">
+        <div class="dis_row_end_center but_addsplb_css" v-if="userData.userType === '0'">
           <el-button type="primary" size="mini" @click="addLbClick">添加类别</el-button>
           <el-button type="danger" size="mini" @click="delLbShow = !delLbShow">删除类别</el-button>
         </div>
@@ -118,9 +118,9 @@
           </el-form>
         </div>
         <div class="dis_row_between_center form_box_css">
-          <el-button type="primary" plain @click="adminShow = true;delLbShow = false">账号管理</el-button>
+          <el-button v-if="userData.userType === '0'" type="primary" plain @click="adminShow = true;delLbShow = false">账号管理</el-button>
           <h2>{{ leftName }}</h2>
-          <el-button type="primary" icon="el-icon-plus" @click="addClick"
+          <el-button v-if="userData.userType === '0'" type="primary" icon="el-icon-plus" @click="addClick"
             >添加商品</el-button
           >
         </div>
@@ -193,8 +193,8 @@
             >
             </el-table-column>
             <el-table-column
-              prop="expressPrice"
-              label="一件代发邮费"
+              prop="goodsName"
+              label="货品名称"
               align="center"
               width="110px"
             ></el-table-column>
@@ -274,10 +274,10 @@
             >
               <template slot-scope="scope">
                 <div class="dis_row_around_center">
-                  <el-button type="primary" size="mini" @click="editClick(scope.row)"
+                  <el-button v-if="userData.userType === '0'" type="primary" size="mini" @click="editClick(scope.row)"
                     >编辑</el-button
                   >
-                  <el-button type="danger" size="mini" @click="delConfirm(scope.row)">删除</el-button>
+                  <el-button v-if="userData.userType === '0'" type="danger" size="mini" @click="delConfirm(scope.row)">删除</el-button>
                   <el-button
                     type="success"
                     @click="detailClick(scope)"
@@ -359,6 +359,7 @@ export default {
           goodsStatus: "0",//货品类型
           brandName: "mac", //品牌名称
           modelName: "小辣椒",//品牌型号
+          goodsName: "mac口红",//货品名称
           specifications: "200g",//货品规格
           color: "#3388ff",//货品颜色
           stockNum: "99",//库存

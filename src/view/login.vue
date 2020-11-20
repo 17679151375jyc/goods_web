@@ -73,7 +73,7 @@ export default {
                 that.$message({
                   type: "success",
                   message: "登录成功!",
-                  duration: 30000
+                  duration: 1000
                 });
               }else{
                 that.loading = false;

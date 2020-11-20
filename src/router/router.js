@@ -56,14 +56,6 @@ const router = new Router({
                 title: '手机详情页',
             },
             component: () => import('@/view/detailApp'),
-        },
-        {
-            path: '/myInfo',
-            name: 'myInfo',
-            meta: {
-                title: '账号信息',
-            },
-            component: () => import('@/view/myInfo'),
         }]
 })
 router.beforeEach((to, from, next) => {

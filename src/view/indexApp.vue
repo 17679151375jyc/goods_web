@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import { storage_get, storage_remove } from "@/common/storage.js";
+import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
@@ -154,6 +154,7 @@ export default {
           goodsStatus: "0", //货品类型
           brandName: "mac", //品牌名称
           modelName: "小辣椒", //品牌型号
+          goodsName: "",//货品名称
           specifications: "200g", //货品规格
           color: "#3388ff", //货品颜色
           stockNum: "99", //库存
@@ -180,8 +181,6 @@ export default {
     };
   },
   methods: {
-    myInfo() {},
-    move(e) {},
     //点击搜索
     search() {
       this.form.brandName = this.dataForm.brandName;
