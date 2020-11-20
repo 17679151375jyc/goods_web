@@ -45,6 +45,13 @@ Vue.prototype.rules = {
             },
         },
     ],
+    goodsName:[
+        {
+            required: true,
+            message: "货品进货价不能为空！",
+            trigger: "blur",
+        }
+    ],
     purchasePrice: [
         {
             required: true,

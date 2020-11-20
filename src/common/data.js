@@ -76,36 +76,15 @@ Vue.prototype.levelList = [{
     name: '超级管理员',
     level: "0"
 }, {
-    name: '总管理员',
+    name: '团队统领',
     level: "1"
 }, {
-    name: '一级管理员',
+    name: '团队长老',
     level: "2"
 }, {
-    name: '二级管理员',
+    name: '团队骨干',
     level: "3"
 }, {
-    name: '成员',
+    name: '团队成员',
     level: "4"
 }]
-Vue.prototype.getLevel = (value) => {
-    let txt = "未知身份"
-    switch (value) {
-        case "0":
-            txt = '超级管理员'
-            break;
-        case "1":
-            txt = '总管理员'
-            break;
-        case "2":
-            txt = '一级管理员'
-            break;
-        case "3":
-            txt = '二级管理员'
-            break;
-        case "4":
-            txt = '成员'
-            break;
-    }
-    return txt;
-}

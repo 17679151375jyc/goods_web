@@ -3,7 +3,7 @@
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL微商货源管理系统 </span>
       <div class="dis_row_between_center out_box_css">
-        <span><i class="iconfont icongerenmingpian"></i> {{getLevel(userData.userType)}}</span>
+        <span><i class="iconfont icongerenmingpian" style="margin-right:.5vw"></i>{{levelList[Number(userData.userType)].name}}</span>
         <span class="phone_css">{{userData.accountName}} / {{userData.accountPhone}}</span>
         <el-button type="primary" @click.stop="logouts" size="mini" plain>退出系统</el-button>
       </div>
@@ -56,7 +56,7 @@
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="拿货价(元)：">
+            <el-form-item label="进货价(元)：">
               <el-input
                 clearable
                 type="number"
@@ -181,7 +181,7 @@
             </el-table-column>
             <el-table-column
               label="进货价"
-              prop="purchasePrice"
+              :prop="`purchasePrice${userData.userType}`"
               align="center"
               width="100px"
             ></el-table-column>
@@ -347,7 +347,7 @@ export default {
         brandName: "",
         modelName: "",
         expressPrice: "",
-        purchasePrice: "",
+        purchasePrice0: "",
         marketPrice: "",
         minPrice: "",
         maxPrice: "",
@@ -365,7 +365,10 @@ export default {
           stockNum: "99",//库存
           expressPrice: "10",//一件代发邮费
           buyerName: "彩妆店",//进货商家名称
-          purchasePrice: "150",//进货价
+          purchasePrice0: "150",//进货价
+          purchasePrice1: "160",//进货价
+          purchasePrice2: "170",//进货价
+          purchasePrice3: "180",//进货价
           marketPrice: "189",//市场价
           minPrice: "170",  //最低出售价
           maxPrice: "180",//最高出售价

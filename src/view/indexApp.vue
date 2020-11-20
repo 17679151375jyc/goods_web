@@ -3,7 +3,7 @@
     <div class="dis_row_between_center my_box">
       <span
         ><i class="iconfont icongerenmingpian"></i>
-        {{ getLevel(userData.userType) }}</span
+        {{ levelList[Number(userData.userType)].name }}</span
       >
       <span class="phone_css"
         >{{ userData.accountName }} / {{ userData.accountPhone }}</span
@@ -54,7 +54,7 @@
               <td>
                 <span :style="{ 'background-color': item.color }"></span>
               </td>
-              <td>{{ item.purchasePrice }}</td>
+              <td>{{ item[`purchasePrice${userData.userType}`] }}</td>
             </tr>
             <tr v-if="data.length === 0" && !loading>
               <td colspan="5">暂无数据</td>
@@ -160,7 +160,10 @@ export default {
           stockNum: "99", //库存
           expressPrice: "10", //一件代发邮费
           buyerName: "彩妆店", //进货商家名称
-          purchasePrice: "150", //进货价
+          purchasePrice0: "150",//进货价
+          purchasePrice1: "160",//进货价
+          purchasePrice2: "170",//进货价
+          purchasePrice3: "180",//进货价
           marketPrice: "189", //市场价
           minPrice: "170", //最低出售价
           maxPrice: "180", //最高出售价
@@ -224,6 +227,9 @@ export default {
 };
 </script>
 <style scoped>
+>>>.el-form-item__label{
+  font-size: 3.74vw;
+}
 >>> .el-message {
   min-width: 70vw !important;
   top: 60vh !important;
@@ -255,6 +261,9 @@ export default {
 }
 >>> .el-tabs__content {
   padding: 0;
+}
+>>>.el-input--small .el-input__inner{
+  width: 56vw;
 }
 .table_width_css {
   width: calc(100vw - 15px);
@@ -295,7 +304,7 @@ export default {
 }
 .neirong_box_css {
   width: 80vw;
-  height: 100vw;
+  height: 110vw;
   background-color: #fff;
   margin: 0 auto;
   padding: 2vw;

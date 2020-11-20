@@ -36,8 +36,17 @@
             <span class="span_color" :style="{'background-color': form.color}"></span>
           </div>
         </el-form-item>
-        <el-form-item label="进货价：">
-          <div class="div_width">{{ form.purchasePrice }}（元/件）</div>
+        <el-form-item label="一级进货价：">
+          <div class="div_width">{{ form.purchasePrice0 }}（元/件）</div>
+        </el-form-item>
+        <el-form-item label="二级进货价：">
+          <div class="div_width">{{ form.purchasePrice1 }}（元/件）</div>
+        </el-form-item>
+        <el-form-item label="三级进货价：">
+          <div class="div_width">{{ form.purchasePrice2 }}（元/件）</div>
+        </el-form-item>
+        <el-form-item label="四级进货价：">
+          <div class="div_width">{{ form.purchasePrice3 }}（元/件）</div>
         </el-form-item>
         <el-form-item label="市场价：">
           <div class="div_width">{{ form.marketPrice }}（元/件）</div>
@@ -51,6 +60,9 @@
         </el-form-item>
         <el-form-item label="一件代发邮费：">
           <div class="div_width">{{ form.expressPrice }}（元/件）</div>
+        </el-form-item>
+        <el-form-item label="货品名称：">
+          <div class="div_width">{{ form.goodsName }}</div>
         </el-form-item>
         <el-form-item label="进货商家名称：">
           <div class="div_width">{{ form.buyerName }}</div>
@@ -106,8 +118,12 @@ export default {
         color: "#3388ff", //货品颜色
         stockNum: "99", //库存
         expressPrice: "10", //一件代发邮费
+        goodsName: "货品1", //货品名称
         buyerName: "彩妆店", //进货商家名称
-        purchasePrice: "150", //进货价
+        purchasePrice0: "150", //一级进货价
+        purchasePrice1: "160", //二级进货价
+        purchasePrice2: "170", //三级进货价
+        purchasePrice3: "180", //四级进货价
         marketPrice: "189", //市场价
         minPrice: "170", //最低出售价
         maxPrice: "180", //最高出售价

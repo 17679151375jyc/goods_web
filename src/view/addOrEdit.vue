@@ -4,7 +4,7 @@
       :title="title"
       :visible.sync="show"
       width="800px"
-      top="50px"
+      top="30px"
       :append-to-body="true"
       :close-on-click-modal="false"
       :before-close="handleClose"
@@ -80,12 +80,42 @@
             ></span>
           </div>
         </el-form-item>
-        <el-form-item prop="purchasePrice" label="进货价：">
+        <el-form-item prop="purchasePrice" label="一级进货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
-            v-model="form.purchasePrice"
+            v-model="form.purchasePrice0"
+            placeholder="请输入进货价"
+            size="small"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="purchasePrice" label="二级级进货价：">
+          <el-input
+            clearable
+            type="number"
+            style="width: 200px"
+            v-model="form.purchasePrice1"
+            placeholder="请输入进货价"
+            size="small"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="purchasePrice" label="三级级进货价：">
+          <el-input
+            clearable
+            type="number"
+            style="width: 200px"
+            v-model="form.purchasePrice2"
+            placeholder="请输入进货价"
+            size="small"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="purchasePrice" label="四级级进货价：">
+          <el-input
+            clearable
+            type="number"
+            style="width: 200px"
+            v-model="form.purchasePrice3"
             placeholder="请输入进货价"
             size="small"
           ></el-input>
@@ -196,22 +226,32 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="货品图片：">
-          <div style="width:540px">
-            <div 
+          <div style="width: 540px">
+            <div
               class="img_tupian"
               v-for="(item, index) in form.goodsImg"
-              :key="index">
-              <el-image                
+              :key="index"
+            >
+              <el-image
                 ref="img_tupian"
-                style="width:100%;height:100%"
+                style="width: 100%; height: 100%"
                 :src="item"
                 :preview-src-list="form.goodsImg"
               ></el-image>
-              <i class="el-icon-circle-close del_css" @click="delImgClick(index)"></i>
+              <i
+                class="el-icon-circle-close del_css"
+                @click="delImgClick(index)"
+              ></i>
             </div>
             <div class="img_tupian">
               <i class="el-icon-plus addimg_css" @click="updateClick"></i>
-              <input ref="res_imginput" @change="fileChange" type="file" style="display:none" accept="image/gif, image/jpeg, image/png, image/jpg">
+              <input
+                ref="res_imginput"
+                @change="fileChange"
+                type="file"
+                style="display: none"
+                accept="image/gif, image/jpeg, image/png, image/jpg"
+              />
             </div>
           </div>
         </el-form-item>
@@ -238,10 +278,14 @@ export default {
         modelName: "小辣椒", //品牌型号
         specifications: "200g", //货品规格
         color: "#3388ff", //货品颜色
+        goodsName: "111", //货品名称
         stockNum: "99", //库存
         expressPrice: "10", //一件代发邮费
         buyerName: "彩妆店", //进货商家名称
-        purchasePrice: "150", //进货价
+        purchasePrice0: "150", //一级进货价
+        purchasePrice1: "160", //二级进货价
+        purchasePrice2: "170", //三级进货价
+        purchasePrice3: "180", //四级进货价
         marketPrice: "189", //市场价
         minPrice: "170", //最低出售价
         maxPrice: "180", //最高出售价
@@ -272,15 +316,15 @@ export default {
     },
   },
   methods: {
-    updateClick(){
-      this.$refs.res_imginput.click()
+    updateClick() {
+      this.$refs.res_imginput.click();
     },
-    fileChange(e){
-      let file = e.target.files[0]
-      console.log(file)
+    fileChange(e) {
+      let file = e.target.files[0];
+      console.log(file);
     },
-    delImgClick(index){
-      this.form.goodsImg.splice(index,1)
+    delImgClick(index) {
+      this.form.goodsImg.splice(index, 1);
     },
     getData() {},
     //关闭按钮
@@ -337,7 +381,7 @@ export default {
   background-color: #fafafa;
   cursor: pointer;
 }
-.del_css{
+.del_css {
   position: absolute;
   top: -5px;
   right: -5px;
@@ -346,10 +390,10 @@ export default {
   background-color: #fff;
   border-radius: 50%;
 }
-.addimg_css{
+.addimg_css {
   font-size: 80px;
   width: 100%;
-  color: #C7C6C5;
+  color: #c7c6c5;
   cursor: pointer;
 }
 </style>

@@ -28,7 +28,7 @@
         </div>
         <div class="dis_row_between_center box_css">
           <span>进货价：</span>
-          <span>{{ form.purchasePrice }}（元/件）</span>
+          <span>{{ form[`purchasePrice${userData.userType}`] }}（元/件）</span>
         </div>
         <div class="dis_row_between_center box_css">
           <span>市场价：</span>
@@ -132,7 +132,10 @@ export default {
         stockNum: "99", //库存
         expressPrice: "10", //一件代发邮费
         buyerName: "彩妆店", //进货商家名称
-        purchasePrice: "150", //进货价
+        purchasePrice0: "150", //进货价
+        purchasePrice1: "160", //进货价
+        purchasePrice2: "170", //进货价
+        purchasePrice3: "180", //进货价
         marketPrice: "189", //市场价
         minPrice: "170", //最低出售价
         maxPrice: "180", //最高出售价
