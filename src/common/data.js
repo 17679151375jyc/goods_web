@@ -33,58 +33,58 @@ Vue.prototype.pickerOptions = {
 Vue.prototype.leftList = [
     {
         statusname: "口红",
-        statuaid: "0",
-    },
-    {
-        statusname: "化妆品",
-        statuaid: "1",
+        goodsType: "0",
     },
     {
         statusname: "护肤品",
-        statuaid: "2",
+        goodsType: "2",
+    },
+    {
+        statusname: "化妆品",
+        goodsType: "1",
     },
     {
         statusname: "包包",
-        statuaid: "3",
+        goodsType: "3",
     },
     {
         statusname: "手表",
-        statuaid: "4",
+        goodsType: "4",
     },
     {
         statusname: "鞋子",
-        statuaid: "5",
+        goodsType: "5",
     },
     {
         statusname: "衣服",
-        statuaid: "6",
+        goodsType: "6",
     },
     {
         statusname: "裤子",
-        statuaid: "7",
+        goodsType: "7",
     },
     {
         statusname: "玩具",
-        statuaid: "8",
+        goodsType: "8",
     },
     {
         statusname: "其他",
-        statuaid: "999",
+        goodsType: "999",
     },
 ]
-Vue.prototype.levelList = [{
+Vue.prototype.userTypeList = [{
     name: '超级管理员',
-    level: "0"
+    userType: "0"
 }, {
     name: '团队统领',
-    level: "1"
+    userType: "1"
 }, {
     name: '团队长老',
-    level: "2"
+    userType: "2"
 }, {
     name: '团队骨干',
-    level: "3"
+    userType: "3"
 }, {
     name: '团队成员',
-    level: "4"
+    userType: "4"
 }]

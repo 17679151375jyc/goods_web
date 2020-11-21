@@ -26,7 +26,23 @@
           <span>颜色：</span>
           <p class="span_color" :style="{ 'background-color': form.color }"></p>
         </div>
-        <div class="dis_row_between_center box_css">
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
+          <span>一级进货价：</span>
+          <span>{{ form.purchasePrice0 }}（元/件）</span>
+        </div>
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
+          <span>二级进货价：</span>
+          <span>{{ form.purchasePrice1 }}（元/件）</span>
+        </div>
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
+          <span>三级进货价：</span>
+          <span>{{ form.purchasePrice2 }}（元/件）</span>
+        </div>
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
+          <span>四级进货价：</span>
+          <span>{{ form.purchasePrice3 }}（元/件）</span>
+        </div>
+        <div class="dis_row_between_center box_css" v-if="userData.userType !== '0'">
           <span>进货价：</span>
           <span>{{ form[`purchasePrice${userData.userType}`] }}（元/件）</span>
         </div>
@@ -111,6 +127,7 @@
 
 <script>
 import { storage_get } from "@/common/storage.js";
+import { getDetailData } from "@/axios/api";
 export default {
   name: "",
   data() {
@@ -156,6 +173,21 @@ export default {
     };
   },
   methods: {
+    getData() {
+      let goodsId = this.$route.query.goodsId
+      getDetailData(goodsId).then(res=>{
+        if(res.code === 0){
+          if(res.data.goodsImg){
+            if(res.data.goodsImg.indexOf(',') > 0){
+              res.data.goodsImg = res.data.goodsImg.split(',');
+            }else{
+              res.data.goodsImg = res.data.goodsImg.split(' ');
+            }
+          }
+          this.form = res.data
+        }
+      })
+    },
     wenanClick() {
       if (this.form.goodsRemark) {
         var val = document.getElementById("remark");

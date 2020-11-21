@@ -3,20 +3,20 @@
     <div class="dis_row_between_center my_box">
       <span
         ><i class="iconfont icongerenmingpian"></i>
-        {{ levelList[Number(userData.userType)].name }}</span
+        {{ userTypeList[Number(userData.userType)].name }}</span
       >
       <span class="phone_css"
         >{{ userData.accountName }} / {{ userData.accountPhone }}</span
       >
     </div>
     <el-tabs
-      v-model="form.statusid"
+      v-model="form.goodsType"
       @tab-click="handleClick"
       type="border-card"
     >
       <el-tab-pane
         :label="item.statusname"
-        :name="item.statuaid"
+        :name="item.goodsType"
         v-for="(item, index) in leftList"
         :key="index"
       >
@@ -98,6 +98,16 @@
               size="small"
             ></el-input>
           </el-form-item>
+          <el-form-item label="进货价：">
+            <el-input
+              clearable
+              type="number"
+              :maxlength="4"
+              v-model="dataForm.purchasePrice"
+              placeholder="请输入进货价"
+              size="small"
+            ></el-input>
+          </el-form-item>
         </el-form>
         <el-button type="primary" class="button_css" @click="search"
           >确认搜索</el-button
@@ -132,15 +142,20 @@ export default {
       dataForm: {
         brandName: "",
         modelName: "",
+        purchasePrice: ""
       },
       form: {
         brandName: "",
         modelName: "",
-        statusid: "0",
+        goodsType: "0",
+        purchasePrice0: "",
+        purchasePrice1: "",
+        purchasePrice2: "",
+        purchasePrice3: "",
       },
       data: [
         // {
-        // statusid: "0", //货品类型
+        // goodsType: "0", //货品类型
         // brandName: "mac", //品牌名称
         // modelName: "小辣椒", //品牌型号
         // color: "#3388ff", //货品颜色
@@ -158,6 +173,7 @@ export default {
       this.searchShow = false;
       this.form.brandName = this.dataForm.brandName;
       this.form.modelName = this.dataForm.modelName;
+      this.form[`purchasePrice${this.userData.userType}`] = this.dataForm.purchasePrice;
       this.pagination.page = 1;
       this.pagination.size = 10;
       this.data = [];
@@ -169,7 +185,9 @@ export default {
     },
     //详情
     detailClick(data) {
-      this.$router.push({ path: "/detailApp" });
+      this.$router.push({ path: "/detailApp", query:{
+        goodsId: data.goodsId
+      } });
     },
     //分页
     pageClick() {
@@ -180,6 +198,7 @@ export default {
     getData() {
       let that = this;
       that.loading = true;
+      console.log(this.form)
       getList(this.form).then((res) => {
         that.loading = false;
         if (res.code === 0) {
@@ -197,7 +216,7 @@ export default {
     //tab页切换
     handleClick(tab) {
       this.data = [];
-      this.form.statusid = tab.name;
+      this.form.goodsType = tab.name;
       this.getData();
     },
   },
@@ -291,7 +310,7 @@ export default {
 }
 .neirong_box_css {
   width: 80vw;
-  height: 80vw;
+  height: 95vw;
   background-color: #fff;
   margin: 0 auto;
   padding: 2vw;

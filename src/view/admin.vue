@@ -30,7 +30,7 @@
             @keyup.enter.native="onSubmit"
             style="width: 180px"
             clearable
-            v-model="form.account_phone"
+            v-model="form.accountPhone"
             placeholder="请输入手机号"
             size="small"
           ></el-input>
@@ -49,7 +49,7 @@
           type="primary"
           @click="
             addAdminShow = true;
-            title = '添加账号';
+            title = '添加';
           "
           >添加账号</el-button
         >
@@ -68,10 +68,15 @@
         ></el-table-column>
         <el-table-column
           label="账号身份"
-          prop="level"
+          prop="userType"
           align="center"
           width="100px"
         >
+          <template slot-scope="scope">
+            <div>
+              {{ userTypeList[Number(scope.row.userType)].name }}
+            </div>
+          </template>
         </el-table-column>
         <el-table-column
           prop="account"
@@ -93,17 +98,10 @@
         ></el-table-column>
         <el-table-column
           label="手机号"
-          prop="account_phone"
+          prop="accountPhone"
           align="center"
           width="120px"
         ></el-table-column>
-
-        <!-- <el-table-column
-          label="操作时间"
-          prop="operationTime"
-          align="center"
-          width="100px"
-        ></el-table-column> -->
         <el-table-column
           prop="remark"
           label="备注"
@@ -162,6 +160,7 @@
     <add
       :title="title"
       :show="addAdminShow"
+      :accountId="accountId"
       @handleClose="addAdminHandleClose"
       @comfirm="addAdminComfirm"
     />
@@ -169,6 +168,8 @@
 </template>
 
 <script>
+import { getUserInfo, delUser, editUser } from "@/axios/api";
+import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   components: {
@@ -176,11 +177,17 @@ export default {
   },
   data() {
     return {
-      title: "添加账号",
+      accountId: "",
+      userData: {
+        accountName: null,
+        userType: null,
+        accountPhone: null,
+      },
+      title: "添加",
       addAdminShow: false,
       form: {
         account: "",
-        account_phone: "",
+        accountPhone: "",
       },
       pagination: {
         page: 1,
@@ -188,16 +195,16 @@ export default {
         total: 0,
       },
       data: [
-        {
-          status: "1",
-          level: "超级管理员",
-          account: "jyc17679151375",
-          password: "q123456",
-          accountName: "蒋雨成",
-          account_phone: "17679151375",
-          remark: "无",
-          operationTime: "2020-11-08 15:00",
-        },
+        // {
+        //   status: "1",
+        //   level: "超级管理员",
+        //   account: "jyc17679151375",
+        //   password: "q123456",
+        //   accountName: "蒋雨成",
+        //   accountPhone: "17679151375",
+        //   remark: "无",
+        //   operationTime: "2020-11-08 15:00",
+        // },
       ],
       tableLoading: false,
     };
@@ -208,22 +215,25 @@ export default {
   watch: {
     show: function (val, oldVal) {
       if (val) {
+        this.userData = storage_get("userdata");
         this.resetForm();
       }
     },
   },
   methods: {
     detailClick(row) {
-      this.title = "编辑账号";
+      this.title = "编辑";
+      this.accountId = row.accountId;
       this.addAdminShow = true;
     },
-    //确认添加
+    //取消添加
     addAdminHandleClose() {
       this.addAdminShow = false;
     },
-    //取消添加
+    //确认添加
     addAdminComfirm() {
       this.addAdminShow = false;
+      this.getData();
     },
     //查询
     onSubmit() {
@@ -231,22 +241,37 @@ export default {
     },
     //重置
     resetForm() {
-      this.pagination.page = 1
-      this.pagination.size = 10
+      this.pagination.page = 1;
+      this.pagination.size = 10;
       this.form.account = "";
-      this.form.account_phone = "";
+      this.form.accountPhone = "";
       this.getData();
     },
     //翻页
     handleCurrentChange(page) {
       this.pagination.page = page;
+      this.getData();
     },
     //一页多条
     handleCurrentChange1(size) {
       this.pagination.size = size;
+      this.getData();
     },
-    getData() {},
-    //关闭按钮
+    //获取数据
+    getData() {
+      this.tableLoading = true;
+      getUserInfo(this.form)
+        .then((res) => {
+          this.tableLoading = false;
+          if (res.code === 0) {
+            this.data = res.data;
+          }
+        })
+        .catch((err) => {
+          this.data = [];
+        });
+    },
+    //关闭弹窗按钮
     handleClose() {
       this.$emit("handleClose");
     },
@@ -261,19 +286,46 @@ export default {
           type: "warning",
         })
         .then(() => {
-          that.$message({
-            type: "success",
-            message: "删除成功!",
+          delUser(row.accountId).then((res) => {
+            if (res.code === 0) {
+              that.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            }
+            that.getData();
           });
         })
-        .catch(() => {});
+        .catch((err) => {
+          that.$message("编辑失败!");
+        });
     },
     //禁用
-    disConfirm() {
-      console.log(row);
+    disConfirm(row) {
+      let data = {
+        accountid: row.accountId,
+        status: "0",
+      };
+      editUser(data).then((res) => {
+        this.$message({
+          type: "error",
+          message: "禁用成功!",
+        });
+      });
     },
     //启用
-    enableConfirm() {},
+    enableConfirm(row) {
+      let data = {
+        accountId: row.accountId,
+        status: "1",
+      };
+      editUser(data).then((res) => {
+        this.$message({
+          type: "success",
+          message: "启用成功!",
+        });
+      });
+    },
   },
 };
 </script>

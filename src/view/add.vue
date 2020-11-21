@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="title"
+      :title="`${title}账号`"
       :visible.sync="show"
       width="500px"
       top="50px"
@@ -17,19 +17,19 @@
         :rules="addrules"
         class="demo-form-inline"
       >
-        <el-form-item label="账号身份：" prop="level">
+        <el-form-item label="账号身份：" prop="userType">
           <el-select
             clearable
-            v-model="form.level"
+            v-model="form.userType"
             placeholder="请选择账号身份"
             style="width: 220px"
             size="small"
           >
             <el-option
-              v-for="item in levelList"
-              :key="item.level"
+              v-for="item in userTypeList"
+              :key="item.userType"
               :label="item.name"
-              :value="item.level"
+              :value="item.userType"
             >
             </el-option>
           </el-select>
@@ -64,10 +64,10 @@
             maxlength="10"
           ></el-input>
         </el-form-item>
-        <el-form-item label="手机号：" prop="phone">
+        <el-form-item label="手机号：" prop="accountPhone">
           <el-input
             clearable
-            v-model="form.phone"
+            v-model="form.accountPhone"
             style="width: 220px"
             placeholder="请输入手机号"
             size="small"
@@ -90,57 +90,119 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="handleClose">关闭</el-button>
-        <el-button size="small" type="primary" @click="comfirm">确定</el-button>
+        <el-button size="small" @click="handleClose" :loading="loading"
+          >关闭</el-button
+        >
+        <el-button
+          size="small"
+          type="primary"
+          @click="comfirm"
+          :loading="loading"
+          >确定</el-button
+        >
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { addUser, detailUser, editUser } from "@/axios/api";
+import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
     return {
+      loading: false,
       form: {
-        id: "",
-        level: "",
+        userType: "",
+        status: "1",
         account: "",
         password: "",
         accountName: "",
-        phone: "",
+        accountPhone: "",
         remark: "",
+        createName: storage_get("userdata").createName,
       },
     };
   },
   props: {
     show: { default: false },
-    title: { default: "添加账号" },
+    title: { default: "添加" },
+    accountId: { default: "" },
   },
   watch: {
     show: function (val, oldVal) {
       if (val) {
-        this.getData();
+        if (this.title === "编辑") {
+          this.getData();
+        } else {
+          this.form = {
+            userType: "",
+            status: "0",
+            account: "",
+            password: "",
+            accountName: "",
+            accountPhone: "",
+            remark: "",
+            createName: storage_get("userdata").accountName,
+          };
+        }
       }
     },
   },
   methods: {
-    getData() {},
+    getData() {
+      detailUser(this.accountId).then((res) => {
+        console.log(res);
+        if (res.code === 0) {
+          this.form = res.data;
+        }
+      });
+    },
     //关闭按钮
     handleClose() {
       this.$emit("handleClose");
     },
     //确定按钮
     comfirm() {
-      console.log(this.form);
       let that = this;
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
-          this.$message({
-            type: "success",
-            message: "新账号添加成功!",
-          });
-          this.$emit("comfirm");
+          that.loading = true;
+          if (that.title === "添加") {
+            addUser(that.form)
+              .then((res) => {
+                that.loading = false;
+                if (res.code === 0) {
+                  that.$message({
+                    type: "success",
+                    message: "新账号添加成功!",
+                  });
+                  that.$emit("comfirm");
+                }
+              })
+              .catch((err) => {
+                that.$message("新增失败!");
+                that.loading = false;
+              });
+          } else {
+            this.form.updateName = storage_get("userdata").accountName;
+            this.form.createTime = "";
+            editUser(this.form)
+              .then((res) => {
+                if (res.code === 0) {
+                  that.$message({
+                    type: "success",
+                    message: "账号编辑成功!",
+                  });
+                  that.$emit("comfirm");
+                }
+              })
+              .catch((err) => {
+                that.$message("编辑失败!");
+                that.loading = false;
+              });
+          }
         }
       });
     },

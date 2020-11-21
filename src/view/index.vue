@@ -3,7 +3,7 @@
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL微商货源管理系统 </span>
       <div class="dis_row_between_center out_box_css">
-        <span><i class="iconfont icongerenmingpian" style="margin-right:.5vw"></i>{{levelList[Number(userData.userType)].name}}</span>
+        <span><i class="iconfont icongerenmingpian" style="margin-right:.5vw"></i>{{userTypeList[Number(userData.userType)].name}}</span>
         <span class="phone_css">{{userData.accountName}} / {{userData.accountPhone}}</span>
         <el-button type="primary" @click.stop="logouts" size="mini" plain>退出系统</el-button>
       </div>
@@ -11,7 +11,7 @@
     <div class="dis_row_between_center">
       <div class="left_box">
         <el-menu
-          :default-active="form.statusid"
+          :default-active="form.goodsType"
           @select="butClick"
           class="el-menu-demo"
         >
@@ -20,7 +20,7 @@
           <el-button type="danger" size="mini" @click="delLbShow = !delLbShow">删除类别</el-button>
         </div>
           <el-menu-item
-            :index="item.statuaid"
+            :index="item.goodsType"
             v-for="(item, index) in leftList"
             :key="index"
             >
@@ -40,7 +40,7 @@
             ref="formData"
             class="demo-form-inline"
           >
-            <el-form-item label="品牌：">
+            <el-form-item label="品牌：" prop="brandName">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
@@ -49,7 +49,7 @@
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="型号：">
+            <el-form-item label="型号：" prop="modelName">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
@@ -58,28 +58,27 @@
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="货品名称：">
+            <el-form-item label="货品名称：" prop="goodsName">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
-                type="number"
                 v-model="form.goodsName"
                 placeholder="请输入货品名称"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="进货价(元)：">
+            <el-form-item label="进货价(元)：" :prop="`purchasePrice${userData.userType}`">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
                 type="number"
                 :maxlength="4"
-                v-model="form.purchasePrice"
-                placeholder="请输入拿货价"
+                v-model="form[`purchasePrice${userData.userType}`]"
+                placeholder="请输入进货价"
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="市场价(元)：">
+            <el-form-item label="市场价(元)：" prop="marketPrice">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
@@ -89,11 +88,12 @@
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="添加时间：">
+            <el-form-item label="添加时间：" prop="times">
               <el-date-picker
+                v-model="times"
                 clearable
-                v-model="form.createTime"
-                type="datetimerange"
+                @change="timeChange"
+                type="daterange"
                 :picker-options="pickerOptions"
                 range-separator="至"
                 start-placeholder="请选择开始日期"
@@ -156,8 +156,7 @@
               label="颜色"
               align="center"
               width="100px"
-            >
-              
+            >              
               <template slot-scope="scope">
                 <div class="dis_row_center_center wid">
                   <span :style="{'background-color': scope.row.color}"></span>
@@ -189,30 +188,6 @@
               align="center"
               width="110px"
             ></el-table-column>
-            <!-- <el-table-column
-              prop="stockNum"
-              label="库存"
-              align="center"
-              width="100px"
-            ></el-table-column> -->
-            <!-- <el-table-column
-              label="已售数量"
-              prop="soldNum"
-              align="center"
-              width="100px">
-            </el-table-column> -->
-            <!-- <el-table-column
-              label="样品拿货价"
-              prop="samplePrice"
-              align="center"
-              width="95px">
-            </el-table-column> -->
-            <!-- <el-table-column
-              label="样品规格"
-              prop="sampleSpecifications"
-              align="center"
-              width="100px">
-            </el-table-column> -->
             <el-table-column
               prop="goodsRemark"
               label="货品文案"
@@ -240,18 +215,6 @@
               align="center"
               width="100px"
             ></el-table-column>
-            <!-- <el-table-column
-              prop="updateTime"
-              label="更新时间"
-              align="center"
-              width="100px"
-            ></el-table-column> -->
-            <!-- <el-table-column
-              prop="updateName"
-              label="最后操作人"
-              align="center"
-              width="100px"
-            ></el-table-column> -->
             <el-table-column
               label="操作"
               align="center"
@@ -265,7 +228,7 @@
                   <el-button v-if="userData.userType === '0'" type="danger" size="mini" @click="delConfirm(scope.row)">删除</el-button>
                   <el-button
                     type="success"
-                    @click="detailClick(scope)"
+                    @click="detailClick(scope.row)"
                     size="mini"
                     >详情</el-button
                   >
@@ -288,12 +251,14 @@
         </div>
       </div>
     </div>
-    <detail @handleClose="handleClose" :show="detailShow" />
+    <detail @handleClose="handleClose" :show="detailShow" :goodsId="goodsId"/>
     <addOrEdit
       @comfirm="addComfirm"
       @handleClose="addHandleClose"
       :show="addShow"
       :title="title"
+      :goodsType="form.goodsType"
+      :goodsId="goodsId"
     />
     <admin :show="adminShow" @handleClose="adminHandleClose"/>
   </div>
@@ -301,7 +266,7 @@
 
 <script>
 import { storage_get, storage_remove } from "@/common/storage.js"
-import { getList } from "@/axios/api";
+import { getList, delData } from "@/axios/api";
 export default {
   name: "",
   components: {
@@ -311,6 +276,8 @@ export default {
   },
   data() {
     return {
+      goodsId: '',
+      times:[],
       userData: {
         accountName: null,
         userType: null,
@@ -318,7 +285,7 @@ export default {
       },
       delLbShow: false,
       leftName: "口红类货品列表",
-      title: "编辑货品",
+      title: "编辑",
       pagination: {
         page: 1,
         size: 10,
@@ -329,11 +296,14 @@ export default {
       adminShow: false,
       tableLoading: false,
       form: {
-        statusid: "0",
+        goodsType: "0",
         brandName: "",
         modelName: "",
-        expressPrice: "",
+        goodsName: "",
         purchasePrice0: "",
+        purchasePrice1: "",
+        purchasePrice2: "",
+        purchasePrice3: "",
         marketPrice: "",
         startTime: "",
         endTime: "",
@@ -341,13 +311,12 @@ export default {
       data: [
         // {
         //   goodsId: "000001",//货品编号
-        //   goodsStatus: "0",//货品类型
+        //   goodsType: "0",//货品类型
         //   brandName: "mac", //品牌名称
         //   modelName: "小辣椒",//品牌型号
         //   goodsName: "mac口红",//货品名称
         //   specifications: "200g",//货品规格
         //   color: "#3388ff",//货品颜色
-        //   stockNum: "99",//库存
         //   expressPrice: "10",//一件代发邮费
         //   buyerName: "彩妆店",//进货商家名称
         //   purchasePrice0: "150",//进货价
@@ -356,6 +325,7 @@ export default {
         //   purchasePrice3: "180",//进货价
         //   marketPrice: "189",//市场价
         //   samplePrice: "12",//样品拿货价
+        //   stockNum: "99",//库存
         //   soldNum: 8,//已售数量
         //   sampleSpecifications: "15g",//样品规格
         //   goodsRemark: "max小辣椒，库存充足",//货品文案
@@ -372,6 +342,11 @@ export default {
     };
   },
   methods: {
+    //时间选择
+    timeChange(val){
+      this.form.startTime = this.getTimeToDate(val[0].getTime(), 'D')
+      this.form.endTime = this.getTimeToDate(val[1].getTime(), 'D')
+    },
     //获取列表
     getData(){
       this.tableLoading = true
@@ -402,7 +377,7 @@ export default {
             type: 'success',
             message: '删除成功!'
           });
-          location.reload()
+          location.reload();
         }).catch(() => {
           this.delLbShow = true
         });
@@ -421,7 +396,7 @@ export default {
             type: 'success',
             message: '添加类别成功！'
           });
-          location.reload()
+          location.reload();
         }).catch(() => {});
     },
     //关闭账号弹窗
@@ -432,7 +407,7 @@ export default {
     butClick(index) {
       this.delLbShow = false;
       this.leftName = this.leftList[index].statusname + "类货品列表";
-      this.form.statusid = index;
+      this.form.goodsType = index;
       this.getData();
     },
     //关闭新增
@@ -445,15 +420,16 @@ export default {
       this.getData();
     },
     //点击编辑按钮
-    editClick() {
+    editClick(row) {
       this.delLbShow = false
-      this.title = "编辑货品";
+      this.title = "编辑";
+      this.goodsId = row.goodsId
       this.addShow = true;
     },
     //点击添加按钮
     addClick() {
       this.delLbShow = false
-      this.title = "添加货品";
+      this.title = "添加";
       this.addShow = true;
     },
     //删除货品
@@ -465,11 +441,17 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          that.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-          location.reload();
+          console.log(row.goodsId)
+          delData(row.goodsId).then(res=>{
+            console.log(res)
+            if(res.code === 0){
+              that.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getData();
+            }
+          })
         }).catch(() => {});
     },
     //退出
@@ -493,6 +475,7 @@ export default {
     detailClick(row){
       this.delLbShow = false
       this.detailShow = true
+      this.goodsId = row.goodsId
     },
     //关闭详情
     handleClose() {
@@ -512,11 +495,7 @@ export default {
       this.delLbShow = false;
       this.pagination.page = 1;
       this.pagination.size = 10;
-      this.form.brandName = "";
-      this.form.brandName = "";
-      this.form.modelName = "";
-      this.form.expressPrice = "";
-      this.form.marketPrice = "";
+      this.$refs["formData"].resetFields();
       this.form.startTime = "";
       this.form.endTime = "";
       this.getData();

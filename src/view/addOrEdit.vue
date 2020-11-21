@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :title="title"
+      :title="`${title}货品`"
       :visible.sync="show"
       width="800px"
       top="30px"
@@ -17,18 +17,18 @@
         :rules="rules"
         class="demo-form-inline"
       >
-        <el-form-item label="类别：" prop="goodsStatus">
+        <el-form-item label="类别：" prop="goodsType">
           <el-select
-            v-model="form.goodsStatus"
+            v-model="form.goodsType"
             placeholder="请选择类别"
             style="width: 200px"
             size="small"
           >
             <el-option
               v-for="item in leftList"
-              :key="item.value"
-              :label="item.title"
-              :value="item.value"
+              :key="item.goodsType"
+              :label="item.statusname"
+              :value="item.goodsType"
             >
             </el-option>
           </el-select>
@@ -80,7 +80,17 @@
             ></span>
           </div>
         </el-form-item>
-        <el-form-item prop="purchasePrice" label="一级进货价：">
+        <el-form-item prop="goodsName" label="货品名称：">
+          <el-input
+            clearable
+            maxlength="20"
+            style="width: 200px"
+            v-model="form.goodsName"
+            placeholder="请输入货品名称"
+            size="small"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="purchasePrice0" label="一级进货价：">
           <el-input
             clearable
             type="number"
@@ -90,7 +100,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice" label="二级级进货价：">
+        <el-form-item prop="purchasePrice1" label="二级级进货价：">
           <el-input
             clearable
             type="number"
@@ -100,7 +110,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice" label="三级级进货价：">
+        <el-form-item prop="purchasePrice2" label="三级级进货价：">
           <el-input
             clearable
             type="number"
@@ -110,7 +120,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice" label="四级级进货价：">
+        <el-form-item prop="purchasePrice3" label="四级级进货价：">
           <el-input
             clearable
             type="number"
@@ -130,7 +140,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="一件代发邮费：">
+        <el-form-item prop="expressPrice" label="一件代发邮费：">
           <el-input
             clearable
             type="number"
@@ -141,7 +151,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="进货商家名称：">
+        <el-form-item prop="buyerName" label="进货商家名称：">
           <el-input
             clearable
             maxlength="20"
@@ -151,7 +161,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="样品拿货价：">
+        <el-form-item prop="samplePrice" label="样品拿货价：">
           <el-input
             clearable
             type="number"
@@ -161,7 +171,7 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="样品规格：">
+        <el-form-item prop="sampleSpecifications" label="样品规格：">
           <el-input
             clearable
             style="width: 200px"
@@ -170,18 +180,18 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="库存数量：">
+        <el-form-item prop="stockNum" label="库存数量：">
           <el-input
             clearable
             type="number"
             maxlength="20"
             style="width: 200px"
             v-model="form.stockNum"
-            placeholder="请输入库存"
+            placeholder="请输入库存数"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="已售数量：">
+        <el-form-item label="已售数量：" v-if="title === '编辑'">
           <el-input
             clearable
             type="number"
@@ -191,14 +201,14 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item label="文案：">
+        <el-form-item prop="goodsRemark" label="文案：">
           <el-input
             clearable
             rows="4"
             show-word-limit
             resize="none"
             style="width: 540px"
-            maxlength="35"
+            maxlength="80"
             v-model="form.goodsRemark"
             placeholder="请输入文案"
             type="textarea"
@@ -208,14 +218,16 @@
           <div style="width: 540px">
             <div
               class="img_tupian"
-              v-for="(item, index) in form.goodsImg"
+              v-for="(item, index) in imgList"
               :key="index"
             >
               <el-image
+                v-if="imgList.length > 0"
                 ref="img_tupian"
                 style="width: 100%; height: 100%"
                 :src="item"
-                :preview-src-list="form.goodsImg"
+                :preview-src-list="imgList"
+                
               ></el-image>
               <i
                 class="el-icon-circle-close del_css"
@@ -226,6 +238,7 @@
               <i class="el-icon-plus addimg_css" @click="updateClick"></i>
               <input
                 ref="res_imginput"
+                multiple
                 @change="fileChange"
                 type="file"
                 style="display: none"
@@ -246,49 +259,58 @@
 </template>
 
 <script>
+import { getDetailData, updataData, addData, updataImg, delImg } from "@/axios/api";
+import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
     return {
+      imgList: [],
       form: {
-        goodsId: "commodity000001", //货品编号
-        goodsStatus: "0", //货品类型
-        brandName: "mac", //品牌名称
-        modelName: "小辣椒", //品牌型号
-        specifications: "200g", //货品规格
-        color: "#3388ff", //货品颜色
-        goodsName: "111", //货品名称
-        stockNum: "99", //库存
-        expressPrice: "10", //一件代发邮费
-        buyerName: "彩妆店", //进货商家名称
-        purchasePrice0: "150", //一级进货价
-        purchasePrice1: "160", //二级进货价
-        purchasePrice2: "170", //三级进货价
-        purchasePrice3: "180", //四级进货价
-        marketPrice: "189", //市场价
-        samplePrice: "12", //样品拿货价
-        soldNum: 8, //已售数量
-        sampleSpecifications: "15g", //样品规格
-        operationTime: "2020-11-08 15:00",
-        updateTime: "2020-11-11 15:00",
-        updateName: "蒋雨成",
-        goodsRemark: "max小辣椒，库存充足",
-        goodsImg: [
-          "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-        ],
+        goodsType: "",
+        brandName: "",
+        modelName: "",
+        specifications: "",
+        color: "",
+        goodsName: "",
+        purchasePrice0: "",
+        purchasePrice1: "",
+        purchasePrice2: "",
+        purchasePrice3: "",
+        marketPrice: "",
+        expressPrice: "",
+        buyerName: "",
+        samplePrice: "",
+        sampleSpecifications: "",
+        stockNum: "",
+        goodsRemark: "",
+        goodsImg: "",
+      },
+      userData: {
+        accountName: null,
+        userType: null,
+        accountPhone: null,
       },
     };
   },
   props: {
     title: {
-      default: "编辑货物",
+      default: "编辑",
     },
     show: { default: false },
+    goodsId: { default: "" },
+    goodsType: {default: ""}
   },
   watch: {
     show: function (val, oldVal) {
       if (val) {
-        this.getData();
+        this.userData = storage_get("userdata");
+        if(this.title === '编辑'){
+          this.getData();
+        }else{
+          this.form.goodsType = this.goodsType
+          this.$refs["formData"].resetFields();
+        }
       }
     },
   },
@@ -296,25 +318,74 @@ export default {
     updateClick() {
       this.$refs.res_imginput.click();
     },
+    //上传图片
     fileChange(e) {
-      let file = e.target.files[0];
-      console.log(file);
+      let file = e.target.files;
+        file.forEach(item=>{
+          let formData = new FormData();
+          formData.append('file', item)
+          updataImg(formData).then(res=>{
+            if(res.code === 0){
+              this.imgList.push(res.msg)
+            }
+          })
+        })
     },
+    //删除图片
     delImgClick(index) {
-      this.form.goodsImg.splice(index, 1);
+      let key = this.imgList[index]
+      key = key.substring(55,key.length);
+      delImg(key).then(res=>{
+        console.log(res)
+        this.imgList.splice(index, 1);
+      })
     },
-    getData() {},
+    //编辑获取数据
+    getData() {
+      getDetailData(this.goodsId).then((res) => {
+        if (res.code === 0) {
+          this.imgList = res.data.goodsImg.split(" ");
+          this.form = res.data;
+        }
+      });
+    },
     //关闭按钮
     handleClose() {
       this.$emit("handleClose");
     },
     //确定按钮
     addComfirm() {
-      console.log(this.form);
       let that = this;
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
-          this.$emit("comfirm");
+          if(this.title === "编辑"){
+            this.form.updateTime = null;
+            this.form.createTime = null;
+            this.form.updateName = this.userData.accountName;
+            this.form.goodsImg = this.imgList.toString();
+            updataData(this.form).then((res) => {
+              if (res.code === 0) {
+                that.$message({
+                  type: "success",
+                  message: "编辑成功!",
+                  duration: 1000,
+                });
+                this.$emit("comfirm");
+              }
+            });
+          }else{
+            this.form.createName = this.userData.accountName;
+            addData(this.form).then(res=>{
+              if(res.code === 0){
+                that.$message({
+                  type: "success",
+                  message: "添加成功!",
+                  duration: 1000,
+                });
+                this.$emit("comfirm");
+              }
+            })
+          }
         }
       });
     },

@@ -4,8 +4,9 @@ import { Message } from 'element-ui';
 import Qs from "qs";
 const service = axios.create({
     timeout: 30000, // 请求超时时间
-    baseURL: "/",
-    // baseURL: "http://49.234.22.146:8077/",
+    // baseURL: "/",
+    // baseURL: "http://287e6562c4.goho.co:20672/",
+    baseURL: "http://49.234.22.146:8077/",
     headers:{
         "Content-Type": "application/x-www-form-urlencoded",        
     }

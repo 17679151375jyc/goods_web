@@ -1,6 +1,6 @@
 import Vue from "vue"
 Vue.prototype.rules = {
-    goodsStatus: [
+    goodsType: [
         {
             required: true,
             message: "货品类别不能为空！",
@@ -48,14 +48,35 @@ Vue.prototype.rules = {
     goodsName:[
         {
             required: true,
-            message: "货品进货价不能为空！",
+            message: "货品名称不能为空！",
             trigger: "blur",
         }
     ],
-    purchasePrice: [
+    purchasePrice0: [
         {
             required: true,
-            message: "货品进货价不能为空！",
+            message: "一级进货价不能为空！",
+            trigger: "blur",
+        }
+    ],
+    purchasePrice1: [
+        {
+            required: true,
+            message: "二级进货价不能为空！",
+            trigger: "blur",
+        }
+    ],
+    purchasePrice2: [
+        {
+            required: true,
+            message: "三级进货价不能为空！",
+            trigger: "blur",
+        }
+    ],
+    purchasePrice3: [
+        {
+            required: true,
+            message: "四级进货价不能为空！",
             trigger: "blur",
         }
     ],
@@ -66,16 +87,9 @@ Vue.prototype.rules = {
             trigger: "blur",
         }
     ],
-    minPrice: [
-        {
-            required: true,
-            message: "货品最低出售价不能为空！",
-            trigger: "blur",
-        }
-    ]
 }
 Vue.prototype.addrules = {
-    level: [{
+    userType: [{
         required: true,
         message: "账号身份不能为空！",
         trigger: "change",
@@ -95,7 +109,7 @@ Vue.prototype.addrules = {
         message: "账号持有者不能为空！",
         trigger: "blur",
     }],
-    phone: [{
+    accountPhone: [{
         required: true,
         message: "持有者电话不能为空！",
         trigger: "blur",
