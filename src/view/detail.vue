@@ -19,7 +19,7 @@
           <div class="div_width">{{ form.goodsId }}</div>
         </el-form-item>
         <el-form-item label="类别：">
-          <div class="div_width">{{ form.goodsType?leftList[Number(form.goodsType)].statusname:'' }}</div>
+          <div class="div_width">{{ goodsTypename }}</div>
           <!-- <div class="div_width">{{ form.goodsType }}</div> -->
         </el-form-item>
         <el-form-item label="品牌：">
@@ -105,12 +105,14 @@
 </template>
 
 <script>
-import { getDetailData } from "@/axios/api";
+import { getDetailData, getTypelist } from "@/axios/api";
 import { storage_get } from "@/common/storage.js"
 export default {
   name: "",
   data() {
     return {
+      goodsTypeList: [],
+      goodsTypename: null,
       userData: {
         accountName: null,
         userType: null,
@@ -132,6 +134,36 @@ export default {
     },
   },
   methods: {
+    //获取类型
+    getGoodsTypeList(goodsType) {
+      getTypelist()
+        .then((res) => {
+          if (res.code === 0) {
+            this.goodsTypeList = res.data;
+            this.goodsTypeList.forEach(item=>{
+              if(item.goodsType === goodsType){
+                this.goodsTypename = item.goodsTypename
+              }
+            })
+          } else {
+            this.goodsTypeList = [
+              {
+                goodsTypename: "口红",
+                goodsType: "0",
+              },
+            ];
+          }
+        })
+        .catch((err) => {
+          this.goodsTypeList = [
+            {
+              goodsTypename: "口红",
+              goodsType: "0",
+            },
+          ];
+        });
+    },
+    //获取数据
     getData() {
       getDetailData(this.goodsId).then(res=>{
         if(res.code === 0){
@@ -139,6 +171,7 @@ export default {
             res.data.goodsImg = res.data.goodsImg.split(' ');
           }
           this.form = res.data
+          this.getGoodsTypeList(this.form.goodsType);
         }
       })
     },

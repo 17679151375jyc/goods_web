@@ -8,7 +8,7 @@
           <el-form-item label="账号：" prop="account">
             <el-input
               clearable
-              maxlength="12"
+              maxlength="20"
               v-model="form.account"
               placeholder="请输入账号"
               class="input_css"
@@ -19,7 +19,7 @@
               clearable
               v-model="form.password"
               type="password"
-              maxlength="12"
+              maxlength="20"
               placeholder="请输入密码"
               show-password
               class="input_css"
@@ -68,7 +68,6 @@ export default {
             .then((res) => {
               if (res.code === 0) {
                 storage_set("userdata", res.data);
-                storage_set("accountinfo", data);
                 that.$router.push({ path: "/indexApp" });
                 that.$message({
                   type: "success",
@@ -90,10 +89,10 @@ export default {
     },
   },
   created(){
-    if(storage_get('accountinfo')){
+    if(storage_get('userdata')){
       this.form = {
-        account: storage_get('accountinfo').account,
-        password: storage_get('accountinfo').password,
+        account: storage_get('userdata').account,
+        password: storage_get('userdata').password,
       }
     }    
   }

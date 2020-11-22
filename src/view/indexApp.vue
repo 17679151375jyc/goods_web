@@ -15,9 +15,9 @@
       type="border-card"
     >
       <el-tab-pane
-        :label="item.statusname"
+        :label="item.goodsTypename"
         :name="item.goodsType"
-        v-for="(item, index) in leftList"
+        v-for="(item, index) in goodsTypeList"
         :key="index"
       >
         <div>
@@ -30,9 +30,7 @@
               <span v-if="form.brandName && form.modelName">-</span>
               <span v-if="form.modelName">{{ form.modelName }}</span>
             </div>
-            <span v-else @click="searchShow = true"
-              >点击搜索</span
-            >
+            <span v-else @click="searchShow = true">点击搜索</span>
           </div>
           <table class="table_width_css">
             <tr>
@@ -112,9 +110,10 @@
         <el-button type="primary" class="button_css" @click="search"
           >确认搜索</el-button
         >
-        <el-button plain class="button_css" @click="searchShow = false"
-          >取消</el-button
-        >
+        <div class="dis_row_between_center button_css">
+          <el-button class="bottom_but_css" plain @click="searchShow = false">关闭</el-button>
+          <el-button class="bottom_but_css" plain @click="resetForm">重置</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -122,11 +121,17 @@
 
 <script>
 import { storage_get } from "@/common/storage.js";
-import { getList } from "@/axios/api";
+import { getList, getTypelist } from "@/axios/api";
 export default {
   name: "",
   data() {
     return {
+      goodsTypeList: [
+        {
+          goodsTypename: "口红",
+          goodsType: "0",
+        },
+      ],
       userData: {
         accountName: null,
         userType: null,
@@ -142,7 +147,7 @@ export default {
       dataForm: {
         brandName: "",
         modelName: "",
-        purchasePrice: ""
+        purchasePrice: "",
       },
       form: {
         brandName: "",
@@ -153,30 +158,52 @@ export default {
         purchasePrice2: "",
         purchasePrice3: "",
       },
-      data: [
-        // {
-        // goodsType: "0", //货品类型
-        // brandName: "mac", //品牌名称
-        // modelName: "小辣椒", //品牌型号
-        // color: "#3388ff", //货品颜色
-        // purchasePrice0: "150", //进货价
-        // purchasePrice1: "160", //进货价
-        // purchasePrice2: "170", //进货价
-        // purchasePrice3: "180", //进货价
-        // },
-      ],
+      data: [],
     };
   },
   methods: {
+    getGoodsTypeList() {
+      getTypelist()
+        .then((res) => {
+          if (res.code === 0) {
+            this.goodsTypeList = res.data;
+          } else {
+            this.goodsTypeList = [
+              {
+                goodsTypename: "口红",
+                goodsType: "0",
+              },
+            ];
+          }
+        })
+        .catch((err) => {
+          this.goodsTypeList = [
+            {
+              goodsTypename: "口红",
+              goodsType: "0",
+            },
+          ];
+        });
+    },
     //点击搜索
     search() {
       this.searchShow = false;
       this.form.brandName = this.dataForm.brandName;
       this.form.modelName = this.dataForm.modelName;
-      this.form[`purchasePrice${this.userData.userType}`] = this.dataForm.purchasePrice;
+      this.form[
+        `purchasePrice${this.userData.userType}`
+      ] = this.dataForm.purchasePrice;
       this.pagination.page = 1;
       this.pagination.size = 10;
       this.data = [];
+      this.getData();
+    },
+    //重置
+    resetForm() {
+      this.pagination.page = 1;
+      this.pagination.size = 10;
+      this.$refs["formData"].resetFields();
+      this.searchShow = false;
       this.getData();
     },
     //弹出搜索条件
@@ -185,9 +212,12 @@ export default {
     },
     //详情
     detailClick(data) {
-      this.$router.push({ path: "/detailApp", query:{
-        goodsId: data.goodsId
-      } });
+      this.$router.push({
+        path: "/detailApp",
+        query: {
+          goodsId: data.goodsId,
+        },
+      });
     },
     //分页
     pageClick() {
@@ -198,16 +228,19 @@ export default {
     getData() {
       let that = this;
       that.loading = true;
-      console.log(this.form)
+      this.form.size = this.pagination.size;
+      this.form.current = this.pagination.page;
       getList(this.form).then((res) => {
         that.loading = false;
         if (res.code === 0) {
-          if (res.data.length > 0) {
-            res.data.forEach((item) => {
+          if (res.data.records.length > 0) {
+            res.data.records.forEach((item) => {
               item.goodsImg = item.goodsImg.split(" ");
             });
-            this.data = res.data;
+            this.pagination.total = res.data.total;
+            this.data = res.data.records;
           } else {
+            this.pagination.total = 0;
             this.data = [];
           }
         }
@@ -225,6 +258,7 @@ export default {
       this.$router.replace({ path: "/loginApp" });
     }
     this.userData = storage_get("userdata");
+    this.getGoodsTypeList();
     this.getData();
   },
 };
@@ -342,5 +376,9 @@ export default {
 }
 .my_box span:last-child {
   margin-left: 5vw;
+}
+.bottom_but_css{
+  border-radius: 10vw;
+  width: 35vw;
 }
 </style>

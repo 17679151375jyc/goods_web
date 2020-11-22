@@ -26,7 +26,7 @@
             size="small"
           >
             <el-option
-              v-for="item in userTypeList"
+              v-for="item in userTypeList.filter(val=>{return val.userType !== '0'})"
               :key="item.userType"
               :label="item.name"
               :value="item.userType"
@@ -40,7 +40,7 @@
             v-model="form.account"
             placeholder="请输入账号"
             size="small"
-            maxlength="12"
+            maxlength="20"
             style="width: 220px"
           ></el-input>
         </el-form-item>
@@ -51,7 +51,7 @@
             placeholder="请输入密码"
             style="width: 220px"
             size="small"
-            maxlength="12"
+            maxlength="20"
           ></el-input>
         </el-form-item>
         <el-form-item label="持有者：" prop="accountName">
@@ -71,7 +71,7 @@
             style="width: 220px"
             placeholder="请输入手机号"
             size="small"
-            maxlength="12"
+            maxlength="11"
           ></el-input>
         </el-form-item>
         <el-form-item label="备注：">
@@ -114,7 +114,7 @@ export default {
     return {
       loading: false,
       form: {
-        userType: "",
+        userType: "4",
         status: "1",
         account: "",
         password: "",
@@ -136,16 +136,9 @@ export default {
         if (this.title === "编辑") {
           this.getData();
         } else {
-          this.form = {
-            userType: "",
-            status: "0",
-            account: "",
-            password: "",
-            accountName: "",
-            accountPhone: "",
-            remark: "",
-            createName: storage_get("userdata").accountName,
-          };
+          this.$nextTick(() => {
+            this.$refs["formData"].resetFields();
+          });
         }
       }
     },
@@ -188,6 +181,7 @@ export default {
           } else {
             this.form.updateName = storage_get("userdata").accountName;
             this.form.createTime = "";
+            this.form.updateTime = null
             editUser(this.form)
               .then((res) => {
                 if (res.code === 0) {

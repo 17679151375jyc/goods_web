@@ -8,7 +8,7 @@
         </div>
         <div class="dis_row_between_center box_css">
           <span>类别：</span>
-          <span>{{ leftList[Number(form.goodsStatus)].title }}</span>
+          <span>{{ goodsTypename }}</span>
         </div>
         <div class="dis_row_between_center box_css">
           <span>品牌：</span>
@@ -51,12 +51,6 @@
           <span>{{ form.marketPrice }}（元/件）</span>
         </div>
         <div class="dis_row_between_center box_css">
-          <span>价格出售范围：</span>
-          <div>
-            <p>{{ form.maxPrice }} ~ {{ form.maxPrice }}（元/件）</p>
-          </div>
-        </div>
-        <div class="dis_row_between_center box_css">
           <span>货品名称：</span>
           <span>{{ form.goodsName }}</span>
         </div>
@@ -86,7 +80,7 @@
         </div>
         <div class="dis_row_between_center box_css">
           <span>添加时间：</span>
-          <span>{{ form.operationTime }}</span>
+          <span>{{ form.createTime }}</span>
         </div>
         <div class="dis_row_between_center box_css">
           <span>更新时间：</span>
@@ -127,11 +121,13 @@
 
 <script>
 import { storage_get } from "@/common/storage.js";
-import { getDetailData } from "@/axios/api";
+import { getDetailData, getTypelist } from "@/axios/api";
 export default {
   name: "",
   data() {
     return {
+      goodsTypeList: [],
+      goodsTypename: null,
       userData: {
         accountName: null,
         userType: null,
@@ -173,18 +169,46 @@ export default {
     };
   },
   methods: {
+    //获取类型
+    getGoodsTypeList(goodsType) {
+      getTypelist()
+        .then((res) => {
+          if (res.code === 0) {
+            this.goodsTypeList = res.data;
+            res.data.forEach(item=>{
+              if(item.goodsType === goodsType){
+                this.goodsTypename = item.goodsTypename
+              }
+              console.log(item)
+            })
+          } else {
+            this.goodsTypeList = [
+              {
+                goodsTypename: "口红",
+                goodsType: "0",
+              },
+            ];
+          }
+        })
+        .catch((err) => {
+          this.goodsTypeList = [
+            {
+              goodsTypename: "口红",
+              goodsType: "0",
+            },
+          ];
+        });
+    },
+    //获取数据
     getData() {
       let goodsId = this.$route.query.goodsId
       getDetailData(goodsId).then(res=>{
         if(res.code === 0){
           if(res.data.goodsImg){
-            if(res.data.goodsImg.indexOf(',') > 0){
-              res.data.goodsImg = res.data.goodsImg.split(',');
-            }else{
-              res.data.goodsImg = res.data.goodsImg.split(' ');
-            }
+            res.data.goodsImg = res.data.goodsImg.split(' ');
           }
           this.form = res.data
+          this.getGoodsTypeList(this.form.goodsType);
         }
       })
     },
@@ -214,8 +238,7 @@ export default {
   mounted() {
     this.show = true;
     this.userData = storage_get("userdata");
-    let demol = document.getElementsByClassName("el-image-viewer__canvas");
-    console.log(demol);
+    this.getData()
   },
 };
 </script>

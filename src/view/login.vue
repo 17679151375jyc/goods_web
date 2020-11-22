@@ -10,7 +10,7 @@
           <el-input
             @keyup.enter.native="onSubmit"
             clearable
-            maxlength="12"
+            maxlength="20"
             style="width: 250px"
             placeholder="请输入账号"
             v-model="form.account"
@@ -22,7 +22,7 @@
             clearable
             @keyup.enter.native="onSubmit"
             type="password"
-            maxlength="12"
+            maxlength="20"
             placeholder="请输入密码"
             style="width: 250px"
             v-model="form.password"

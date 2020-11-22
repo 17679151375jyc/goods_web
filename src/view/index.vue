@@ -1,11 +1,18 @@
 <template>
   <div>
     <div class="dis_row_between_center header_box">
-      <span class="color_text">JYCYL微商货源管理系统 </span>
+      <span class="color_text">JYCYL货源管理系统 </span>
       <div class="dis_row_between_center out_box_css">
-        <span><i class="iconfont icongerenmingpian" style="margin-right:.5vw"></i>{{userTypeList[Number(userData.userType)].name}}</span>
-        <span class="phone_css">{{userData.accountName}} / {{userData.accountPhone}}</span>
-        <el-button type="primary" @click.stop="logouts" size="mini" plain>退出系统</el-button>
+        <span
+          ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
+          >{{ userTypeList[Number(userData.userType)].name }}</span
+        >
+        <span class="phone_css"
+          >{{ userData.accountName }} / {{ userData.accountPhone }}</span
+        >
+        <el-button type="primary" @click.stop="logouts" size="mini" plain
+          >退出系统</el-button
+        >
       </div>
     </div>
     <div class="dis_row_between_center">
@@ -15,21 +22,32 @@
           @select="butClick"
           class="el-menu-demo"
         >
-        <div class="dis_row_end_center but_addsplb_css" v-if="userData.userType === '0'">
-          <el-button type="primary" size="mini" @click="addLbClick">添加类别</el-button>
-          <el-button type="danger" size="mini" @click="delLbShow = !delLbShow">删除类别</el-button>
-        </div>
+          <div
+            class="dis_row_end_center but_addsplb_css"
+            v-if="userData.userType === '0' || userData.userType === '1'"
+          >
+            <el-button type="primary" size="mini" @click="addLbClick"
+              >添加类型</el-button
+            >
+            <el-button type="danger" size="mini" @click="delLbShow = !delLbShow"
+              >删除类型</el-button
+            >
+          </div>
           <el-menu-item
             :index="item.goodsType"
-            v-for="(item, index) in leftList"
+            v-for="(item, index) in goodsTypeList"
             :key="index"
-            >
-            <div class="dis_row_between_center">
-              <span>{{ item.statusname }}</span>
-              <i v-if="delLbShow && index+1 != leftList.length"  class="el-icon-error" style="color:red" @click="delLbClick(index, item.statusname)"></i>
-            </div>
-            </el-menu-item
           >
+            <div class="dis_row_between_center">
+              <span>{{ item.goodsTypename }}</span>
+              <i
+                v-if="delLbShow && item.goodsTypename !== '其他'"
+                class="el-icon-error"
+                style="color: red"
+                @click="delLbClick(item.goodsType, item.goodsTypename)"
+              ></i>
+            </div>
+          </el-menu-item>
         </el-menu>
       </div>
       <div class="rigth_css">
@@ -67,7 +85,10 @@
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="进货价(元)：" :prop="`purchasePrice${userData.userType}`">
+            <el-form-item
+              label="进货价(元)："
+              :prop="`purchasePrice${userData.userType}`"
+            >
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
@@ -111,9 +132,22 @@
           </el-form>
         </div>
         <div class="dis_row_between_center form_box_css">
-          <el-button v-if="userData.userType === '0'" type="primary" plain @click="adminShow = true;delLbShow = false">账号管理</el-button>
+          <el-button
+            v-if="userData.userType === '0'"
+            type="primary"
+            plain
+            @click="
+              adminShow = true;
+              delLbShow = false;
+            "
+            >账号管理</el-button
+          >
           <h2>{{ leftName }}</h2>
-          <el-button v-if="userData.userType === '0'" type="primary" icon="el-icon-plus" @click="addClick"
+          <el-button
+            v-if="userData.userType === '0' || userData.userType === '1'"
+            type="primary"
+            icon="el-icon-plus"
+            @click="addClick"
             >添加商品</el-button
           >
         </div>
@@ -156,10 +190,10 @@
               label="颜色"
               align="center"
               width="100px"
-            >              
+            >
               <template slot-scope="scope">
                 <div class="dis_row_center_center wid">
-                  <span :style="{'background-color': scope.row.color}"></span>
+                  <span :style="{ 'background-color': scope.row.color }"></span>
                 </div>
               </template>
             </el-table-column>
@@ -196,8 +230,12 @@
             <el-table-column width="100px" label="货品图片" align="center">
               <template slot-scope="scope">
                 <div>
+                  <img
+                    :src="require('@/img/zanwu.jpg')"
+                    class="img_tupian"
+                    v-if="scope.row.goodsImg.length === 0"
+                  />
                   <el-image
-                  ref="img_tupian"
                     v-if="scope.row.goodsImg.length > 0"
                     class="img_tupian"
                     :src="scope.row.goodsImg[0]"
@@ -208,24 +246,31 @@
                     >...</span
                   >
                 </div>
-              </template></el-table-column>
+              </template></el-table-column
+            >
             <el-table-column
               prop="createTime"
               label="添加时间"
               align="center"
               width="100px"
             ></el-table-column>
-            <el-table-column
-              label="操作"
-              align="center"
-              width="220px"
-            >
+            <el-table-column label="操作" align="center" width="220px">
               <template slot-scope="scope">
                 <div class="dis_row_around_center">
-                  <el-button v-if="userData.userType === '0'" type="primary" size="mini" @click="editClick(scope.row)"
+                  <el-button
+                    v-if="userData.userType === '0' || userData.userType === '1'"
+                    type="primary"
+                    size="mini"
+                    @click="editClick(scope.row)"
                     >编辑</el-button
                   >
-                  <el-button v-if="userData.userType === '0'" type="danger" size="mini" @click="delConfirm(scope.row)">删除</el-button>
+                  <el-button
+                    v-if="userData.userType === '0' || userData.userType === '1'"
+                    type="danger"
+                    size="mini"
+                    @click="delConfirm(scope.row)"
+                    >删除</el-button
+                  >
                   <el-button
                     type="success"
                     @click="detailClick(scope.row)"
@@ -243,7 +288,7 @@
             @current-change="handleCurrentChange"
             @size-change="handleCurrentChange1"
             :current-page.sync="pagination.page"
-            :page-sizes="[10, 20, 30, 40, 50]"
+            :page-sizes="[10, 20, 30, 40, 50, 100]"
             :page-size="pagination.size"
             layout="prev, pager, next, sizes, jumper"
             :total="pagination.total"
@@ -251,7 +296,7 @@
         </div>
       </div>
     </div>
-    <detail @handleClose="handleClose" :show="detailShow" :goodsId="goodsId"/>
+    <detail @handleClose="handleClose" :show="detailShow" :goodsId="goodsId" />
     <addOrEdit
       @comfirm="addComfirm"
       @handleClose="addHandleClose"
@@ -260,13 +305,19 @@
       :goodsType="form.goodsType"
       :goodsId="goodsId"
     />
-    <admin :show="adminShow" @handleClose="adminHandleClose"/>
+    <admin :show="adminShow" @handleClose="adminHandleClose" />
   </div>
 </template>
 
 <script>
-import { storage_get, storage_remove } from "@/common/storage.js"
-import { getList, delData } from "@/axios/api";
+import { storage_get, storage_remove } from "@/common/storage.js";
+import {
+  getList,
+  delData,
+  getTypelist,
+  delGoodsType,
+  addGoodsType,
+} from "@/axios/api";
 export default {
   name: "",
   components: {
@@ -276,12 +327,19 @@ export default {
   },
   data() {
     return {
-      goodsId: '',
-      times:[],
+      goodsTypeList: [
+        {
+          goodsTypename: "口红",
+          goodsType: "0",
+        },
+      ],
+      goodsId: "",
+      times: [],
       userData: {
+        accountId: null,
         accountName: null,
         userType: null,
-        accountPhone: null
+        accountPhone: null,
       },
       delLbShow: false,
       leftName: "口红类货品列表",
@@ -305,108 +363,184 @@ export default {
         purchasePrice2: "",
         purchasePrice3: "",
         marketPrice: "",
-        startTime: "",
-        endTime: "",
+        startTime: '',
+        endTime: '',
+        size: 10,
       },
       data: [
-        // {
-        //   goodsId: "000001",//货品编号
-        //   goodsType: "0",//货品类型
-        //   brandName: "mac", //品牌名称
-        //   modelName: "小辣椒",//品牌型号
-        //   goodsName: "mac口红",//货品名称
-        //   specifications: "200g",//货品规格
-        //   color: "#3388ff",//货品颜色
-        //   expressPrice: "10",//一件代发邮费
-        //   buyerName: "彩妆店",//进货商家名称
-        //   purchasePrice0: "150",//进货价
-        //   purchasePrice1: "160",//进货价
-        //   purchasePrice2: "170",//进货价
-        //   purchasePrice3: "180",//进货价
-        //   marketPrice: "189",//市场价
-        //   samplePrice: "12",//样品拿货价
-        //   stockNum: "99",//库存
-        //   soldNum: 8,//已售数量
-        //   sampleSpecifications: "15g",//样品规格
-        //   goodsRemark: "max小辣椒，库存充足",//货品文案
-        //   createTime: "2020-11-08 15:00",//创建时间
-        //   updateTime: "2020-11-11 15:00",//更新时间
-        //   updateName: "蒋雨成", //操作人
-        //   goodsImg: [
-        //     "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-        //     "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
-        //     "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
-        //   ],//商品图片
-        // },
+        {
+          goodsId: "000001", //货品编号
+          goodsType: "0", //货品类型
+          brandName: "mac", //品牌名称
+          modelName: "小辣椒", //品牌型号
+          goodsName: "mac口红", //货品名称
+          specifications: "200g", //货品规格
+          color: "#3388ff", //货品颜色
+          expressPrice: "10", //一件代发邮费
+          buyerName: "彩妆店", //进货商家名称
+          purchasePrice0: "150", //进货价
+          purchasePrice1: "160", //进货价
+          purchasePrice2: "170", //进货价
+          purchasePrice3: "180", //进货价
+          marketPrice: "189", //市场价
+          samplePrice: "12", //样品拿货价
+          stockNum: "99", //库存
+          soldNum: 8, //已售数量
+          sampleSpecifications: "15g", //样品规格
+          goodsRemark: "max小辣椒，库存充足", //货品文案
+          createTime: "2020-11-08 15:00", //创建时间
+          updateTime: "2020-11-11 15:00", //更新时间
+          updateName: "蒋雨成", //操作人
+          goodsImg: [
+            // "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
+            // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
+            // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
+          ], //商品图片
+        },
       ],
     };
   },
   methods: {
     //时间选择
-    timeChange(val){
-      this.form.startTime = this.getTimeToDate(val[0].getTime(), 'D')
-      this.form.endTime = this.getTimeToDate(val[1].getTime(), 'D')
+    timeChange(val) {
+      this.form.startTime = this.getTimeToDate(val[0].getTime(), "D");
+      this.form.endTime = this.getTimeToDate(val[1].getTime(), "D");
+      // this.form.startTime = val[0];
+      // this.form.endTime = val[1];
     },
-    //获取列表
-    getData(){
-      this.tableLoading = true
-      getList(this.form).then(res=>{
-        this.tableLoading = false
-        if(res.code === 0){
-          if(res.data.length === 0){
-            this.data = [];
-            return;
+    //获取货品类型
+    getGoodsTypeList() {
+      getTypelist()
+        .then((res) => {
+          if (res.code === 0) {
+            this.goodsTypeList = res.data;
+          } else {
+            this.goodsTypeList = [
+              {
+                goodsTypename: "口红",
+                goodsType: "0",
+              },
+            ];
           }
-          res.data.forEach(item=>{
-            item.goodsImg = item.goodsImg.split(' ')
-          })
-          this.data = res.data
-        }
-      })
-    },
-    //删除类别
-    delLbClick(index, title){
-      console.log(index, title)
-      let that = this
-      that.$confirm(`删除【${title}】类后该类别里的所有商品都将转入【其他】类别，是否继续该操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          that.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-          location.reload();
-        }).catch(() => {
-          this.delLbShow = true
+        })
+        .catch((err) => {
+          this.goodsTypeList = [
+            {
+              goodsTypename: "口红",
+              goodsType: "0",
+            },
+          ];
         });
     },
-    //添加类别弹窗
-    addLbClick(){
-        this.delLbShow = false
-        this.$prompt('请输入类别名称', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          closeOnClickModal: false,
-          inputPattern: /^[\u4e00-\u9fa5]{1,4}$/,
-          inputErrorMessage: '类别名称为1到4个汉字！'
-        }).then(({ value }) => {
-          this.$message({
-            type: 'success',
-            message: '添加类别成功！'
-          });
-          location.reload();
-        }).catch(() => {});
+    //获取列表
+    getData() {
+      this.tableLoading = true;
+      this.form.size = this.pagination.size;
+      this.form.current = this.pagination.page;
+      getList(this.form)
+        .then((res) => {
+          this.tableLoading = false;
+          if (res.code === 0) {
+            if (res.data.length === 0) {
+              this.data = [];
+              return;
+            }
+            res.data.records.forEach((item) => {
+              if(item.goodsImg){
+                item.goodsImg = item.goodsImg.split(" ");
+              }else{
+                item.goodsImg = []
+              }
+            });
+            this.pagination.total = res.data.total;
+            this.data = res.data.records;
+          }
+        })
+        .catch((err) => {
+          this.tableLoading = false;
+          this.pagination.total = 0;
+          this.$message.error("网络错误，请稍后重试！");
+        });
+    },
+    //删除类型
+    delLbClick(id, title) {
+      let that = this;
+      that
+        .$confirm(
+          `删除【${title}】类后该类里的所有货品都将自动放入【其他】类，是否继续该操作?`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        )
+        .then(() => {
+          delGoodsType(id)
+            .then((res) => {
+              if (res.code === 0) {
+                that.$message({
+                  type: "success",
+                  message: "删除成功!",
+                });
+                location.reload();
+              }
+            })
+            .catch((err) => {
+              this.delLbShow = true;
+              this.$message.error("类型删除失败！");
+            });
+        })
+        .catch(() => {
+          this.delLbShow = true;
+        });
+    },
+    //添加类型弹窗
+    addLbClick() {
+      this.delLbShow = false;
+      this.$prompt("请输入类型名称", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnClickModal: false,
+        inputPattern: /^(?!\D+$).{1,6}$/,
+        inputErrorMessage: "类型名称长度为1到6！",
+      })
+        .then(({ value }) => {
+          let data = {
+            goodsTypename: value,
+          };
+          addGoodsType(data)
+            .then((res) => {
+              if (res.code === 0) {
+                this.$message({
+                  type: "success",
+                  message: "添加类型成功！",
+                });
+                location.reload();
+              }
+            })
+            .catch((err) => {
+              this.$message.error("类型添加失败！");
+            });
+        })
+        .catch(() => {});
     },
     //关闭账号弹窗
-    adminHandleClose(){
-      this.adminShow = false
+    adminHandleClose() {
+      this.adminShow = false;
     },
     //侧边导航
-    butClick(index) {
+    butClick(id) {
       this.delLbShow = false;
-      this.leftName = this.leftList[index].statusname + "类货品列表";
+      let index = this.goodsTypeList[0].goodsType;
+      let title = this.goodsTypeList[0].goodsTypename;
+      this.goodsTypeList.forEach(item=>{
+        if(item.goodsType === id){
+          index = item.goodsType;
+          title = item.goodsTypename
+        }
+      })
+      this.leftName = title + '类商品列表'
       this.form.goodsType = index;
       this.getData();
     },
@@ -421,61 +555,71 @@ export default {
     },
     //点击编辑按钮
     editClick(row) {
-      this.delLbShow = false
+      this.delLbShow = false;
       this.title = "编辑";
-      this.goodsId = row.goodsId
+      this.goodsId = row.goodsId;
       this.addShow = true;
     },
     //点击添加按钮
     addClick() {
-      this.delLbShow = false
+      this.delLbShow = false;
       this.title = "添加";
       this.addShow = true;
     },
     //删除货品
     delConfirm(row) {
-      this.delLbShow = false
-      let that = this
-      that.$confirm( `確定要删除货品【${row.brandName}/${row.modelName}】吗？`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          console.log(row.goodsId)
-          delData(row.goodsId).then(res=>{
-            console.log(res)
-            if(res.code === 0){
+      this.delLbShow = false;
+      let that = this;
+      that
+        .$confirm(
+          `確定要删除货品【${row.brandName}/${row.modelName}】吗？`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+          }
+        )
+        .then(() => {
+          console.log(row.goodsId);
+          delData(row.goodsId).then((res) => {
+            console.log(res);
+            if (res.code === 0) {
               that.$message({
-                type: 'success',
-                message: '删除成功!'
+                type: "success",
+                message: "删除成功!",
               });
               this.getData();
             }
-          })
-        }).catch(() => {});
+          });
+        })
+        .catch(() => {});
     },
     //退出
-    logouts(){
-      let that = this
-      this.delLbShow = false
-      that.$confirm('確定要退出系统吗吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          storage_remove('userdata')
-          that.$router.replace({path: "/login"})
+    logouts() {
+      let that = this;
+      this.delLbShow = false;
+      that
+        .$confirm("確定要退出系统吗吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          storage_remove("userdata");
+          that.$router.replace({ path: "/login" });
           that.$message({
-            type: 'success',
-            message: '退出成功!'
-          })
-        }).catch(() => {});
+            type: "success",
+            message: "退出成功!",
+          });
+        })
+        .catch(() => {});
     },
     //详情按钮
-    detailClick(row){
-      this.delLbShow = false
-      this.detailShow = true
-      this.goodsId = row.goodsId
+    detailClick(row) {
+      this.delLbShow = false;
+      this.detailShow = true;
+      this.goodsId = row.goodsId;
     },
     //关闭详情
     handleClose() {
@@ -496,30 +640,32 @@ export default {
       this.pagination.page = 1;
       this.pagination.size = 10;
       this.$refs["formData"].resetFields();
-      this.form.startTime = "";
-      this.form.endTime = "";
+      this.form.startTime = '';
+      this.form.endTime = '';
+      this.times = [];
       this.getData();
     },
     //翻页
     handleCurrentChange(page) {
-      this.delLbShow = false
+      this.delLbShow = false;
       this.pagination.page = page;
       this.getData();
     },
     //一页多条
     handleCurrentChange1(size) {
-      this.delLbShow = false
+      this.delLbShow = false;
       this.pagination.size = size;
       this.getData();
     },
   },
-  created(){
-    if(!storage_get('userdata').accountId){
-      this.$router.replace({path: "/login"})
-    }    
-    this.userData = storage_get('userdata');
+  created() {
+    if (!storage_get("userdata").accountId) {
+      this.$router.replace({ path: "/login" });
+    }
+    this.userData = storage_get("userdata");
+    this.getGoodsTypeList();
     this.getData();
-  }
+  },
 };
 </script>
 <style scoped>
@@ -574,6 +720,7 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 3px;
+  cursor: pointer;
   margin-left: 5px;
 }
 .dian_css {
@@ -581,18 +728,18 @@ export default {
   font-size: 18px;
   font-weight: bold;
 }
-.but_addsplb_css{
+.but_addsplb_css {
   height: 30px;
   padding: 5%;
   border-bottom: 1px solid#E6E6E6;
 }
-.out_box_css{
+.out_box_css {
   min-width: 200px;
   margin-right: 15px;
 }
-.out_box_css .phone_css{
+.out_box_css .phone_css {
   font-size: 12px;
-  margin:0 10px;
+  margin: 0 10px;
   display: block;
   line-height: 20px;
 }

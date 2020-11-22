@@ -30,59 +30,17 @@ Vue.prototype.pickerOptions = {
         },
     ],
 };
-Vue.prototype.leftList = [
-    {
-        statusname: "口红",
-        goodsType: "0",
-    },
-    {
-        statusname: "护肤品",
-        goodsType: "2",
-    },
-    {
-        statusname: "化妆品",
-        goodsType: "1",
-    },
-    {
-        statusname: "包包",
-        goodsType: "3",
-    },
-    {
-        statusname: "手表",
-        goodsType: "4",
-    },
-    {
-        statusname: "鞋子",
-        goodsType: "5",
-    },
-    {
-        statusname: "衣服",
-        goodsType: "6",
-    },
-    {
-        statusname: "裤子",
-        goodsType: "7",
-    },
-    {
-        statusname: "玩具",
-        goodsType: "8",
-    },
-    {
-        statusname: "其他",
-        goodsType: "999",
-    },
-]
 Vue.prototype.userTypeList = [{
     name: '超级管理员',
     userType: "0"
 }, {
-    name: '团队统领',
+    name: '总管理员',
     userType: "1"
 }, {
-    name: '团队长老',
+    name: '团队骨干',
     userType: "2"
 }, {
-    name: '团队骨干',
+    name: '团队精英',
     userType: "3"
 }, {
     name: '团队成员',

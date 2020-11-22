@@ -6,7 +6,6 @@
       width="1000px"
       top="50px"
       :append-to-body="true"
-      :close-on-click-modal="false"
       :before-close="handleClose"
     >
       <el-form
@@ -114,8 +113,17 @@
                 v-if="scope.row.status === '0'"
                 type="success"
                 size="mini"
+                :loading="butLoading"
                 @click="enableConfirm(scope.row)"
                 >启用</el-button
+              >
+              <el-button
+                v-if="scope.row.status === '1' && scope.row.accountId != '000001'"
+                type="warning"
+                size="mini"
+                :loading="butLoading"
+                @click="disConfirm(scope.row)"
+                >禁用</el-button
               >
               <el-button
                 type="primary"
@@ -124,15 +132,9 @@
                 >编辑</el-button
               >
               <el-button
-                v-if="scope.row.status === '1'"
-                type="warning"
-                size="mini"
-                @click="disConfirm(scope.row)"
-                >禁用</el-button
-              >
-              <el-button
                 type="danger"
                 size="mini"
+                v-if="scope.row.accountId != '000001'"
                 @click="delConfirm(scope.row)"
                 >删除</el-button
               >
@@ -177,6 +179,7 @@ export default {
   },
   data() {
     return {
+      butLoading: false,
       accountId: "",
       userData: {
         accountName: null,
@@ -194,18 +197,7 @@ export default {
         size: 10,
         total: 0,
       },
-      data: [
-        // {
-        //   status: "1",
-        //   level: "超级管理员",
-        //   account: "jyc17679151375",
-        //   password: "q123456",
-        //   accountName: "蒋雨成",
-        //   accountPhone: "17679151375",
-        //   remark: "无",
-        //   operationTime: "2020-11-08 15:00",
-        // },
-      ],
+      data: [],
       tableLoading: false,
     };
   },
@@ -260,11 +252,14 @@ export default {
     //获取数据
     getData() {
       this.tableLoading = true;
+      this.form.size = this.pagination.size;
+      this.form.current = this.pagination.page;
       getUserInfo(this.form)
         .then((res) => {
           this.tableLoading = false;
           if (res.code === 0) {
-            this.data = res.data;
+            this.data = res.data.records;
+            this.pagination.total = res.data.total
           }
         })
         .catch((err) => {
@@ -277,8 +272,14 @@ export default {
     },
     //确认删除
     delConfirm(row) {
-      console.log(row);
       let that = this;
+      if (this.userData.accountId === "000001") {
+        that.$message({
+          type: "warning",
+          message: "该账号不可删除！",
+        });
+        return;
+      }
       that
         .$confirm("确定要删除该账号吗？", "提示", {
           confirmButtonText: "确定",
@@ -296,21 +297,29 @@ export default {
             that.getData();
           });
         })
-        .catch((err) => {
-          that.$message("编辑失败!");
-        });
+        .catch((err) => {});
     },
     //禁用
     disConfirm(row) {
+      if (row.accountId === "000001") {
+        this.$message({
+          type: "warning",
+          message: "该账号不可禁用！",
+        });
+        return;
+      }
       let data = {
-        accountid: row.accountId,
+        accountId: row.accountId,
         status: "0",
       };
+      this.butLoading = true
       editUser(data).then((res) => {
+        this.butLoading = false
         this.$message({
-          type: "error",
+          type: "success",
           message: "禁用成功!",
         });
+        this.getData();
       });
     },
     //启用
@@ -319,11 +328,14 @@ export default {
         accountId: row.accountId,
         status: "1",
       };
+      this.butLoading = true
       editUser(data).then((res) => {
+        this.butLoading = false
         this.$message({
           type: "success",
           message: "启用成功!",
         });
+        this.getData();
       });
     },
   },

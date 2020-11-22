@@ -25,9 +25,9 @@
             size="small"
           >
             <el-option
-              v-for="item in leftList"
+              v-for="item in goodsTypeList"
               :key="item.goodsType"
-              :label="item.statusname"
+              :label="item.goodsTypename"
               :value="item.goodsType"
             >
             </el-option>
@@ -72,7 +72,6 @@
               v-model="form.color"
               placeholder="请输入颜色"
               size="small"
-              @focus="colorClick"
             ></el-input>
             <span
               class="span_color"
@@ -227,7 +226,6 @@
                 style="width: 100%; height: 100%"
                 :src="item"
                 :preview-src-list="imgList"
-                
               ></el-image>
               <i
                 class="el-icon-circle-close del_css"
@@ -259,12 +257,25 @@
 </template>
 
 <script>
-import { getDetailData, updataData, addData, updataImg, delImg } from "@/axios/api";
+import {
+  getDetailData,
+  updataData,
+  addData,
+  updataImg,
+  delImg,
+  getTypelist,
+} from "@/axios/api";
 import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
     return {
+      goodsTypeList: [
+        {
+          goodsTypename: "口红",
+          goodsType: "0",
+        },
+      ],
       imgList: [],
       form: {
         goodsType: "",
@@ -299,46 +310,73 @@ export default {
     },
     show: { default: false },
     goodsId: { default: "" },
-    goodsType: {default: ""}
+    goodsType: { default: "" },
   },
   watch: {
     show: function (val, oldVal) {
       if (val) {
         this.userData = storage_get("userdata");
-        if(this.title === '编辑'){
+        this.getGoodsTypeList();
+        if (this.title === "编辑") {
           this.getData();
-        }else{
-          this.form.goodsType = this.goodsType
-          this.$refs["formData"].resetFields();
+        } else {
+          this.$nextTick(() => {
+            this.$refs["formData"].resetFields();
+          });
+          this.form.goodsType = this.goodsType;
         }
       }
     },
   },
   methods: {
+    //获取类型
+    getGoodsTypeList() {
+      getTypelist()
+        .then((res) => {
+          if (res.code === 0) {
+            this.goodsTypeList = res.data;
+          } else {
+            this.goodsTypeList = [
+              {
+                goodsTypename: "口红",
+                goodsType: "0",
+              },
+            ];
+          }
+        })
+        .catch((err) => {
+          this.goodsTypeList = [
+            {
+              goodsTypename: "口红",
+              goodsType: "0",
+            },
+          ];
+        });
+    },
     updateClick() {
       this.$refs.res_imginput.click();
     },
     //上传图片
     fileChange(e) {
       let file = e.target.files;
-        file.forEach(item=>{
-          let formData = new FormData();
-          formData.append('file', item)
-          updataImg(formData).then(res=>{
-            if(res.code === 0){
-              this.imgList.push(res.msg)
-            }
-          })
-        })
+      file.forEach((item) => {
+        let formData = new FormData();
+        formData.append("file", item);
+        updataImg(formData).then((res) => {
+          if (res.code === 0) {
+            this.imgList.push(res.msg);
+          }
+        });
+      });
     },
     //删除图片
     delImgClick(index) {
-      let key = this.imgList[index]
-      key = key.substring(55,key.length);
-      delImg(key).then(res=>{
-        console.log(res)
+      let key = this.imgList[index];
+      key = key.substring(55, key.length);
+      delImg(key).then((res) => {
+        console.log(res);
         this.imgList.splice(index, 1);
-      })
+      });
     },
     //编辑获取数据
     getData() {
@@ -358,7 +396,7 @@ export default {
       let that = this;
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
-          if(this.title === "编辑"){
+          if (this.title === "编辑") {
             this.form.updateTime = null;
             this.form.createTime = null;
             this.form.updateName = this.userData.accountName;
@@ -373,10 +411,10 @@ export default {
                 this.$emit("comfirm");
               }
             });
-          }else{
+          } else {
             this.form.createName = this.userData.accountName;
-            addData(this.form).then(res=>{
-              if(res.code === 0){
+            addData(this.form).then((res) => {
+              if (res.code === 0) {
                 that.$message({
                   type: "success",
                   message: "添加成功!",
@@ -384,14 +422,10 @@ export default {
                 });
                 this.$emit("comfirm");
               }
-            })
+            });
           }
         }
       });
-    },
-    //颜色
-    colorClick(e) {
-      console.log(e);
     },
   },
 };
