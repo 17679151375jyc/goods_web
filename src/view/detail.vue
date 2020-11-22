@@ -32,9 +32,12 @@
           <div class="div_width">{{ form.specifications }}</div>
         </el-form-item>
         <el-form-item label="颜色：">
-          <div class="dis_row_between_center" style="width:100px">
+          <div class="dis_row_between_center" style="width: 100px">
             <span>{{ form.color }}</span>
-            <span class="span_color" :style="{'background-color': form.color}"></span>
+            <span
+              class="span_color"
+              :style="{ 'background-color': form.color }"
+            ></span>
           </div>
         </el-form-item>
         <el-form-item label="一级进货价：" v-if="userData.userType === '0'">
@@ -50,7 +53,9 @@
           <div class="div_width">{{ form.purchasePrice3 }}（元/件）</div>
         </el-form-item>
         <el-form-item label="进货价：" v-if="userData.userType !== '0'">
-          <div class="div_width">{{ form[`purchasePrice${userData.userType}`]}}（元/件）</div>
+          <div class="div_width">
+            {{ form[`purchasePrice${userData.userType}`] }}（元/件）
+          </div>
         </el-form-item>
         <el-form-item label="市场价：">
           <div class="div_width">{{ form.marketPrice }}（元/件）</div>
@@ -93,7 +98,13 @@
         </el-form-item>
         <el-form-item label="货品图片：">
           <div class="myimgbox">
-            <el-image class="myimg_css" :src="item" :preview-src-list="form.goodsImg" v-for="(item, index) in form.goodsImg" :key="index"></el-image>
+            <el-image
+              class="myimg_css"
+              :src="item"
+              :preview-src-list="form.goodsImg"
+              v-for="(item, index) in form.goodsImg"
+              :key="index"
+            ></el-image>
           </div>
         </el-form-item>
       </el-form>
@@ -106,7 +117,7 @@
 
 <script>
 import { getDetailData, getTypelist } from "@/axios/api";
-import { storage_get } from "@/common/storage.js"
+import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
@@ -116,19 +127,19 @@ export default {
       userData: {
         accountName: null,
         userType: null,
-        accountPhone: null
+        accountPhone: null,
       },
       form: {},
     };
   },
   props: {
     show: { default: false },
-    goodsId: {default: ""}
+    goodsId: { default: "" },
   },
   watch: {
     show: function (val, oldVal) {
       if (val) {
-        this.userData = storage_get('userdata');
+        this.userData = storage_get("userdata");
         this.getData();
       }
     },
@@ -140,16 +151,16 @@ export default {
         .then((res) => {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
-            this.goodsTypeList.forEach(item=>{
-              if(item.goodsType === goodsType){
-                this.goodsTypename = item.goodsTypename
+            this.goodsTypeList.forEach((item) => {
+              if (item.goodsType === goodsType) {
+                this.goodsTypename = item.goodsTypename;
               }
-            })
+            });
           } else {
             this.goodsTypeList = [
               {
-                goodsTypename: "口红",
-                goodsType: "0",
+                goodsTypename: "其他",
+                goodsType: "99",
               },
             ];
           }
@@ -157,23 +168,25 @@ export default {
         .catch((err) => {
           this.goodsTypeList = [
             {
-              goodsTypename: "口红",
-              goodsType: "0",
+              goodsTypename: "其他",
+              goodsType: "99",
             },
           ];
         });
     },
     //获取数据
     getData() {
-      getDetailData(this.goodsId).then(res=>{
-        if(res.code === 0){
-          if(res.data.goodsImg){
-            res.data.goodsImg = res.data.goodsImg.split(' ');
+      getDetailData(this.goodsId).then((res) => {
+        if (res.code === 0) {
+          if (res.data.goodsImg.indexOf(",")) {
+            res.data.goodsImg = res.data.goodsImg.split(",");
+          } else {
+            res.data.goodsImg = res.data.goodsImg.split(" ");
           }
-          this.form = res.data
+          this.form = res.data;
           this.getGoodsTypeList(this.form.goodsType);
         }
-      })
+      });
     },
     //关闭按钮
     handleClose() {
@@ -183,10 +196,10 @@ export default {
 };
 </script>
 <style scoped>
->>>.el-dialog__body{
+>>> .el-dialog__body {
   padding-top: 0;
 }
->>>.el-image-viewer__close{
+>>> .el-image-viewer__close {
   color: #fff;
 }
 >>> .el-form-item {
@@ -195,12 +208,12 @@ export default {
 .myimgbox {
   width: 540px;
 }
-.div_width{
+.div_width {
   width: 200px;
 }
-.myimg_css{  
+.myimg_css {
   width: 80px;
   height: 80px;
-  margin:10px 10px 0 0;
+  margin: 10px 10px 0 0;
 }
 </style>

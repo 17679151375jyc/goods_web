@@ -272,8 +272,8 @@ export default {
     return {
       goodsTypeList: [
         {
-          goodsTypename: "口红",
-          goodsType: "0",
+          goodsTypename: "其他",
+          goodsType: "99",
         },
       ],
       imgList: [],
@@ -338,8 +338,8 @@ export default {
           } else {
             this.goodsTypeList = [
               {
-                goodsTypename: "口红",
-                goodsType: "0",
+                goodsTypename: "其他",
+                goodsType: "99",
               },
             ];
           }
@@ -347,8 +347,8 @@ export default {
         .catch((err) => {
           this.goodsTypeList = [
             {
-              goodsTypename: "口红",
-              goodsType: "0",
+              goodsTypename: "其他",
+              goodsType: "99",
             },
           ];
         });
@@ -374,7 +374,6 @@ export default {
       let key = this.imgList[index];
       key = key.substring(55, key.length);
       delImg(key).then((res) => {
-        console.log(res);
         this.imgList.splice(index, 1);
       });
     },
@@ -382,7 +381,15 @@ export default {
     getData() {
       getDetailData(this.goodsId).then((res) => {
         if (res.code === 0) {
-          this.imgList = res.data.goodsImg.split(" ");
+          if(res.data.goodsImg){
+            if(res.data.goodsImg.indexOf(',')){
+              this.imgList = res.data.goodsImg.split(",");
+            }else{
+              this.imgList = res.data.goodsImg.split(" ");
+            }
+          }else{
+            this.imgList = []
+          }
           this.form = res.data;
         }
       });
@@ -413,6 +420,7 @@ export default {
             });
           } else {
             this.form.createName = this.userData.accountName;
+            this.form.goodsImg = this.imgList.toString();
             addData(this.form).then((res) => {
               if (res.code === 0) {
                 that.$message({

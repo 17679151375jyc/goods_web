@@ -146,7 +146,6 @@ export default {
   methods: {
     getData() {
       detailUser(this.accountId).then((res) => {
-        console.log(res);
         if (res.code === 0) {
           this.form = res.data;
         }

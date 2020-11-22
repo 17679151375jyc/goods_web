@@ -75,6 +75,7 @@
       <div class="neirong_box_css">
         <span class="cha_css">货品查询</span>
         <el-form
+          ref="formData"
           label-width="20vw"
           :inline="true"
           :model="dataForm"
@@ -111,8 +112,12 @@
           >确认搜索</el-button
         >
         <div class="dis_row_between_center button_css">
-          <el-button class="bottom_but_css" plain @click="searchShow = false">关闭</el-button>
-          <el-button class="bottom_but_css" plain @click="resetForm">重置</el-button>
+          <el-button class="bottom_but_css" plain @click="searchShow = false"
+            >关闭</el-button
+          >
+          <el-button class="bottom_but_css" plain @click="resetForm"
+            >重置</el-button
+          >
         </div>
       </div>
     </div>
@@ -128,8 +133,8 @@ export default {
     return {
       goodsTypeList: [
         {
-          goodsTypename: "口红",
-          goodsType: "0",
+          goodsTypename: "其他",
+          goodsType: "99",
         },
       ],
       userData: {
@@ -170,8 +175,8 @@ export default {
           } else {
             this.goodsTypeList = [
               {
-                goodsTypename: "口红",
-                goodsType: "0",
+                goodsTypename: "其他",
+                goodsType: "99",
               },
             ];
           }
@@ -179,8 +184,8 @@ export default {
         .catch((err) => {
           this.goodsTypeList = [
             {
-              goodsTypename: "口红",
-              goodsType: "0",
+              goodsTypename: "其他",
+              goodsType: "99",
             },
           ];
         });
@@ -202,7 +207,18 @@ export default {
     resetForm() {
       this.pagination.page = 1;
       this.pagination.size = 10;
-      this.$refs["formData"].resetFields();
+      this.form.brandName = '';
+      this.form.modelName = '';
+      this.form.brandName = '';
+      this.form.purchasePrice0 = '';
+      this.form.purchasePrice1 = '';
+      this.form.purchasePrice2 = '';
+      this.form.purchasePrice3 = '';
+      this.dataForm = {
+        brandName: "",
+        modelName: "",
+        purchasePrice: "",
+      };
       this.searchShow = false;
       this.getData();
     },
@@ -377,7 +393,7 @@ export default {
 .my_box span:last-child {
   margin-left: 5vw;
 }
-.bottom_but_css{
+.bottom_but_css {
   border-radius: 10vw;
   width: 35vw;
 }

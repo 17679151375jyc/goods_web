@@ -2,6 +2,7 @@
 import fetch from '@/axios/http.js'
 const URL = "http://49.234.22.146:8077";
 const URLIMG = "http://49.234.22.146:8070"
+// const URLIMG = "http://fdcu5k.natappfree.cc"
 // 登录
 export function login(data) {
   return fetch({

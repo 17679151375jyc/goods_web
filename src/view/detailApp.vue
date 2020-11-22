@@ -179,13 +179,12 @@ export default {
               if(item.goodsType === goodsType){
                 this.goodsTypename = item.goodsTypename
               }
-              console.log(item)
             })
           } else {
             this.goodsTypeList = [
               {
-                goodsTypename: "口红",
-                goodsType: "0",
+                goodsTypename: "其他",
+                goodsType: "99",
               },
             ];
           }
@@ -193,8 +192,8 @@ export default {
         .catch((err) => {
           this.goodsTypeList = [
             {
-              goodsTypename: "口红",
-              goodsType: "0",
+              goodsTypename: "其他",
+              goodsType: "99",
             },
           ];
         });
@@ -204,8 +203,10 @@ export default {
       let goodsId = this.$route.query.goodsId
       getDetailData(goodsId).then(res=>{
         if(res.code === 0){
-          if(res.data.goodsImg){
-            res.data.goodsImg = res.data.goodsImg.split(' ');
+          if (res.data.goodsImg.indexOf(",")) {
+            res.data.goodsImg = res.data.goodsImg.split(",");
+          } else {
+            res.data.goodsImg = res.data.goodsImg.split(" ");
           }
           this.form = res.data
           this.getGoodsTypeList(this.form.goodsType);

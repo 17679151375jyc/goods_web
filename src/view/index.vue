@@ -18,7 +18,7 @@
     <div class="dis_row_between_center">
       <div class="left_box">
         <el-menu
-          :default-active="form.goodsType"
+          :default-active="goodsTypeList[0].goodsType"
           @select="butClick"
           class="el-menu-demo"
         >
@@ -148,7 +148,7 @@
             type="primary"
             icon="el-icon-plus"
             @click="addClick"
-            >添加商品</el-button
+            >添加货品</el-button
           >
         </div>
         <div class="form_box_css table_height_css">
@@ -258,14 +258,18 @@
               <template slot-scope="scope">
                 <div class="dis_row_around_center">
                   <el-button
-                    v-if="userData.userType === '0' || userData.userType === '1'"
+                    v-if="
+                      userData.userType === '0' || userData.userType === '1'
+                    "
                     type="primary"
                     size="mini"
                     @click="editClick(scope.row)"
                     >编辑</el-button
                   >
                   <el-button
-                    v-if="userData.userType === '0' || userData.userType === '1'"
+                    v-if="
+                      userData.userType === '0' || userData.userType === '1'
+                    "
                     type="danger"
                     size="mini"
                     @click="delConfirm(scope.row)"
@@ -329,8 +333,8 @@ export default {
     return {
       goodsTypeList: [
         {
-          goodsTypename: "口红",
-          goodsType: "0",
+          goodsTypename: "其他",
+          goodsType: "99",
         },
       ],
       goodsId: "",
@@ -354,7 +358,7 @@ export default {
       adminShow: false,
       tableLoading: false,
       form: {
-        goodsType: "0",
+        goodsType: "",
         brandName: "",
         modelName: "",
         goodsName: "",
@@ -363,40 +367,40 @@ export default {
         purchasePrice2: "",
         purchasePrice3: "",
         marketPrice: "",
-        startTime: '',
-        endTime: '',
+        startTime: "",
+        endTime: "",
         size: 10,
       },
       data: [
-        {
-          goodsId: "000001", //货品编号
-          goodsType: "0", //货品类型
-          brandName: "mac", //品牌名称
-          modelName: "小辣椒", //品牌型号
-          goodsName: "mac口红", //货品名称
-          specifications: "200g", //货品规格
-          color: "#3388ff", //货品颜色
-          expressPrice: "10", //一件代发邮费
-          buyerName: "彩妆店", //进货商家名称
-          purchasePrice0: "150", //进货价
-          purchasePrice1: "160", //进货价
-          purchasePrice2: "170", //进货价
-          purchasePrice3: "180", //进货价
-          marketPrice: "189", //市场价
-          samplePrice: "12", //样品拿货价
-          stockNum: "99", //库存
-          soldNum: 8, //已售数量
-          sampleSpecifications: "15g", //样品规格
-          goodsRemark: "max小辣椒，库存充足", //货品文案
-          createTime: "2020-11-08 15:00", //创建时间
-          updateTime: "2020-11-11 15:00", //更新时间
-          updateName: "蒋雨成", //操作人
-          goodsImg: [
-            // "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-            // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
-            // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
-          ], //商品图片
-        },
+        // {
+        //   goodsId: "000001", //货品编号
+        //   goodsType: "0", //货品类型
+        //   brandName: "mac", //品牌名称
+        //   modelName: "小辣椒", //品牌型号
+        //   goodsName: "mac口红", //货品名称
+        //   specifications: "200g", //货品规格
+        //   color: "#3388ff", //货品颜色
+        //   expressPrice: "10", //一件代发邮费
+        //   buyerName: "彩妆店", //进货商家名称
+        //   purchasePrice0: "150", //进货价
+        //   purchasePrice1: "160", //进货价
+        //   purchasePrice2: "170", //进货价
+        //   purchasePrice3: "180", //进货价
+        //   marketPrice: "189", //市场价
+        //   samplePrice: "12", //样品拿货价
+        //   stockNum: "99", //库存
+        //   soldNum: 8, //已售数量
+        //   sampleSpecifications: "15g", //样品规格
+        //   goodsRemark: "max小辣椒，库存充足", //货品文案
+        //   createTime: "2020-11-08 15:00", //创建时间
+        //   updateTime: "2020-11-11 15:00", //更新时间
+        //   updateName: "蒋雨成", //操作人
+        //   goodsImg: [
+        //     // "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
+        //     // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
+        //     // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
+        //   ], //商品图片
+        // },
       ],
     };
   },
@@ -405,20 +409,20 @@ export default {
     timeChange(val) {
       this.form.startTime = this.getTimeToDate(val[0].getTime(), "D");
       this.form.endTime = this.getTimeToDate(val[1].getTime(), "D");
-      // this.form.startTime = val[0];
-      // this.form.endTime = val[1];
     },
     //获取货品类型
     getGoodsTypeList() {
       getTypelist()
         .then((res) => {
           if (res.code === 0) {
-            this.goodsTypeList = res.data;
+            this.goodsTypeList = res.data;      
+            this.form.goodsType = res.data[0].goodsType
+            this.getData();
           } else {
             this.goodsTypeList = [
               {
-                goodsTypename: "口红",
-                goodsType: "0",
+                goodsTypename: "其他",
+                goodsType: "99",
               },
             ];
           }
@@ -426,8 +430,8 @@ export default {
         .catch((err) => {
           this.goodsTypeList = [
             {
-              goodsTypename: "口红",
-              goodsType: "0",
+              goodsTypename: "其他",
+              goodsType: "99",
             },
           ];
         });
@@ -446,10 +450,14 @@ export default {
               return;
             }
             res.data.records.forEach((item) => {
-              if(item.goodsImg){
-                item.goodsImg = item.goodsImg.split(" ");
-              }else{
-                item.goodsImg = []
+              if (item.goodsImg) {
+                if (item.goodsImg.indexOf(",")) {
+                  item.goodsImg = item.goodsImg.split(",");
+                } else {
+                  item.goodsImg = item.goodsImg.split(" ");
+                }
+              } else {
+                item.goodsImg = [];
               }
             });
             this.pagination.total = res.data.total;
@@ -502,7 +510,7 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         closeOnClickModal: false,
-        inputPattern: /^(?!\D+$).{1,6}$/,
+        inputPattern: /^.{1,6}$/,
         inputErrorMessage: "类型名称长度为1到6！",
       })
         .then(({ value }) => {
@@ -534,13 +542,13 @@ export default {
       this.delLbShow = false;
       let index = this.goodsTypeList[0].goodsType;
       let title = this.goodsTypeList[0].goodsTypename;
-      this.goodsTypeList.forEach(item=>{
-        if(item.goodsType === id){
+      this.goodsTypeList.forEach((item) => {
+        if (item.goodsType === id) {
           index = item.goodsType;
-          title = item.goodsTypename
+          title = item.goodsTypename;
         }
-      })
-      this.leftName = title + '类商品列表'
+      });
+      this.leftName = title + "类货品列表";
       this.form.goodsType = index;
       this.getData();
     },
@@ -581,9 +589,7 @@ export default {
           }
         )
         .then(() => {
-          console.log(row.goodsId);
           delData(row.goodsId).then((res) => {
-            console.log(res);
             if (res.code === 0) {
               that.$message({
                 type: "success",
@@ -640,8 +646,8 @@ export default {
       this.pagination.page = 1;
       this.pagination.size = 10;
       this.$refs["formData"].resetFields();
-      this.form.startTime = '';
-      this.form.endTime = '';
+      this.form.startTime = "";
+      this.form.endTime = "";
       this.times = [];
       this.getData();
     },
@@ -664,7 +670,6 @@ export default {
     }
     this.userData = storage_get("userdata");
     this.getGoodsTypeList();
-    this.getData();
   },
 };
 </script>
