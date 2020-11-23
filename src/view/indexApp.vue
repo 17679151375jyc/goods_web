@@ -205,6 +205,7 @@ export default {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
             this.form.goodsType = res.data[0].goodsType
+            this.getData();
           } else {
             this.goodsTypeList = [
               {
@@ -313,7 +314,6 @@ export default {
     }
     this.userData = storage_get("userdata");
     this.getGoodsTypeList();
-    this.getData();
   },
 };
 </script>

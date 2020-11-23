@@ -36,7 +36,7 @@
         <el-form-item prop="brandName" label="品牌：">
           <el-input
             clearable
-            maxlength="20"
+            maxlength="30"
             style="width: 200px"
             v-model="form.brandName"
             placeholder="请输入品牌名称"
@@ -46,7 +46,7 @@
         <el-form-item prop="modelName" label="型号：">
           <el-input
             clearable
-            maxlength="20"
+            maxlength="30"
             style="width: 200px"
             v-model="form.modelName"
             placeholder="请输入型号"
@@ -56,7 +56,7 @@
         <el-form-item prop="specifications" label="规格：">
           <el-input
             clearable
-            maxlength="20"
+            maxlength="50"
             style="width: 200px"
             v-model="form.specifications"
             placeholder="请输入规格"
@@ -82,7 +82,7 @@
         <el-form-item prop="goodsName" label="货品名称：">
           <el-input
             clearable
-            maxlength="20"
+            maxlength="50"
             style="width: 200px"
             v-model="form.goodsName"
             placeholder="请输入货品名称"
@@ -153,7 +153,7 @@
         <el-form-item prop="buyerName" label="进货商家名称：">
           <el-input
             clearable
-            maxlength="20"
+            maxlength="30"
             style="width: 200px"
             v-model="form.buyerName"
             placeholder="请输入进货商家名称"
@@ -173,6 +173,7 @@
         <el-form-item prop="sampleSpecifications" label="样品规格：">
           <el-input
             clearable
+            maxlength="30"
             style="width: 200px"
             v-model="form.sampleSpecifications"
             placeholder="请输入样品规格"
@@ -183,7 +184,7 @@
           <el-input
             clearable
             type="number"
-            maxlength="20"
+            maxlength="10"
             style="width: 200px"
             v-model="form.stockNum"
             placeholder="请输入库存数"
@@ -194,6 +195,7 @@
           <el-input
             clearable
             type="number"
+            maxlength="10"
             style="width: 200px"
             v-model="form.soldNum"
             placeholder="请输入已售数量"
@@ -207,7 +209,7 @@
             show-word-limit
             resize="none"
             style="width: 540px"
-            maxlength="80"
+            maxlength="500"
             v-model="form.goodsRemark"
             placeholder="请输入文案"
             type="textarea"
@@ -294,7 +296,8 @@ export default {
         buyerName: "",
         samplePrice: "",
         sampleSpecifications: "",
-        stockNum: "",
+        stockNum: "99",
+        soldNum: 0,
         goodsRemark: "",
         goodsImg: "",
       },
@@ -340,7 +343,8 @@ export default {
           type: "warning",
         })
         .then(() => {
-          window.location.href="http://49.234.22.146:8081/staticFile/getColor.zip"          
+          window.location.href =
+            "http://49.234.22.146:8081/staticFile/getColor.zip";
         })
         .catch((err) => {});
     },
@@ -418,11 +422,11 @@ export default {
       let that = this;
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
-          if(!this.form.stockNum){
-            this.form.stockNum = 0
+          if (!this.form.stockNum) {
+            this.form.stockNum = 0;
           }
-          if(!this.form.soldNum){
-            this.form.soldNum = 0
+          if (!this.form.soldNum) {
+            this.form.soldNum = 0;
           }
           if (this.title === "编辑") {
             this.form.updateName = this.userData.accountName;

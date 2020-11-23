@@ -372,37 +372,7 @@ export default {
         endTime: "",
         size: 10,
       },
-      data: [
-        // {
-        //   goodsId: "000001", //货品编号
-        //   goodsType: "0", //货品类型
-        //   brandName: "mac", //品牌名称
-        //   modelName: "小辣椒", //品牌型号
-        //   goodsName: "mac口红", //货品名称
-        //   specifications: "200g", //货品规格
-        //   color: "#3388ff", //货品颜色
-        //   expressPrice: "10", //一件代发邮费
-        //   buyerName: "彩妆店", //进货商家名称
-        //   purchasePrice0: "150", //进货价
-        //   purchasePrice1: "160", //进货价
-        //   purchasePrice2: "170", //进货价
-        //   purchasePrice3: "180", //进货价
-        //   marketPrice: "189", //市场价
-        //   samplePrice: "12", //样品拿货价
-        //   stockNum: "99", //库存
-        //   soldNum: 8, //已售数量
-        //   sampleSpecifications: "15g", //样品规格
-        //   goodsRemark: "max小辣椒，库存充足", //货品文案
-        //   createTime: "2020-11-08 15:00", //创建时间
-        //   updateTime: "2020-11-11 15:00", //更新时间
-        //   updateName: "蒋雨成", //操作人
-        //   goodsImg: [
-        //     // "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1912478382,2180969249&fm=26&gp=0.jpg",
-        //     // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=320079281,4280095860&fm=26&gp=0.jpg",
-        //     // "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1371154128,299347645&fm=26&gp=0.jpg",
-        //   ], //商品图片
-        // },
-      ],
+      data: [],
     };
   },
   methods: {
