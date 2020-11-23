@@ -45,7 +45,7 @@
 
 <script>
 import { login } from "@/axios/api";
-import { storage_set } from "@/common/storage.js"
+import { storage_set, storage_get } from "@/common/storage.js";
 export default {
   name: "",
   data() {
@@ -55,6 +55,13 @@ export default {
         account: "",
         password: "",
       },
+    };
+  },
+  created() {
+    console.log(storage_get("userdata"))
+    this.form = {
+      account: storage_get("userdata").account,
+      password: storage_get("userdata").password,
     };
   },
   methods: {
@@ -68,16 +75,16 @@ export default {
           };
           that.loading = true;
           login(data)
-            .then((res) => {     
-              if(res.code === 0){
-                storage_set('userdata', res.data);
+            .then((res) => {
+              if (res.code === 0) {
+                storage_set("userdata", res.data);
                 that.$router.push({ path: "/index" });
                 that.$message({
                   type: "success",
                   message: "登录成功!",
-                  duration: 1000
+                  duration: 1000,
                 });
-              }else{
+              } else {
                 that.loading = false;
                 that.$message.error(res.msg);
               }
@@ -89,7 +96,7 @@ export default {
         }
       });
     },
-  }
+  },
 };
 </script>
 <style scoped>

@@ -492,7 +492,7 @@ export default {
                   type: "success",
                   message: "删除成功!",
                 });
-                location.reload();
+                this.getGoodsTypeList();
               }
             })
             .catch((err) => {
@@ -536,7 +536,7 @@ export default {
                   type: "success",
                   message: "添加类型成功！",
                 });
-                location.reload();
+                this.getGoodsTypeList();
               }
             })
             .catch((err) => {
@@ -674,10 +674,11 @@ export default {
       this.delLbShow = false;
       this.pagination.size = size;
       this.getData();
+  
     },
   },
   created() {
-    if (!storage_get("userdata").accountId) {
+    if (!storage_get("userdata")) {
       this.$router.replace({ path: "/login" });
     }
     this.userData = storage_get("userdata");
