@@ -83,7 +83,7 @@ Vue.prototype.rules = {
     marketPrice: [
         {
             required: true,
-            message: "货品市场价不能为空！",
+            message: "货品官方指导价不能为空！",
             trigger: "blur",
         }
     ],

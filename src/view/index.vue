@@ -99,13 +99,13 @@
                 size="small"
               ></el-input>
             </el-form-item>
-            <el-form-item label="市场价(元)：" prop="marketPrice">
+            <el-form-item label="官方指导价(元)：" prop="marketPrice">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
                 type="number"
                 v-model="form.marketPrice"
-                placeholder="请输入市场价"
+                placeholder="请输入官方指导价"
                 size="small"
               ></el-input>
             </el-form-item>
@@ -168,18 +168,21 @@
               :index="indexMethod"
             ></el-table-column>
             <el-table-column
+              :show-overflow-tooltip="true"
               prop="brandName"
               label="品牌"
               align="center"
               width="100px"
             ></el-table-column>
             <el-table-column
+              :show-overflow-tooltip="true"
               prop="modelName"
               label="型号"
               align="center"
               width="100px"
             ></el-table-column>
             <el-table-column
+              :show-overflow-tooltip="true"
               prop="specifications"
               label="规格"
               align="center"
@@ -198,6 +201,7 @@
               </template>
             </el-table-column>
             <el-table-column
+              :show-overflow-tooltip="true"
               prop="goodsName"
               label="货品名称"
               align="center"
@@ -210,19 +214,21 @@
               width="100px"
             ></el-table-column>
             <el-table-column
-              label="市场价"
+              label="官方指导价"
               prop="marketPrice"
               align="center"
               width="100px"
             >
             </el-table-column>
             <el-table-column
+              :show-overflow-tooltip="true"
               prop="buyerName"
               label="进货商家名称"
               align="center"
               width="110px"
             ></el-table-column>
             <el-table-column
+              :show-overflow-tooltip="true"
               prop="goodsRemark"
               label="货品文案"
               align="center"

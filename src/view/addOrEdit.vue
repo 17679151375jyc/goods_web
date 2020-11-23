@@ -129,13 +129,13 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="marketPrice" label="市场价：">
+        <el-form-item prop="marketPrice" label="官方指导价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.marketPrice"
-            placeholder="请输入市场价"
+            placeholder="请输入官方指导价"
             size="small"
           ></el-input>
         </el-form-item>

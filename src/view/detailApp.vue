@@ -47,7 +47,7 @@
           <span>{{ form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`] }}（元/件）</span>
         </div>
         <div class="dis_row_between_center box_css">
-          <span>市场价：</span>
+          <span>官方指导价：</span>
           <span>{{ form.marketPrice }}（元/件）</span>
         </div>
         <div class="dis_row_between_center box_css">
@@ -149,7 +149,7 @@ export default {
         purchasePrice1: "160", //进货价
         purchasePrice2: "170", //进货价
         purchasePrice3: "180", //进货价
-        marketPrice: "189", //市场价
+        marketPrice: "189", //官方指导价
         samplePrice: "12", //样品拿货价
         soldNum: 8, //已售数量
         sampleSpecifications: "15g", //样品规格

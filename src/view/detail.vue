@@ -63,7 +63,7 @@
             }}（元/件）
           </div>
         </el-form-item>
-        <el-form-item label="市场价：">
+        <el-form-item label="官方指导价：">
           <div class="div_width">{{ form.marketPrice }}（元/件）</div>
         </el-form-item>
         <el-form-item label="一件代发邮费：">

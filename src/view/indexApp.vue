@@ -10,8 +10,13 @@
       >
     </div>
     <div class="dis_row_between_center my_box">
-      <span class="phone_css" @click="logouts"><i class="iconfont icon084tuichu"></i>退出</span>
+      <span class="phone_css" @click="logouts"
+        ><i class="iconfont icon084tuichu"></i>退出</span
+      >
       <el-button size="mini" plain v-if="false">账号管理</el-button>
+      <el-button size="mini" plain v-else @click="caigouClick"
+        >联系采购</el-button
+      >
       <span @click="resetForm"><i class="iconfont iconshuaxin"></i>刷新</span>
     </div>
     <el-tabs
@@ -136,6 +141,7 @@
         </div>
       </div>
     </div>
+    <span id="spanid">{{wechatMumber}}</span>
   </div>
 </template>
 
@@ -177,6 +183,19 @@ export default {
     };
   },
   methods: {
+    //复制微信号
+    caigouClick() {
+      let txt = "";
+      var val = document.getElementById("spanid");
+      window.getSelection().selectAllChildren(val);
+      document.execCommand("Copy");
+      this.$message({
+        message: "已复制微信号到剪切板!",
+        type: "success",
+        duration: 1000,
+        customClass: "myalert_css1",
+      });
+    },
     //退出
     logouts() {
       let that = this;
@@ -186,7 +205,7 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
-          customClass: 'el-message-box1'
+          customClass: "el-message-box1",
         })
         .then(() => {
           storage_remove("userdata");
@@ -194,7 +213,7 @@ export default {
           that.$message({
             type: "success",
             message: "退出成功!",
-            customClass: 'myalert_css'
+            customClass: "myalert_css",
           });
         })
         .catch(() => {});
@@ -204,7 +223,7 @@ export default {
         .then((res) => {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
-            this.form.goodsType = res.data[0].goodsType
+            this.form.goodsType = res.data[0].goodsType;
             this.getData();
           } else {
             this.goodsTypeList = [
@@ -318,6 +337,10 @@ export default {
 };
 </script>
 <style scoped>
+#spanid{
+  position: absolute;
+  left: -10000px;
+}
 >>> .el-form-item__label {
   font-size: 3.74vw;
 }
