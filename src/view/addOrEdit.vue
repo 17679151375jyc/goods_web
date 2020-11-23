@@ -418,6 +418,12 @@ export default {
       let that = this;
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
+          if(!this.form.stockNum){
+            this.form.stockNum = 0
+          }
+          if(!this.form.soldNum){
+            this.form.soldNum = 0
+          }
           if (this.title === "编辑") {
             this.form.updateName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();

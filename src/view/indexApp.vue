@@ -156,7 +156,7 @@ export default {
       loading: false,
       pagination: {
         page: 1,
-        size: 10,
+        size: 20,
         total: 0,
       },
       dataForm: {
@@ -236,7 +236,6 @@ export default {
         }`
       ] = this.dataForm.purchasePrice;
       this.pagination.page = 1;
-      this.pagination.size = 10;
       this.data = [];
       this.getData();
     },
@@ -244,7 +243,7 @@ export default {
     resetForm() {
       this.data = [];
       this.pagination.page = 1;
-      this.pagination.size = 10;
+      this.pagination.size = 20;
       this.form.brandName = "";
       this.form.modelName = "";
       this.form.brandName = "";
@@ -292,10 +291,10 @@ export default {
               item.goodsImg = item.goodsImg.split(" ");
             });
             this.pagination.total = res.data.total;
-            this.data = res.data.records;
+            this.data = this.data.concat(res.data.records);
           } else {
             this.pagination.total = 0;
-            this.data = [];
+            this.data = this.data;
           }
         }
       });
@@ -303,6 +302,7 @@ export default {
     //tab页切换
     handleClick(tab) {
       this.data = [];
+      this.pagination.page = 1;
       this.form.goodsType = tab.name;
       this.getData();
     },
