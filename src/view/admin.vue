@@ -292,7 +292,7 @@ export default {
     //确认删除
     delConfirm(row) {
       let that = this;
-      if (this.userData.accountId === "000001") {
+      if (row.accountId === "000001") {
         that.$message({
           type: "warning",
           message: "该账号不可删除！",

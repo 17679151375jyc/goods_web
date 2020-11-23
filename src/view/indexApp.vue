@@ -146,12 +146,7 @@ export default {
   name: "",
   data() {
     return {
-      goodsTypeList: [
-        {
-          goodsTypename: "其他",
-          goodsType: "99",
-        },
-      ],
+      goodsTypeList: [],
       userData: {
         accountName: null,
         userType: null,
@@ -172,7 +167,7 @@ export default {
       form: {
         brandName: "",
         modelName: "",
-        goodsType: "0",
+        goodsType: "",
         purchasePrice0: "",
         purchasePrice1: "",
         purchasePrice2: "",
@@ -209,6 +204,7 @@ export default {
         .then((res) => {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
+            this.form.goodsType = res.data[0].goodsType
           } else {
             this.goodsTypeList = [
               {

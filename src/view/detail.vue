@@ -54,7 +54,13 @@
         </el-form-item>
         <el-form-item label="进货价：" v-if="userData.userType !== '0'">
           <div class="div_width">
-            {{ form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`] }}（元/件）
+            {{
+              form[
+                `purchasePrice${
+                  userData.userType === "0" ? 0 : Number(userData.userType) - 1
+                }`
+              ]
+            }}（元/件）
           </div>
         </el-form-item>
         <el-form-item label="市场价：">
@@ -97,7 +103,7 @@
           <div class="myimgbox">{{ form.goodsRemark }}</div>
         </el-form-item>
         <el-form-item label="货品图片：">
-          <div class="myimgbox">
+          <div class="myimgbox" v-if="form.goodsImg && form.goodsImg.length > 0">
             <el-image
               class="myimg_css"
               :src="item"
@@ -106,6 +112,11 @@
               :key="index"
             ></el-image>
           </div>
+          <img
+            :src="require('@/img/zanwu.jpg')"
+            class="myimg_css"
+            v-else
+          />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -178,10 +189,14 @@ export default {
     getData() {
       getDetailData(this.goodsId).then((res) => {
         if (res.code === 0) {
-          if (res.data.goodsImg.indexOf(",")) {
-            res.data.goodsImg = res.data.goodsImg.split(",");
+          if (res.data.goodsImg) {
+            if (res.data.goodsImg.indexOf(",")) {
+              res.data.goodsImg = res.data.goodsImg.split(",");
+            } else {
+              res.data.goodsImg = res.data.goodsImg.split(" ");
+            }
           } else {
-            res.data.goodsImg = res.data.goodsImg.split(" ");
+            res.data.goodsImg = [];
           }
           this.form = res.data;
           this.getGoodsTypeList(this.form.goodsType);

@@ -419,10 +419,12 @@ export default {
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
           if (this.title === "编辑") {
-            this.form.updateTime = null;
-            this.form.createTime = null;
             this.form.updateName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();
+            delete this.form.updateTime;
+            delete this.form.createTime;
+            delete this.form.startTime;
+            delete this.form.endTime;
             updataData(this.form).then((res) => {
               if (res.code === 0) {
                 that.$message({
@@ -434,6 +436,10 @@ export default {
               }
             });
           } else {
+            delete this.form.updateTime;
+            delete this.form.createTime;
+            delete this.form.startTime;
+            delete this.form.endTime;
             this.form.createName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();
             addData(this.form).then((res) => {

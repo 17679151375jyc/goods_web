@@ -8,7 +8,7 @@
           >{{ userTypeList[Number(userData.userType)].name }}</span
         >
         <span class="phone_css"
-          >{{ userData.accountName }} / {{ userData.accountPhone }}</span
+          >{{ userData.account }} / {{ userData.accountName }} /{{ userData.accountPhone }}</span
         >
         <el-button type="primary" @click.stop="logouts" size="mini" plain
           >退出系统</el-button
@@ -344,6 +344,7 @@ export default {
         accountName: null,
         userType: null,
         accountPhone: null,
+        account: null
       },
       delLbShow: false,
       leftName: "",

@@ -19,7 +19,6 @@
       >
         <el-form-item label="账号身份：" prop="userType">
           <el-select
-            :disabled="form.userType === '0' && title === '编辑'"
             clearable
             v-model="form.userType"
             placeholder="请选择账号身份"
@@ -27,7 +26,7 @@
             size="small"
           >
             <el-option
-              v-for="item in form.userType == '0' || storage_get('userdata').accountId ==='000001' ?userTypeList:userTypeList.filter(val=>{return val.userType !== '0'})"
+              v-for="item in userTypeList"
               :key="item.userType"
               :label="item.name"
               :value="item.userType"
@@ -172,6 +171,7 @@ export default {
                     type: "success",
                     message: "新账号添加成功!",
                   });
+                  that.loading = false;
                   that.$emit("comfirm");
                 }
               })
@@ -181,8 +181,8 @@ export default {
               });
           } else {
             this.form.updateName = storage_get("userdata").accountName;
-            this.form.createTime = "";
-            this.form.updateTime = null
+            delete this.form.updateTime;
+            delete this.form.createTime;
             editUser(this.form)
               .then((res) => {
                 if (res.code === 0) {
@@ -190,6 +190,7 @@ export default {
                     type: "success",
                     message: "账号编辑成功!",
                   });
+                  that.loading = false;
                   that.$emit("comfirm");
                 }
               })
