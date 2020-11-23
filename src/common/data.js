@@ -37,10 +37,10 @@ Vue.prototype.userTypeList = [{
     name: '总管理员',
     userType: "1"
 }, {
-    name: '团队骨干',
+    name: '团队精英',
     userType: "2"
 }, {
-    name: '团队精英',
+    name: '团队骨干',
     userType: "3"
 }, {
     name: '团队成员',

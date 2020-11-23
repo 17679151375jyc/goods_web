@@ -95,37 +95,37 @@
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice0"
-            placeholder="请输入进货价"
+            placeholder="请输入一级进货价"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice1" label="二级级进货价：">
+        <el-form-item prop="purchasePrice1" label="二级进货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice1"
-            placeholder="请输入进货价"
+            placeholder="请输入二级进货价"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice2" label="三级级进货价：">
+        <el-form-item prop="purchasePrice2" label="三级进货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice2"
-            placeholder="请输入进货价"
+            placeholder="请输入三级进货价"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice3" label="四级级进货价：">
+        <el-form-item prop="purchasePrice3" label="四级进货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice3"
-            placeholder="请输入进货价"
+            placeholder="请输入四级进货价"
             size="small"
           ></el-input>
         </el-form-item>
@@ -248,6 +248,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="handleClose">关闭</el-button>
+        <el-button size="small" @click="downloadColor">下载取色器</el-button>
         <el-button size="small" type="primary" @click="addComfirm"
           >确定</el-button
         >
@@ -329,6 +330,20 @@ export default {
     },
   },
   methods: {
+    //下载取色器
+    downloadColor() {
+      let that = this;
+      that
+        .$confirm("确定要下载软件【取色器】吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          window.location.href="http://49.234.22.146:8081/staticFile/getColor.zip"          
+        })
+        .catch((err) => {});
+    },
     //获取类型
     getGoodsTypeList() {
       getTypelist()
@@ -381,14 +396,14 @@ export default {
     getData() {
       getDetailData(this.goodsId).then((res) => {
         if (res.code === 0) {
-          if(res.data.goodsImg){
-            if(res.data.goodsImg.indexOf(',')){
+          if (res.data.goodsImg) {
+            if (res.data.goodsImg.indexOf(",")) {
               this.imgList = res.data.goodsImg.split(",");
-            }else{
+            } else {
               this.imgList = res.data.goodsImg.split(" ");
             }
-          }else{
-            this.imgList = []
+          } else {
+            this.imgList = [];
           }
           this.form = res.data;
         }

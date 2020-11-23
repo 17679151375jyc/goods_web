@@ -54,7 +54,7 @@
         </el-form-item>
         <el-form-item label="进货价：" v-if="userData.userType !== '0'">
           <div class="div_width">
-            {{ form[`purchasePrice${userData.userType}`] }}（元/件）
+            {{ form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`] }}（元/件）
           </div>
         </el-form-item>
         <el-form-item label="市场价：">
@@ -76,10 +76,10 @@
           <div class="div_width">{{ form.sampleSpecifications }}</div>
         </el-form-item>
         <el-form-item label="库存数量：">
-          <div class="div_width">{{ form.soldNum }}（件）</div>
+          <div class="div_width">{{ form.stockNum }}（件）</div>
         </el-form-item>
         <el-form-item label="已售数量：">
-          <div class="div_width">{{ form.stockNum }}（件）</div>
+          <div class="div_width">{{ form.soldNum }}（件）</div>
         </el-form-item>
         <el-form-item label="添加时间：">
           <div class="div_width">{{ form.createTime }}</div>

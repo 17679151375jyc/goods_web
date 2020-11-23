@@ -9,6 +9,11 @@
         >{{ userData.accountName }} / {{ userData.accountPhone }}</span
       >
     </div>
+    <div class="dis_row_between_center my_box">
+      <span class="phone_css" @click="logouts"><i class="iconfont icon084tuichu"></i>退出</span>
+      <el-button size="mini" plain v-if="false">账号管理</el-button>
+      <span @click="resetForm"><i class="iconfont iconshuaxin"></i>刷新</span>
+    </div>
     <el-tabs
       v-model="form.goodsType"
       @tab-click="handleClick"
@@ -55,7 +60,17 @@
                 <td>
                   <span :style="{ 'background-color': item.color }"></span>
                 </td>
-                <td>{{ item[`purchasePrice${userData.userType}`] }}</td>
+                <td>
+                  {{
+                    item[
+                      `purchasePrice${
+                        userData.userType === "0"
+                          ? 0
+                          : Number(userData.userType) - 1
+                      }`
+                    ]
+                  }}
+                </td>
               </tr>
             </tbody>
             <tr v-if="loading">
@@ -125,7 +140,7 @@
 </template>
 
 <script>
-import { storage_get } from "@/common/storage.js";
+import { storage_get, storage_remove } from "@/common/storage.js";
 import { getList, getTypelist } from "@/axios/api";
 export default {
   name: "",
@@ -167,6 +182,28 @@ export default {
     };
   },
   methods: {
+    //退出
+    logouts() {
+      let that = this;
+      this.delLbShow = false;
+      that
+        .$confirm("確定要退出系统吗吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+          customClass: 'el-message-box1'
+        })
+        .then(() => {
+          storage_remove("userdata");
+          that.$router.replace({ path: "/loginApp" });
+          that.$message({
+            type: "success",
+            message: "退出成功!",
+            customClass: 'myalert_css'
+          });
+        })
+        .catch(() => {});
+    },
     getGoodsTypeList() {
       getTypelist()
         .then((res) => {
@@ -196,7 +233,11 @@ export default {
       this.form.brandName = this.dataForm.brandName;
       this.form.modelName = this.dataForm.modelName;
       this.form[
-        `purchasePrice${this.userData.userType}`
+        `purchasePrice${
+          this.userData.userType === "0"
+            ? 0
+            : Number(this.userData.userType) - 1
+        }`
       ] = this.dataForm.purchasePrice;
       this.pagination.page = 1;
       this.pagination.size = 10;
@@ -205,15 +246,16 @@ export default {
     },
     //重置
     resetForm() {
+      this.data = [];
       this.pagination.page = 1;
       this.pagination.size = 10;
-      this.form.brandName = '';
-      this.form.modelName = '';
-      this.form.brandName = '';
-      this.form.purchasePrice0 = '';
-      this.form.purchasePrice1 = '';
-      this.form.purchasePrice2 = '';
-      this.form.purchasePrice3 = '';
+      this.form.brandName = "";
+      this.form.modelName = "";
+      this.form.brandName = "";
+      this.form.purchasePrice0 = "";
+      this.form.purchasePrice1 = "";
+      this.form.purchasePrice2 = "";
+      this.form.purchasePrice3 = "";
       this.dataForm = {
         brandName: "",
         modelName: "",

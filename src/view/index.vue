@@ -29,7 +29,7 @@
             <el-button type="primary" size="mini" @click="addLbClick"
               >添加类型</el-button
             >
-            <el-button type="danger" size="mini" @click="delLbShow = !delLbShow"
+            <el-button v-if="goodsTypeList.length>1" type="danger" size="mini" @click="delLbShow = !delLbShow"
               >删除类型</el-button
             >
           </div>
@@ -87,14 +87,14 @@
             </el-form-item>
             <el-form-item
               label="进货价(元)："
-              :prop="`purchasePrice${userData.userType}`"
+              :prop="`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`"
             >
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
                 type="number"
                 :maxlength="4"
-                v-model="form[`purchasePrice${userData.userType}`]"
+                v-model="form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`]"
                 placeholder="请输入进货价"
                 size="small"
               ></el-input>
@@ -205,7 +205,7 @@
             ></el-table-column>
             <el-table-column
               label="进货价"
-              :prop="`purchasePrice${userData.userType}`"
+              :prop="`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`"
               align="center"
               width="100px"
             ></el-table-column>
@@ -346,7 +346,7 @@ export default {
         accountPhone: null,
       },
       delLbShow: false,
-      leftName: "口红类货品列表",
+      leftName: "",
       title: "编辑",
       pagination: {
         page: 1,
@@ -417,7 +417,7 @@ export default {
           if (res.code === 0) {
             this.goodsTypeList = res.data;      
             this.form.goodsType = res.data[0].goodsType
-            this.getData();
+            this.butClick(res.data[0].goodsType);
           } else {
             this.goodsTypeList = [
               {
@@ -514,6 +514,17 @@ export default {
         inputErrorMessage: "类型名称长度为1到6！",
       })
         .then(({ value }) => {
+          let bold = false;
+          this.goodsTypeList.forEach(item=>{
+            if(item.goodsTypename === value){
+              bold = true;
+              return;
+            }
+          })
+          if(bold){
+            this.$message.error("已存在该类型，请勿重复添加！");
+            return;
+          }
           let data = {
             goodsTypename: value,
           };

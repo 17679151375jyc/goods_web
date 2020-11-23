@@ -83,12 +83,12 @@
           align="center"
           width="130px"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="密码"
           prop="password"
           align="center"
           width="120px"
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           label="持有者"
           prop="accountName"
@@ -99,16 +99,15 @@
           label="手机号"
           prop="accountPhone"
           align="center"
-          width="120px"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="remark"
           label="备注"
           align="center"
-        ></el-table-column>
-        <el-table-column label="操作" align="center" width="200px">
+        ></el-table-column> -->
+        <el-table-column label="操作" align="center" width="300px">
           <template slot-scope="scope">
-            <div class="dis_row_around_center">
+            <div class="dis_row_center_center">
               <el-button
                 v-if="scope.row.status === '0'"
                 type="success"
@@ -138,6 +137,12 @@
                 @click="delConfirm(scope.row)"
                 >删除</el-button
               >
+              <el-button
+                type="success"
+                size="mini"
+                @click="detailConfirm(scope.row)"
+                >详情</el-button
+              >
             </div>
           </template>
         </el-table-column>
@@ -166,6 +171,10 @@
       @handleClose="addAdminHandleClose"
       @comfirm="addAdminComfirm"
     />
+    <accountDetail
+      :accountId="accountId"
+      @handleClose="detailHandleClose"
+      :show="accountDetailShow"/>
   </div>
 </template>
 
@@ -176,9 +185,11 @@ export default {
   name: "",
   components: {
     add: () => import("./add"),
+    accountDetail: () => import("./accountDetail"),
   },
   data() {
     return {
+      accountDetailShow: false,
       butLoading: false,
       accountId: "",
       userData: {
@@ -269,6 +280,14 @@ export default {
     //关闭弹窗按钮
     handleClose() {
       this.$emit("handleClose");
+    },
+    //详情
+    detailConfirm(row){
+      this.accountId = row.accountId;
+      this.accountDetailShow = true
+    },
+    detailHandleClose(){
+      this.accountDetailShow = false
     },
     //确认删除
     delConfirm(row) {

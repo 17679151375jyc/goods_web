@@ -19,6 +19,7 @@
       >
         <el-form-item label="账号身份：" prop="userType">
           <el-select
+            :disabled="form.userType === '0' && title === '编辑'"
             clearable
             v-model="form.userType"
             placeholder="请选择账号身份"
@@ -26,7 +27,7 @@
             size="small"
           >
             <el-option
-              v-for="item in userTypeList.filter(val=>{return val.userType !== '0'})"
+              v-for="item in form.userType == '0' || storage_get('userdata').accountId ==='000001' ?userTypeList:userTypeList.filter(val=>{return val.userType !== '0'})"
               :key="item.userType"
               :label="item.name"
               :value="item.userType"
@@ -144,6 +145,7 @@ export default {
     },
   },
   methods: {
+    storage_get,
     getData() {
       detailUser(this.accountId).then((res) => {
         if (res.code === 0) {
