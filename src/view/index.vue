@@ -664,6 +664,9 @@ export default {
 };
 </script>
 <style scoped>
+>>>.el-image-viewer__close{
+  color:#fff;
+}
 >>> .el-menu-item.is-active {
   border-right: 2px solid #38f;
 }

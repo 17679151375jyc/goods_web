@@ -72,13 +72,22 @@
         <el-form-item label="货品名称：">
           <div class="div_width">{{ form.goodsName }}</div>
         </el-form-item>
-        <el-form-item label="进货商家名称：" v-if="userData.userType === '0' || userData.userType === '1'">
+        <el-form-item
+          label="进货商家名称："
+          v-if="userData.userType === '0' || userData.userType === '1'"
+        >
           <div class="div_width">{{ form.buyerName }}</div>
         </el-form-item>
-        <el-form-item label="样品拿货价：" v-if="userData.userType === '0' || userData.userType === '1'">
+        <el-form-item
+          label="样品拿货价："
+          v-if="userData.userType === '0' || userData.userType === '1'"
+        >
           <div class="div_width">{{ form.samplePrice }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="样品规格：" v-if="userData.userType === '0' || userData.userType === '1'">
+        <el-form-item
+          label="样品规格："
+          v-if="userData.userType === '0' || userData.userType === '1'"
+        >
           <div class="div_width">{{ form.sampleSpecifications }}</div>
         </el-form-item>
         <el-form-item label="库存数量：">
@@ -90,20 +99,29 @@
         <el-form-item label="添加时间：">
           <div class="div_width">{{ form.createTime }}</div>
         </el-form-item>
-        <el-form-item label="添加人：" v-if="userData.userType === '0' || userData.userType === '1'">
+        <el-form-item
+          label="添加人："
+          v-if="userData.userType === '0' || userData.userType === '1'"
+        >
           <div class="div_width">{{ form.createName }}</div>
         </el-form-item>
         <el-form-item label="更新时间：">
           <div class="div_width">{{ form.updateTime }}</div>
         </el-form-item>
-        <el-form-item label="最后更新人：" v-if="userData.userType === '0' || userData.userType === '1'">
+        <el-form-item
+          label="最后更新人："
+          v-if="userData.userType === '0' || userData.userType === '1'"
+        >
           <div class="div_width">{{ form.updateName }}</div>
         </el-form-item>
         <el-form-item label="文案：">
           <div class="myimgbox">{{ form.goodsRemark }}</div>
         </el-form-item>
         <el-form-item label="货品图片：">
-          <div class="myimgbox" v-if="form.goodsImg && form.goodsImg.length > 0">
+          <div
+            class="myimgbox"
+            v-if="form.goodsImg && form.goodsImg.length > 0"
+          >
             <el-image
               class="myimg_css"
               :src="item"
@@ -112,14 +130,18 @@
               :key="index"
             ></el-image>
           </div>
-          <img
-            :src="require('@/img/zanwu.jpg')"
-            class="myimg_css"
-            v-else
-          />
+          <img :src="require('@/img/zanwu.jpg')" class="myimg_css" v-else />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
+        <el-button
+          size="small"
+          @click="download"
+          type="primary"
+          :loading="loading"
+          v-if="form.goodsImg && form.goodsImg.length > 0"
+          >一键下载图片</el-button
+        >
         <el-button size="small" @click="handleClose">关闭</el-button>
       </span>
     </el-dialog>
@@ -127,7 +149,7 @@
 </template>
 
 <script>
-import { getDetailData, getTypelist } from "@/axios/api";
+import { getDetailData, getTypelist, downloadImg } from "@/axios/api";
 import { storage_get } from "@/common/storage.js";
 export default {
   name: "",
@@ -141,6 +163,7 @@ export default {
         accountPhone: null,
       },
       form: {},
+      loading: false,
     };
   },
   props: {
@@ -156,6 +179,30 @@ export default {
     },
   },
   methods: {
+    download() {
+      let that = this
+      that
+        .$confirm("确定要下载改组图片吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          that.form.goodsImg.forEach((item) => {
+            let key = item.substring(55, item.length);
+            downloadImg(key).then((res) => {
+              
+            });
+          });
+        })
+        .catch((err) => {});
+      // console.log(this.form.goodsImg);
+      // let key = this.form.goodsImg[index];
+      // key = key.substring(55, key.length);
+      // delImg(key).then((res) => {
+      //   this.form.goodsImg.splice(index, 1);
+      // });
+    },
     //获取类型
     getGoodsTypeList(goodsType) {
       getTypelist()
@@ -187,7 +234,9 @@ export default {
     },
     //获取数据
     getData() {
+      this.loading = true;
       getDetailData(this.goodsId).then((res) => {
+        this.loading = false;
         if (res.code === 0) {
           if (res.data.goodsImg) {
             if (res.data.goodsImg.indexOf(",")) {

@@ -70,6 +70,14 @@ export function delImg(key) {
     method: "get"
   });
 }
+//下载图片
+export function downloadImg(key) {
+  return fetch({
+    url: URLIMG + `/upload/downLoadFile?key=${key}`,
+    method: "get"
+  });
+}
+// 
 //获取账号列表
 export function getUserInfo(data) {
   return fetch({

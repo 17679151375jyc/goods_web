@@ -45,8 +45,8 @@
           <div class="sco_css">
             <table class="table_width_css">
               <tr>
-                <td style="width: 10vw">序号</td>
-                <td>品牌</td>
+                <td style="width: 9vw">序号</td>
+                <td style="width: 13vw">品牌</td>
                 <td>型号</td>
                 <td style="width: 12vw">颜色</td>
                 <td style="width: 15vw">拿货价</td>
