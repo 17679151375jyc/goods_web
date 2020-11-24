@@ -253,7 +253,7 @@
         <el-button size="small" @click="downloadColor">下载取色器</el-button>
         <el-button size="small" type="primary" @click="addComfirm(true)" v-if="title === '编辑'"
           >再次添加</el-button>
-        <el-button size="small" type="primary" @click="addComfirm"
+        <el-button size="small" type="primary" @click="addComfirm(false)"
           >确定</el-button>
       </span>
     </el-dialog>
@@ -328,6 +328,7 @@ export default {
           this.$nextTick(() => {
             this.$refs["formData"].resetFields();
           });
+          this.imgList = [];
           this.form.goodsType = this.goodsType;
         }
       }
