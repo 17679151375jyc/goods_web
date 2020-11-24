@@ -205,7 +205,7 @@
               prop="goodsName"
               label="货品名称"
               align="center"
-              width="110px"
+              width="150px"
             ></el-table-column>
             <el-table-column
               label="进货价"
@@ -226,7 +226,7 @@
               prop="buyerName"
               label="进货商家名称"
               align="center"
-              width="110px"
+              width="130px"
             ></el-table-column>
             <el-table-column
               :show-overflow-tooltip="true"

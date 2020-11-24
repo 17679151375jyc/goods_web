@@ -75,7 +75,7 @@
           <span>{{ form.stockNum }}（件）</span>
         </div>
         <div class="dis_row_between_center box_css">
-          <span>库存数量：</span>
+          <span>已售数量：</span>
           <span>{{ form.soldNum }}（件）</span>
         </div>
         <div class="dis_row_between_center box_css">
@@ -86,7 +86,7 @@
           <span>更新时间：</span>
           <span>{{ form.updateTime }}</span>
         </div>
-        <div class="dis_row_between_center box_css">
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0' || userData.userType === '1'">
           <span>最后更新人：</span>
           <span>{{ form.updateName }}</span>
         </div>

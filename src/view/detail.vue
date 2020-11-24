@@ -90,13 +90,13 @@
         <el-form-item label="添加时间：">
           <div class="div_width">{{ form.createTime }}</div>
         </el-form-item>
-        <el-form-item label="添加人：">
+        <el-form-item label="添加人：" v-if="userData.userType === '0' || userData.userType === '1'">
           <div class="div_width">{{ form.createName }}</div>
         </el-form-item>
         <el-form-item label="更新时间：">
           <div class="div_width">{{ form.updateTime }}</div>
         </el-form-item>
-        <el-form-item label="最后更新人：">
+        <el-form-item label="最后更新人：" v-if="userData.userType === '0' || userData.userType === '1'">
           <div class="div_width">{{ form.updateName }}</div>
         </el-form-item>
         <el-form-item label="文案：">

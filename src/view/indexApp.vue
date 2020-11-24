@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { storage_get, storage_remove } from "@/common/storage.js";
+import { storage_get,storage_set, storage_remove } from "@/common/storage.js";
 import { getList, getTypelist } from "@/axios/api";
 export default {
   name: "",
@@ -225,7 +225,8 @@ export default {
         .then((res) => {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
-            this.form.goodsType = res.data[0].goodsType;
+            let SgoodsType = storage_get('goodsType')
+            this.form.goodsType = SgoodsType?SgoodsType:res.data[0].goodsType;
             this.getData();
           } else {
             this.goodsTypeList = [
@@ -323,6 +324,7 @@ export default {
     },
     //tab页切换
     handleClick(tab) {
+      storage_set('goodsType', tab.name)
       this.data = [];
       this.pagination.page = 1;
       this.form.goodsType = tab.name;
@@ -368,6 +370,14 @@ export default {
   text-align: center;
   font-weight: bold;
   z-index: 100;
+  animation: dong 1s infinite;
+  /* transform: scale(1.1); */
+  transition: 0.5s;
+}
+@keyframes dong{
+  0%{font-size: 3.74vw;}
+  50%{font-size: 4.5vw;}
+  100%{font-size: 3.74vw;}
 }
 >>> .el-tabs--border-card {
   border: 0;
