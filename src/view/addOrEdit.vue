@@ -431,7 +431,7 @@ export default {
       if (boLd) {
         that
           .$confirm(
-            `再次添加商品需确报二者参数有所改动，确定再次添加吗？`,
+            `再次添加商品需确保二者参数有所改动，且图片不会被添加，确定再次添加吗？`,
             "提示",
             {
               confirmButtonText: "确定",
@@ -445,10 +445,8 @@ export default {
             delete this.form.startTime;
             delete this.form.endTime;
             this.form.createName = this.userData.accountName;
-            this.form.goodsImg = this.imgList.toString();
-            if (this.form.goodsId) {
-              delete this.form.goodsId;
-            }
+            this.form.goodsImg = "";
+            delete this.form.goodsId;
             addData(this.form).then((res) => {
               if (res.code === 0) {
                 that.$message({
