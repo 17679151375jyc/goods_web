@@ -55,18 +55,18 @@
           <span>{{ form.goodsName }}</span>
         </div>
         <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
-          <span>一件代发邮费：</span>
+          <span>邮费：</span>
           <span>{{ form.expressPrice }}</span>
         </div>
-        <div class="dis_row_between_center box_css" v-if="userData.userType === '0'">
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0' || userData.userType === '1'">
           <span>进货商家名称：</span>
           <span>{{ form.buyerName }}</span>
         </div>
-        <div class="dis_row_between_center box_css">
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0' || userData.userType === '1'">
           <span>样品拿货价：</span>
           <span>{{ form.samplePrice }}（元/件）</span>
         </div>
-        <div class="dis_row_between_center box_css">
+        <div class="dis_row_between_center box_css" v-if="userData.userType === '0' || userData.userType === '1'">
           <span>样品规格：</span>
           <span>{{ form.sampleSpecifications }}</span>
         </div>
@@ -143,7 +143,7 @@ export default {
         specifications: "200g", //货品规格
         color: "#3388ff", //货品颜色
         stockNum: "99", //库存
-        expressPrice: "10", //一件代发邮费
+        expressPrice: "10", //邮费
         buyerName: "彩妆店", //进货商家名称
         purchasePrice0: "150", //进货价
         purchasePrice1: "160", //进货价

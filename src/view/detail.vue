@@ -66,19 +66,19 @@
         <el-form-item label="官方指导价：">
           <div class="div_width">{{ form.marketPrice }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="一件代发邮费：">
+        <el-form-item label="邮费：">
           <div class="div_width">{{ form.expressPrice }}（元/件）</div>
         </el-form-item>
         <el-form-item label="货品名称：">
           <div class="div_width">{{ form.goodsName }}</div>
         </el-form-item>
-        <el-form-item label="进货商家名称：">
+        <el-form-item label="进货商家名称：" v-if="userData.userType === '0' || userData.userType === '1'">
           <div class="div_width">{{ form.buyerName }}</div>
         </el-form-item>
-        <el-form-item label="样品拿货价：">
+        <el-form-item label="样品拿货价：" v-if="userData.userType === '0' || userData.userType === '1'">
           <div class="div_width">{{ form.samplePrice }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="样品规格：">
+        <el-form-item label="样品规格：" v-if="userData.userType === '0' || userData.userType === '1'">
           <div class="div_width">{{ form.sampleSpecifications }}</div>
         </el-form-item>
         <el-form-item label="库存数量：">

@@ -221,6 +221,7 @@
             >
             </el-table-column>
             <el-table-column
+               v-if="userData.userType === '0' || userData.userType === '1'"
               :show-overflow-tooltip="true"
               prop="buyerName"
               label="进货商家名称"

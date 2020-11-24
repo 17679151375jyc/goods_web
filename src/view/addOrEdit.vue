@@ -139,14 +139,14 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="expressPrice" label="一件代发邮费：">
+        <el-form-item prop="expressPrice" label="邮费：">
           <el-input
             clearable
             type="number"
             maxlength="20"
             style="width: 200px"
             v-model="form.expressPrice"
-            placeholder="请输入一件代发邮费"
+            placeholder="请输入邮费"
             size="small"
           ></el-input>
         </el-form-item>
@@ -251,9 +251,10 @@
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="handleClose">关闭</el-button>
         <el-button size="small" @click="downloadColor">下载取色器</el-button>
+        <el-button size="small" type="primary" @click="addComfirm(true)" v-if="title === '编辑'"
+          >再次添加</el-button>
         <el-button size="small" type="primary" @click="addComfirm"
-          >确定</el-button
-        >
+          >确定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -418,7 +419,7 @@ export default {
       this.$emit("handleClose");
     },
     //确定按钮
-    addComfirm() {
+    addComfirm(boLd) {
       let that = this;
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
@@ -428,7 +429,7 @@ export default {
           if (!this.form.soldNum) {
             this.form.soldNum = 0;
           }
-          if (this.title === "编辑") {
+          if (this.title === "编辑" && !boLd) {
             this.form.updateName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();
             delete this.form.updateTime;
@@ -452,6 +453,9 @@ export default {
             delete this.form.endTime;
             this.form.createName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();
+            if(this.form.goodsId){
+              delete this.form.goodsId;
+            }
             addData(this.form).then((res) => {
               if (res.code === 0) {
                 that.$message({
