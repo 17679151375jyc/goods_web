@@ -328,12 +328,12 @@ export default {
       if (val) {
         this.userData = storage_get("userdata");
         this.getGoodsTypeList();
+        this.$nextTick(() => {
+          this.$refs["formData"].resetFields();
+        });
         if (this.title === "编辑") {
           this.getData();
         } else {
-          this.$nextTick(() => {
-            this.$refs["formData"].resetFields();
-          });
           this.imgList = [];
           this.form.goodsType = this.goodsType;
         }
