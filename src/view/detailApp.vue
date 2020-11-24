@@ -203,10 +203,14 @@ export default {
       let goodsId = this.$route.query.goodsId
       getDetailData(goodsId).then(res=>{
         if(res.code === 0){
-          if (res.data.goodsImg.indexOf(",")) {
-            res.data.goodsImg = res.data.goodsImg.split(",");
+          if (res.data.goodsImg) {
+            if (res.data.goodsImg.indexOf(",")) {
+              res.data.goodsImg = res.data.goodsImg.split(",");
+            } else {
+              res.data.goodsImg = res.data.goodsImg.split(" ");
+            }
           } else {
-            res.data.goodsImg = res.data.goodsImg.split(" ");
+            res.data.goodsImg = [];
           }
           this.form = res.data
           this.getGoodsTypeList(this.form.goodsType);

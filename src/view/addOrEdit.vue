@@ -251,10 +251,16 @@
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="handleClose">关闭</el-button>
         <el-button size="small" @click="downloadColor">下载取色器</el-button>
-        <el-button size="small" type="primary" @click="addComfirm(true)" v-if="title === '编辑'"
-          >再次添加</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          @click="addComfirm(true)"
+          v-if="title === '编辑'"
+          >再次添加</el-button
+        >
         <el-button size="small" type="primary" @click="addComfirm(false)"
-          >确定</el-button>
+          >确定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -422,6 +428,41 @@ export default {
     //确定按钮
     addComfirm(boLd) {
       let that = this;
+      if (boLd) {
+        that
+          .$confirm(
+            `再次添加商品需确报二者参数有所改动，确定再次添加吗？`,
+            "提示",
+            {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning",
+            }
+          )
+          .then(() => {
+            delete this.form.updateTime;
+            delete this.form.createTime;
+            delete this.form.startTime;
+            delete this.form.endTime;
+            this.form.createName = this.userData.accountName;
+            this.form.goodsImg = this.imgList.toString();
+            if (this.form.goodsId) {
+              delete this.form.goodsId;
+            }
+            addData(this.form).then((res) => {
+              if (res.code === 0) {
+                that.$message({
+                  type: "success",
+                  message: "相同货品添加成功!",
+                  duration: 1000,
+                });
+                this.$emit("comfirm");
+              }
+            });
+          })
+          .catch(() => {});
+        return;
+      }
       this.$refs["formData"].validate(async (valid) => {
         if (valid) {
           if (!this.form.stockNum) {
@@ -430,7 +471,7 @@ export default {
           if (!this.form.soldNum) {
             this.form.soldNum = 0;
           }
-          if (this.title === "编辑" && !boLd) {
+          if (this.title === "编辑") {
             this.form.updateName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();
             delete this.form.updateTime;
@@ -454,7 +495,7 @@ export default {
             delete this.form.endTime;
             this.form.createName = this.userData.accountName;
             this.form.goodsImg = this.imgList.toString();
-            if(this.form.goodsId){
+            if (this.form.goodsId) {
               delete this.form.goodsId;
             }
             addData(this.form).then((res) => {

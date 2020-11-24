@@ -34,60 +34,62 @@
           <div class="sousuo_css">
             <div
               @click="searchShow = true"
-              v-if="form.brandName || form.modelName"
+              v-if="form.brandName || form.goodsName"
             >
               <span v-if="form.brandName">{{ form.brandName }}</span>
-              <span v-if="form.brandName && form.modelName">-</span>
-              <span v-if="form.modelName">{{ form.modelName }}</span>
+              <span v-if="form.brandName && form.goodsName">-</span>
+              <span v-if="form.goodsName">{{ form.goodsName }}</span>
             </div>
             <span v-else @click="searchShow = true">点击搜索</span>
           </div>
-          <table class="table_width_css">
-            <tr>
-              <td style="width: 10vw">序号</td>
-              <td>品牌</td>
-              <td>型号</td>
-              <td style="width: 12vw">颜色</td>
-              <td style="width: 15vw">拿货价</td>
-            </tr>
-            <tr v-if="data.length === 0 && !loading">
-              <td colspan="5">暂无数据</td>
-            </tr>
-            <tbody v-if="data.length > 0">
-              <tr
-                v-for="(item, index) in data"
-                :key="index"
-                @click="detailClick(item)"
-              >
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.brandName }}</td>
-                <td>{{ item.modelName }}</td>
-                <td>
-                  <span :style="{ 'background-color': item.color }"></span>
-                </td>
-                <td>
-                  {{
-                    item[
-                      `purchasePrice${
-                        userData.userType === "0"
-                          ? 0
-                          : Number(userData.userType) - 1
-                      }`
-                    ]
-                  }}
-                </td>
+          <div class="sco_css">
+            <table class="table_width_css">
+              <tr>
+                <td style="width: 10vw">序号</td>
+                <td>品牌</td>
+                <td>型号</td>
+                <td style="width: 12vw">颜色</td>
+                <td style="width: 15vw">拿货价</td>
               </tr>
-            </tbody>
-            <tr v-if="loading">
-              <td colspan="5">加载中...</td>
-            </tr>
-            <tr
-              v-if="pagination.total !== data.length && !loading"
-              @click="pageClick"
-            >
-              <td colspan="5">点击加载更多</td>
-            </tr>
-          </table>
+              <tr v-if="data.length === 0 && !loading">
+                <td colspan="5">暂无数据</td>
+              </tr>
+              <tbody v-if="data.length > 0">
+                <tr
+                  v-for="(item, index) in data"
+                  :key="index"
+                  @click="detailClick(item)"
+                >
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.brandName }}</td>
+                  <td>{{ item.goodsName }}</td>
+                  <td>
+                    <span :style="{ 'background-color': item.color }"></span>
+                  </td>
+                  <td>
+                    {{
+                      item[
+                        `purchasePrice${
+                          userData.userType === "0"
+                            ? 0
+                            : Number(userData.userType) - 1
+                        }`
+                      ]
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+              <tr v-if="loading">
+                <td colspan="5">加载中...</td>
+              </tr>
+              <tr
+                v-if="pagination.total !== data.length && !loading"
+                @click="pageClick"
+              >
+                <td colspan="5">点击加载更多</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -109,11 +111,11 @@
               size="small"
             ></el-input>
           </el-form-item>
-          <el-form-item label="型号：">
+          <el-form-item label="货品名：">
             <el-input
               clearable
-              v-model="dataForm.modelName"
-              placeholder="请输入型号名称"
+              v-model="dataForm.goodsName"
+              placeholder="请输入货品名称"
               size="small"
             ></el-input>
           </el-form-item>
@@ -141,7 +143,7 @@
         </div>
       </div>
     </div>
-    <span id="spanid">{{wechatMumber}}</span>
+    <span id="spanid">{{ wechatMumber }}</span>
   </div>
 </template>
 
@@ -167,12 +169,12 @@ export default {
       },
       dataForm: {
         brandName: "",
-        modelName: "",
+        goodsName: "",
         purchasePrice: "",
       },
       form: {
         brandName: "",
-        modelName: "",
+        goodsName: "",
         goodsType: "",
         purchasePrice0: "",
         purchasePrice1: "",
@@ -247,7 +249,7 @@ export default {
     search() {
       this.searchShow = false;
       this.form.brandName = this.dataForm.brandName;
-      this.form.modelName = this.dataForm.modelName;
+      this.form.goodsName = this.dataForm.goodsName;
       this.form[
         `purchasePrice${
           this.userData.userType === "0"
@@ -265,7 +267,7 @@ export default {
       this.pagination.page = 1;
       this.pagination.size = 20;
       this.form.brandName = "";
-      this.form.modelName = "";
+      this.form.goodsName = "";
       this.form.brandName = "";
       this.form.purchasePrice0 = "";
       this.form.purchasePrice1 = "";
@@ -273,7 +275,7 @@ export default {
       this.form.purchasePrice3 = "";
       this.dataForm = {
         brandName: "",
-        modelName: "",
+        goodsName: "",
         purchasePrice: "",
       };
       this.searchShow = false;
@@ -337,7 +339,7 @@ export default {
 };
 </script>
 <style scoped>
-#spanid{
+#spanid {
   position: absolute;
   left: -10000px;
 }
@@ -457,5 +459,10 @@ export default {
 .bottom_but_css {
   border-radius: 10vw;
   width: 35vw;
+}
+.sco_css {
+  width: 100vw;
+  height: calc(100vh - 46vw);
+  overflow-y: scroll;
 }
 </style>
