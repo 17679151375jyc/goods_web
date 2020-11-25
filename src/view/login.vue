@@ -30,13 +30,21 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            style="width: 100%"
-            :loading="loading"
-            type="primary"
-            @click="onSubmit"
-            >登录</el-button
-          >
+          <div class="dis_row_between_center" style="width: 100%">
+            <el-button
+              style="width: 45%"
+              :loading="loading"
+              @click="youkeClick"
+              >游客</el-button
+            >
+            <el-button
+              style="width: 45%"
+              :loading="loading"
+              type="primary"
+              @click="onSubmit"
+              >登录</el-button
+            >
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -58,13 +66,24 @@ export default {
     };
   },
   created() {
-    console.log(storage_get("userdata"))
+    console.log(storage_get("userdata"));
     this.form = {
       account: storage_get("userdata").account,
       password: storage_get("userdata").password,
     };
   },
   methods: {
+    youkeClick(){
+      let data = {
+        accountId: 'youke12321',
+        accountName: "游客",
+        userType: "5",
+        accountPhone: null,
+        account: null
+      }
+      storage_set("userdata", data);
+      this.$router.push({ path: "/index" });
+    },
     onSubmit() {
       let that = this;
       that.$refs["form"].validate(async (valid) => {
@@ -96,6 +115,7 @@ export default {
         }
       });
     },
+    
   },
 };
 </script>

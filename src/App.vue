@@ -10,7 +10,7 @@ export default {
     return {};
   },
   created() {
-    // document.oncontextmenu = new Function("return false;");
+    document.oncontextmenu = new Function("return false;");
     // document.onkeydown = document.onkeyup = document.onkeypress = function (
     //   event
     // ) {

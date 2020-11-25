@@ -121,7 +121,7 @@ export default {
         accountName: "",
         accountPhone: "",
         remark: "",
-        createName: storage_get("userdata").createName,
+        createName: storage_get("userdata").accountName,
       },
     };
   },

@@ -3,12 +3,18 @@
     <div class="dis_row_between_center header_box">
       <span class="color_text">JYCYL货源管理系统 </span>
       <div class="dis_row_between_center out_box_css">
-        <span
+        <span v-if="userData.userType != '5'"
           ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
           >{{ userTypeList[Number(userData.userType)].name }}</span
         >
-        <span class="phone_css"
-          >{{ userData.account }} / {{ userData.accountName }} /{{ userData.accountPhone }}</span
+        <span class="phone_css" v-if="userData.userType != '5'"
+          >{{ userData.account }} / {{ userData.accountName }} /{{
+            userData.accountPhone
+          }}</span
+        >
+        <span v-if="userData.userType === '5'"
+          ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
+          >{{ userData.accountName }}</span
         >
         <el-button type="primary" @click.stop="logouts" size="mini" plain
           >退出系统</el-button
@@ -29,7 +35,11 @@
             <el-button type="primary" size="mini" @click="addLbClick"
               >添加类型</el-button
             >
-            <el-button v-if="goodsTypeList.length>1" type="danger" size="mini" @click="delLbShow = !delLbShow"
+            <el-button
+              v-if="goodsTypeList.length > 1"
+              type="danger"
+              size="mini"
+              @click="delLbShow = !delLbShow"
               >删除类型</el-button
             >
           </div>
@@ -87,14 +97,24 @@
             </el-form-item>
             <el-form-item
               label="进货价(元)："
-              :prop="`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`"
+              :prop="`purchasePrice${
+                userData.userType === '0' ? 0 : Number(userData.userType==='5'?'4':userData.userType) - 1
+              }`"
             >
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
                 type="number"
                 :maxlength="4"
-                v-model="form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`]"
+                v-model="
+                  form[
+                    `purchasePrice${
+                      userData.userType === '0'
+                        ? 0
+                        : Number(userData.userType==='5'?'4':userData.userType) - 1
+                    }`
+                  ]
+                "
                 placeholder="请输入进货价"
                 size="small"
               ></el-input>
@@ -209,7 +229,9 @@
             ></el-table-column>
             <el-table-column
               label="进货价"
-              :prop="`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`"
+              :prop="`purchasePrice${
+                userData.userType === '0' ? 0 : Number(userData.userType==='5'?'4':userData.userType) - 1
+              }`"
               align="center"
               width="100px"
             ></el-table-column>
@@ -221,7 +243,7 @@
             >
             </el-table-column>
             <el-table-column
-               v-if="userData.userType === '0' || userData.userType === '1'"
+              v-if="userData.userType === '0' || userData.userType === '1'"
               :show-overflow-tooltip="true"
               prop="buyerName"
               label="进货商家名称"
@@ -351,7 +373,7 @@ export default {
         accountName: null,
         userType: null,
         accountPhone: null,
-        account: null
+        account: null,
       },
       delLbShow: false,
       leftName: "",
@@ -393,8 +415,8 @@ export default {
       getTypelist()
         .then((res) => {
           if (res.code === 0) {
-            this.goodsTypeList = res.data;      
-            this.form.goodsType = res.data[0].goodsType
+            this.goodsTypeList = res.data;
+            this.form.goodsType = res.data[0].goodsType;
             this.butClick(res.data[0].goodsType);
           } else {
             this.goodsTypeList = [
@@ -428,6 +450,9 @@ export default {
               return;
             }
             res.data.records.forEach((item) => {
+              if(this.userData.userType === '5'){
+                item.purchasePrice3 = Number(item.purchasePrice3) + 10
+              };
               if (item.goodsImg) {
                 if (item.goodsImg.indexOf(",")) {
                   item.goodsImg = item.goodsImg.split(",");
@@ -493,13 +518,13 @@ export default {
       })
         .then(({ value }) => {
           let bold = false;
-          this.goodsTypeList.forEach(item=>{
-            if(item.goodsTypename === value){
+          this.goodsTypeList.forEach((item) => {
+            if (item.goodsTypename === value) {
               bold = true;
               return;
             }
-          })
-          if(bold){
+          });
+          if (bold) {
             this.$message.error("已存在该类型，请勿重复添加！");
             return;
           }
@@ -627,6 +652,10 @@ export default {
     //搜索
     onSubmit() {
       this.delLbShow = false;
+      console.log(this.form)
+      if(this.userData.userType === '5'){
+        this.form.purchasePrice3 = Number(this.form.purchasePrice3) - 10
+      }
       this.getData();
     },
     //重置
@@ -651,7 +680,6 @@ export default {
       this.delLbShow = false;
       this.pagination.size = size;
       this.getData();
-  
     },
   },
   created() {
@@ -664,8 +692,8 @@ export default {
 };
 </script>
 <style scoped>
->>>.el-image-viewer__close{
-  color:#fff;
+>>> .el-image-viewer__close {
+  color: #fff;
 }
 >>> .el-menu-item.is-active {
   border-right: 2px solid #38f;
@@ -732,7 +760,7 @@ export default {
   border-bottom: 1px solid#E6E6E6;
 }
 .out_box_css {
-  min-width: 200px;
+  min-width: 150px;
   margin-right: 15px;
 }
 .out_box_css .phone_css {

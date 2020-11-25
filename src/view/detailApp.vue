@@ -44,7 +44,7 @@
         </div>
         <div class="dis_row_between_center box_css" v-if="userData.userType !== '0'">
           <span>进货价：</span>
-          <span>{{ form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType)-1}`] }}（元/件）</span>
+          <span>{{ form[`purchasePrice${(userData.userType === '0')?0:Number(userData.userType==='5'?'4':userData.userType)-1}`] }}（元/件）</span>
         </div>
         <div class="dis_row_between_center box_css">
           <span>官方指导价：</span>
@@ -211,6 +211,9 @@ export default {
             }
           } else {
             res.data.goodsImg = [];
+          }
+          if (this.userData.userType === "5") {
+            res.data.purchasePrice3 = Number(res.data.purchasePrice3) + 10;
           }
           this.form = res.data
           this.getGoodsTypeList(this.form.goodsType);

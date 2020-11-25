@@ -57,7 +57,11 @@
             {{
               form[
                 `purchasePrice${
-                  userData.userType === "0" ? 0 : Number(userData.userType) - 1
+                  userData.userType === "0"
+                    ? 0
+                    : Number(
+                        userData.userType === "5" ? "4" : userData.userType
+                      ) - 1
                 }`
               ]
             }}（元/件）
@@ -180,9 +184,9 @@ export default {
   },
   methods: {
     download() {
-      let that = this
+      let that = this;
       that
-        .$confirm("确定要下载改组图片吗？", "提示", {
+        .$confirm("确定要下载该组图片吗？", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning",
@@ -190,18 +194,18 @@ export default {
         .then(() => {
           that.form.goodsImg.forEach((item) => {
             let key = item.substring(55, item.length);
-            downloadImg(key).then((res) => {
-              
-            });
+            downloadImg(key)
+              .then((res) => {
+                if (res.code === 0) {
+                  console.log(item);
+                  // this.downloadIamge(item);
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           });
-        })
-        .catch((err) => {});
-      // console.log(this.form.goodsImg);
-      // let key = this.form.goodsImg[index];
-      // key = key.substring(55, key.length);
-      // delImg(key).then((res) => {
-      //   this.form.goodsImg.splice(index, 1);
-      // });
+        });
     },
     //获取类型
     getGoodsTypeList(goodsType) {
@@ -246,6 +250,9 @@ export default {
             }
           } else {
             res.data.goodsImg = [];
+          }
+          if (this.userData.userType === "5") {
+            res.data.purchasePrice3 = Number(res.data.purchasePrice3) + 10;
           }
           this.form = res.data;
           this.getGoodsTypeList(this.form.goodsType);

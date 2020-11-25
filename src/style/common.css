@@ -19,3 +19,10 @@
 .el-message-box1{
   width: 80vw!important;
 }
+.span_sou_css{
+  background-color: #fafafa;
+  padding:1vw;
+}
+.el-icon-circle-close{
+  color: #fff;
+}

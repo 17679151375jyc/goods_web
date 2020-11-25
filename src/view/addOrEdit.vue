@@ -280,12 +280,7 @@ export default {
   name: "",
   data() {
     return {
-      goodsTypeList: [
-        {
-          goodsTypename: "其他",
-          goodsType: "99",
-        },
-      ],
+      goodsTypeList: [],
       imgList: [],
       form: {
         goodsType: "",
@@ -363,21 +358,11 @@ export default {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
           } else {
-            this.goodsTypeList = [
-              {
-                goodsTypename: "其他",
-                goodsType: "99",
-              },
-            ];
+            this.goodsTypeList = [];
           }
         })
         .catch((err) => {
-          this.goodsTypeList = [
-            {
-              goodsTypename: "其他",
-              goodsType: "99",
-            },
-          ];
+          this.goodsTypeList = [];
         });
     },
     updateClick() {

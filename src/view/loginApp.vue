@@ -23,16 +23,25 @@
               placeholder="请输入密码"
               show-password
               class="input_css"
+              @keyup.enter.native="onSubmit"
             ></el-input>
           </el-form-item>
           <div class="but_box_css">
-            <el-button
-              type="primary"
-              :loading="loading"
-              style="width: 100%"
-              @click="onSubmit"
-              >登录</el-button
-            >
+            <div class="dis_row_between_center" style="width: 100%">
+              <el-button
+                :loading="loading"
+                style="width: 47%"
+                @click="youkeClick"
+                >游客</el-button
+              >
+              <el-button
+                type="primary"
+                :loading="loading"
+                style="width: 47%"
+                @click="onSubmit"
+                >登录</el-button
+              >
+            </div>
           </div>
         </el-form>
       </div>
@@ -55,6 +64,17 @@ export default {
     };
   },
   methods: {
+    youkeClick(){
+      let data = {
+        accountId: 'youke12321',
+        accountName: "游客",
+        userType: "5",
+        accountPhone: null,
+        account: null
+      }
+      storage_set("userdata", data);
+      this.$router.push({ path: "/indexApp" });
+    },
     onSubmit() {
       let that = this;
       this.$refs["form"].validate(async (valid) => {
@@ -73,7 +93,7 @@ export default {
                   type: "success",
                   message: "登录成功!",
                   duration: 1000,
-                  customClass: 'myalert_css'
+                  customClass: "myalert_css",
                 });
               } else {
                 that.loading = false;
@@ -88,27 +108,27 @@ export default {
       });
     },
   },
-  created(){
-    if(storage_get('userdata')){
+  created() {
+    if (storage_get("userdata")) {
       this.form = {
-        account: storage_get('userdata').account,
-        password: storage_get('userdata').password,
-      }
-    }    
-  }
+        account: storage_get("userdata").account,
+        password: storage_get("userdata").password,
+      };
+    }
+  },
 };
 </script>
 <style scoped>
->>> .el-input__inner{
+>>> .el-input__inner {
   height: 10vw;
   line-height: 10vw;
 }
->>> label{
-  border: 1px solid #DCDFE6;
+>>> label {
+  border: 1px solid #dcdfe6;
   height: 10vw;
   line-height: 10vw;
 }
->>>.el-form-item__content{
+>>> .el-form-item__content {
   height: 10vw;
   line-height: 10vw;
 }
@@ -134,7 +154,7 @@ export default {
   width: 81vw;
   margin: 10vw auto;
 }
-.title_css{
+.title_css {
   width: 100%;
   font-size: 5vw;
   font-weight: bold;

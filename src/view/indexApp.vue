@@ -1,19 +1,32 @@
 <template>
   <div>
     <div class="dis_row_between_center my_box">
-      <span
+      <span v-if="userData.userType !== '5'"
         ><i class="iconfont icongerenmingpian"></i>
         {{ userTypeList[Number(userData.userType)].name }}</span
       >
-      <span class="phone_css"
+      <span class="phone_css" v-if="userData.userType !== '5'"
         >{{ userData.accountName }} / {{ userData.accountPhone }}</span
+      >
+      <span v-if="userData.userType === '5'"
+        ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
+        >{{ userData.accountName }}</span
       >
     </div>
     <div class="dis_row_between_center my_box">
       <span class="phone_css" @click="logouts"
         ><i class="iconfont icon084tuichu"></i>退出</span
       >
-      <el-button size="mini" plain v-if="false">账号管理</el-button>
+      <div v-if="userData.userType === '0' || userData.userType === '1'">
+        <el-button
+          size="mini"
+          plain
+          v-if="userData.userType === '0'"
+          @click="accountPath"
+          >账号管理</el-button
+        >
+        <el-button size="mini" plain @click="goodsPath">添加货品</el-button>
+      </div>
       <el-button size="mini" plain v-else @click="caigouClick"
         >联系采购</el-button
       >
@@ -34,11 +47,17 @@
           <div class="sousuo_css">
             <div
               @click="searchShow = true"
-              v-if="form.brandName || form.goodsName"
+              v-if="form.brandName || form.goodsName || prValue"
             >
-              <span v-if="form.brandName">{{ form.brandName }}</span>
-              <span v-if="form.brandName && form.goodsName">-</span>
-              <span v-if="form.goodsName">{{ form.goodsName }}</span>
+              <span class="span_sou_css" v-if="form.brandName">{{
+                form.brandName
+              }}</span>
+              <span>-</span>
+              <span class="span_sou_css" v-if="form.goodsName">{{
+                form.goodsName
+              }}</span>
+              <span>-</span>
+              <span class="span_sou_css" v-if="prValue">{{ prValue }}</span>
             </div>
             <span v-else @click="searchShow = true">点击搜索</span>
           </div>
@@ -50,20 +69,17 @@
                 <td>型号</td>
                 <td style="width: 12vw">颜色</td>
                 <td style="width: 15vw">拿货价</td>
+                <td v-if="shows" style="width: 12vw; padding: 1vw; font-size: 3.74vw">操作</td>
               </tr>
               <tr v-if="data.length === 0 && !loading">
-                <td colspan="5">暂无数据</td>
+                <td colspan="6">暂无数据</td>
               </tr>
               <tbody v-if="data.length > 0">
-                <tr
-                  v-for="(item, index) in data"
-                  :key="index"
-                  @click="detailClick(item)"
-                >
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.brandName }}</td>
-                  <td>{{ item.goodsName }}</td>
-                  <td>
+                <tr v-for="(item, index) in data" :key="index">
+                  <td @click="detailClick(item)">{{ index + 1 }}</td>
+                  <td @click="detailClick(item)">{{ item.brandName }}</td>
+                  <td @click="detailClick(item)">{{ item.goodsName }}</td>
+                  <td @click="detailClick(item)">
                     <span :style="{ 'background-color': item.color }"></span>
                   </td>
                   <td>
@@ -72,21 +88,28 @@
                         `purchasePrice${
                           userData.userType === "0"
                             ? 0
-                            : Number(userData.userType) - 1
+                            : Number(
+                                userData.userType === "5"
+                                  ? "4"
+                                  : userData.userType
+                              ) - 1
                         }`
                       ]
                     }}
                   </td>
+                  <td style="width: 10vw; padding: 0vw; font-size: 3.74vw" v-if="shows">
+                    <div style="color: #38f" @click="caozuoClick(item)">操作</div>
+                  </td>
                 </tr>
               </tbody>
               <tr v-if="loading">
-                <td colspan="5">加载中...</td>
+                <td colspan="6">加载中...</td>
               </tr>
               <tr
                 v-if="pagination.total !== data.length && !loading"
                 @click="pageClick"
               >
-                <td colspan="5">点击加载更多</td>
+                <td colspan="6">点击加载更多</td>
               </tr>
             </table>
           </div>
@@ -148,8 +171,8 @@
 </template>
 
 <script>
-import { storage_get,storage_set, storage_remove } from "@/common/storage.js";
-import { getList, getTypelist } from "@/axios/api";
+import { storage_get, storage_set, storage_remove } from "@/common/storage.js";
+import { getList, getTypelist, delData } from "@/axios/api";
 export default {
   name: "",
   data() {
@@ -184,7 +207,103 @@ export default {
       data: [],
     };
   },
+  computed: {
+    prValue: function () {
+      return this.form[
+        `purchasePrice${
+          this.userData.userType === "0"
+            ? 0
+            : Number(
+                this.userData.userType === "5" ? "4" : this.userData.userType
+              ) - 1
+        }`
+      ];
+    },
+    shows:function(){
+      let show = false;
+      if(this.userData.userType === '0'|| this.userData.userType === '1'){
+        show = true
+      }
+      return show;
+    }
+  },
   methods: {
+    //删除货品
+    delGoods(row) {
+      let that = this;
+      that
+        .$confirm(
+          `確定要删除货品【${row.brandName}/${row.modelName}】吗？`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning",
+            customClass: "el-message-box1",
+          }
+        )
+        .then(() => {
+          delData(row.goodsId).then((res) => {
+            if (res.code === 0) {
+              that.$message({
+                type: "success",
+                message: "删除成功!",
+                customClass: "myalert_css1",
+              });
+              this.pagination.page = 1;
+              this.data = [];
+              this.getData();
+            }
+          });
+        })
+        .catch(() => {});
+    },
+    //双击事件
+    dbClick(row) {
+      console.log(row);
+    },
+    caozuoClick(row) {
+      let that = this;
+      that
+        .$confirm(
+          `你要对货品【${row.brandName}/${row.modelName}】操作是？`,
+          "选择",
+          {
+            confirmButtonText: "编辑",
+            cancelButtonText: "删除",
+            type: "warning",
+            customClass: "el-message-box1",
+            // showClose: false,
+            distinguishCancelAndClose: true
+          }
+        )
+        .then(() => {
+          that.$router.push({
+            path: "/addGoods",
+            query: {
+              goodsType: row.goodsType,
+              goodsId: row.goodsId,
+            },
+          });
+          return;
+        })
+        .catch((err) => {
+          if(err === 'cancel'){
+            that.delGoods(row);
+          }
+        });
+    },
+    goodsPath() {
+      this.$router.push({
+        path: "/addGoods",
+        query: {
+          goodsType: this.form.goodsType,
+        },
+      });
+    },
+    accountPath() {
+      this.$router.push({ path: "/adminApp" });
+    },
     //复制微信号
     caigouClick() {
       let txt = "";
@@ -201,7 +320,6 @@ export default {
     //退出
     logouts() {
       let that = this;
-      this.delLbShow = false;
       that
         .$confirm("確定要退出系统吗吗？", "提示", {
           confirmButtonText: "确定",
@@ -225,8 +343,10 @@ export default {
         .then((res) => {
           if (res.code === 0) {
             this.goodsTypeList = res.data;
-            let SgoodsType = storage_get('goodsType')
-            this.form.goodsType = SgoodsType?SgoodsType:res.data[0].goodsType;
+            let SgoodsType = storage_get("goodsType");
+            this.form.goodsType = SgoodsType
+              ? SgoodsType
+              : res.data[0].goodsType;
             this.getData();
           } else {
             this.goodsTypeList = [
@@ -251,13 +371,17 @@ export default {
       this.searchShow = false;
       this.form.brandName = this.dataForm.brandName;
       this.form.goodsName = this.dataForm.goodsName;
-      this.form[
-        `purchasePrice${
-          this.userData.userType === "0"
-            ? 0
-            : Number(this.userData.userType) - 1
-        }`
-      ] = this.dataForm.purchasePrice;
+      if (this.userData.userType === "5") {
+        this.form.purchasePrice3 = Number(this.dataForm.purchasePrice) - 10;
+      } else {
+        this.form[
+          `purchasePrice${
+            this.userData.userType === "0"
+              ? 0
+              : Number(this.userData.userType) - 1
+          }`
+        ] = this.dataForm.purchasePrice;
+      }
       this.pagination.page = 1;
       this.data = [];
       this.getData();
@@ -311,6 +435,9 @@ export default {
         if (res.code === 0) {
           if (res.data.records.length > 0) {
             res.data.records.forEach((item) => {
+              if (this.userData.userType === "5") {
+                item.purchasePrice3 = Number(item.purchasePrice3) + 10;
+              }
               item.goodsImg = item.goodsImg.split(" ");
             });
             this.pagination.total = res.data.total;
@@ -324,7 +451,7 @@ export default {
     },
     //tab页切换
     handleClick(tab) {
-      storage_set('goodsType', tab.name)
+      storage_set("goodsType", tab.name);
       this.data = [];
       this.pagination.page = 1;
       this.form.goodsType = tab.name;
@@ -374,10 +501,16 @@ export default {
   /* transform: scale(1.1); */
   transition: 0.5s;
 }
-@keyframes dong{
-  0%{font-size: 3.74vw;}
-  50%{font-size: 4.5vw;}
-  100%{font-size: 3.74vw;}
+@keyframes dong {
+  0% {
+    font-size: 3.74vw;
+  }
+  50% {
+    font-size: 4.5vw;
+  }
+  100% {
+    font-size: 3.74vw;
+  }
 }
 >>> .el-tabs--border-card {
   border: 0;
@@ -407,6 +540,12 @@ export default {
   word-break: break-all;
   text-align: center;
   color: #555;
+  user-select: none;
+  -webkit-touch-callout: none; /*系统默认菜单被禁用*/
+  -webkit-user-select: none; /*webkit浏览器*/
+  -khtml-user-select: none; /*早期浏览器*/
+  -moz-user-select: none; /*火狐*/
+  -ms-user-select: none; /*IE10*/
 }
 .table_width_css td span {
   display: block;
