@@ -316,7 +316,7 @@ export default {
   width: 92vw;
   padding: 0 4vw;
   background-color: #fafafa;
-  z-index: 10000;
+  z-index: 1000;
   border-top: 1px solid #e7e7e8;
   font-size: 3.74vw;
 }

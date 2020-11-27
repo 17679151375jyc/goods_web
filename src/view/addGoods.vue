@@ -60,7 +60,6 @@
           <el-input
             clearable
             maxlength="7"
-            style="width:20vw!important"
             v-model="form.color"
             placeholder="请输入颜色"
             size="small"
@@ -269,7 +268,7 @@ export default {
         brandName: "",
         modelName: "",
         specifications: "",
-        color: "#000000",
+        color: "#CE192A",
         goodsName: "",
         purchasePrice0: "",
         purchasePrice1: "",
@@ -424,11 +423,7 @@ export default {
   right: 20px;
 }
 >>>#myInput .el-input__inner{
-  width:50vw
-}
-.input_css {
-  width: 60vw;
-  min-height: 9vw;
+  width:45vw
 }
 .box_but_css {
   width: 90vw;

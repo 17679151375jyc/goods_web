@@ -721,7 +721,7 @@ export default {
   width: 98vw;
   height: 30vw;
   margin: 0 auto;
-  background-color: #fafafa;
+  background-color: #ffffff;
   border-radius: 2vw;
   margin-top: 3vw;
 }

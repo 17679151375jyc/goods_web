@@ -72,6 +72,7 @@
               v-model="form.color"
               placeholder="请输入颜色"
               size="small"
+              readonly
             ></el-input>
             <!-- <span
               class="span_color"
