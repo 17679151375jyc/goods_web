@@ -55,22 +55,19 @@
           size="small"
         ></el-input>
       </el-form-item>
-      <!-- <el-form-item prop="color" label="颜色代码：">
-        <div class="dis_row_between_center input_css">
+      <el-form-item prop="color" label="颜色代码：">
+        <div class="dis_row_between_center input_css" id="myInput">
           <el-input
             clearable
             maxlength="7"
-            style="width: 150px"
+            style="width:20vw!important"
             v-model="form.color"
             placeholder="请输入颜色"
             size="small"
           ></el-input>
-          <span
-            class="span_color"
-            :style="{ 'background-color': form.color }"
-          ></span>
+          <el-color-picker v-model="form.color"></el-color-picker>
         </div>
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item prop="goodsName" label="货品名称：">
         <el-input
           clearable
@@ -227,12 +224,12 @@
       <el-form-item>
         <div class="dis_column_center_center box_but_css">
           <el-button
-            class="but_css"
+            class="but_css but_color_css"
             type="primary"
             @click="comfirm"
             round
             :loading="loading"
-            >确认添加</el-button
+            >{{butName}}</el-button
           >
           <el-button
             :loading="loading"
@@ -262,6 +259,7 @@ export default {
   name: "",
   data() {
     return {
+      butName: "确认添加",
       goodsId: null,
       goodsTypeList: [],
       loading: false,
@@ -399,12 +397,16 @@ export default {
     this.getGoodsTypeList();
     if (this.$route.query.goodsId) {
       this.goodsId = this.$route.query.goodsId;
+      this.butName = "确认编辑"
       this.getData();
     }
   },
 };
 </script>
 <style scoped>
+.page_css{
+  z-index: 100000;
+}
 >>> .el-form-item {
   margin-bottom: 3.5vw;
   display: flex;
@@ -417,6 +419,12 @@ export default {
 }
 >>> .el-image-viewer__actions {
   display: none;
+}
+>>>.el-input__suffix{
+  right: 20px;
+}
+>>>#myInput .el-input__inner{
+  width:50vw
 }
 .input_css {
   width: 60vw;

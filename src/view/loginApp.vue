@@ -2,7 +2,7 @@
   <div>
     <div class="dis_column_center_center box_loginPage_css">
       <img class="logo_css" :src="require('@/img/logo.png')" alt="" />
-      <div class="title_css">JYCYL货源管理系统</div>
+      <div class="title_css">JYCYL货源仓库</div>
       <div class="dis_column_center_center input_box_css">
         <el-form ref="form" :model="form" label-width="21vw" :rules="addrules">
           <el-form-item label="账号：" prop="account">
@@ -51,7 +51,7 @@
 
 <script>
 import { login } from "@/axios/api";
-import { storage_set, storage_get } from "@/common/storage.js";
+import { storage_set, storage_get, storage_remove } from "@/common/storage.js";
 export default {
   name: "",
   data() {
@@ -72,6 +72,7 @@ export default {
         accountPhone: null,
         account: null
       }
+      storage_remove('goodsType');
       storage_set("userdata", data);
       this.$router.push({ path: "/indexApp" });
     },
@@ -79,6 +80,7 @@ export default {
       let that = this;
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
+          storage_remove('goodsType');
           let data = {
             account: that.form.account,
             password: that.form.password,

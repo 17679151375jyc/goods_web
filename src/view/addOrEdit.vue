@@ -73,10 +73,11 @@
               placeholder="请输入颜色"
               size="small"
             ></el-input>
-            <span
+            <!-- <span
               class="span_color"
               :style="{ 'background-color': form.color }"
-            ></span>
+            ></span> -->
+            <el-color-picker v-model="form.color"></el-color-picker>
           </div>
         </el-form-item>
         <el-form-item prop="goodsName" label="货品名称：">

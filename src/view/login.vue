@@ -4,7 +4,7 @@
       <img :src="require('@/img/logo.png')" class="img_css" />
       <el-form ref="form" :model="form" label-width="80px" :rules="addrules">
         <el-form-item>
-          <div class="title_css">JYCYL货源管理系统</div>
+          <div class="title_css">JYCYL货源仓库</div>
         </el-form-item>
         <el-form-item label="账号：" prop="account">
           <el-input

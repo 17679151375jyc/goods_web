@@ -1,7 +1,10 @@
 <template>
   <div class="page_css">
     <div class="dis_row_between_center my_box">
-      <span>{{ userTypeList[Number(userData.userType)].name }}</span>
+      <div class="dis_row_between_center" style="width: 26vw">        
+        <span @click="$router.back()"><i class="iconfont iconzuo"></i></span>
+        <span>{{ userTypeList[Number(userData.userType)].name }}</span>
+      </div>
       <span @click="resetForm"><i class="iconfont iconshuaxin"></i>刷新</span>
       <span @click="addPath"><i class="el-icon-plus"></i> 添加账号</span>
     </div>
@@ -76,19 +79,22 @@
             ></el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" class="button_css" @click="search"
+        <el-button type="primary" class="button_css but_color_css" @click="search"
           >确认搜索</el-button
         >
         <div class="dis_row_between_center button_css">
           <el-button class="bottom_but_css" plain @click="searchShow = false"
             >关闭</el-button
           >
-          <el-button class="bottom_but_css" plain @click="resetForm"
+          <el-button class="bottom_but_css but_color_css" plain @click="resetForm"
             >重置</el-button
           >
         </div>
       </div>
     </div>
+    <transition name="slide-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -191,13 +197,13 @@ export default {
       if (this.time === 0) {
         let accountId = row.accountId;
         this.addAdminShow = true;
-        this.$router.push({ path: "/accountEdit", query: { accountId } });
+        this.$router.push({ path: "/indexApp/accountEdit", query: { accountId } });
       }
       this.time = 0;
     },
     //跳转到添加账号
     addPath() {
-      this.$router.push({ path: "/addApp" });
+      this.$router.push({ path: "/indexApp/addApp" });
     },
     getData() {
       this.loading = true;
@@ -231,7 +237,7 @@ export default {
 .my_box {
   width: 94vw;
   height: 6vw;
-  background-color: #000;
+  background-color:  #FB1099;
   padding: 3vw;
   text-align: right;
   font-size: 3.74vw;
@@ -261,8 +267,10 @@ export default {
   width: 100vw;
   height: 7vw;
   text-align: center;
-  color: #38f;
-  margin: 2vw 0;
+  color: #000;
+  padding: 2vw 0;
+  border-bottom: 1px solid #FB1099;
+  background-color: #FDDBEF;
 }
 .mengceng_css {
   position: fixed;

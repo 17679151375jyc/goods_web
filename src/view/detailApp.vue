@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <transition name="slide-fade">
+  <div class="page_css">
       <div v-if="show" class="page_css">
         <div class="dis_row_between_center box_css">
           <span>货品编号：</span>
@@ -112,13 +111,11 @@
         </div>
         <div class="dis_row_between_center but_box_css">
           <span @click="$router.back()">返回</span>
-          <span class="active" @click="wenanClick">复制文案</span>
+          <span class="but_color_css" @click="wenanClick">复制文案</span>
         </div>
       </div>
-    </transition>
   </div>
 </template>
-
 <script>
 import { storage_get } from "@/common/storage.js";
 import { getDetailData, getTypelist } from "@/axios/api";
@@ -333,10 +330,5 @@ export default {
   background-color: #fff;
   color: #888;
   border: 1px solid #888;
-}
-.but_box_css .active {
-  border: 0;
-  background-color: #3388ff;
-  color: #fff;
 }
 </style>

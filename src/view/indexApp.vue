@@ -1,21 +1,20 @@
 <template>
   <div>
-    <div class="dis_row_between_center my_box">
-      <span v-if="userData.userType !== '5'"
-        ><i class="iconfont icongerenmingpian"></i>
+    <div class="dis_row_between_center my_box" v-if="userData.userType !== '5'">
+      <span  @click="showStatusClick"><i class="iconfont icongerenmingpian"></i>
         {{ userTypeList[Number(userData.userType)].name }}</span
       >
-      <span class="phone_css" v-if="userData.userType !== '5'"
+      <span class="phone_css"
         >{{ userData.accountName }} / {{ userData.accountPhone }}</span
-      >
-      <span v-if="userData.userType === '5'"
-        ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
-        >{{ userData.accountName }}</span
       >
     </div>
     <div class="dis_row_between_center my_box">
-      <span class="phone_css" @click="logouts"
+      <span class="phone_css" @click="logouts"  v-if="userData.userType !== '5'"
         ><i class="iconfont icon084tuichu"></i>退出</span
+      >
+      <span v-if="userData.userType === '5'" @click="showStatusClick"
+        ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
+        >{{ userData.accountName }}</span
       >
       <div v-if="userData.userType === '0' || userData.userType === '1'">
         <el-button
@@ -32,6 +31,7 @@
       >
       <span @click="resetForm"><i class="iconfont iconshuaxin"></i>刷新</span>
     </div>
+    <div>
     <el-tabs
       v-model="form.goodsType"
       @tab-click="handleClick"
@@ -62,7 +62,7 @@
             <span v-else @click="searchShow = true">点击搜索</span>
           </div>
           <div class="sco_css">
-            <table class="table_width_css">
+            <table class="table_width_css" v-if="showStatus === 'table'">
               <tr>
                 <td style="width: 9vw">序号</td>
                 <td style="width: 13vw">品牌</td>
@@ -112,11 +112,67 @@
                 <td colspan="6">点击加载更多</td>
               </tr>
             </table>
+            <div v-if="showStatus === 'div'">
+              <div class="zhuang_css"  v-if="data.length === 0 && !loading">暂无数据</div>
+              <div class="dis_row_between_center shangpin_css" v-for="(item, index) in data" :key="index">
+                <img :src="require('@/img/zanwu.jpg')"class="shangpin_css_img_css" v-if="item.goodsImg.length === 0">
+                <el-image
+                    v-if="item.goodsImg.length > 0"
+                    class="shangpin_css_img_css"
+                    :src="item.goodsImg[0]"
+                    :preview-src-list="item.goodsImg"
+                  >
+                  </el-image>
+                <div class="shangpin_css_neirongbox_css">
+                  <div class="dis_row_start_center "  @click="detailClick(item)">
+                    <span class="span_lable_css title_css">货品名称：{{item.goodsName}}</span>
+                  </div>
+                  <div>
+                    <div class="dis_row_start_center" @click="detailClick(item)">
+                      <span class="span_lable_css">品牌：</span>
+                      <span class="span_lable_css">{{item.brandName}}</span>
+                      <span class="span_lable_css">型号：</span>
+                      <span class="span_lable_css">{{item.modelName}}</span>
+                    </div>
+                    <div class="dis_row_start_center" @click="detailClick(item)">
+                      <span class="span_lable_css">进货价：</span>
+                      <span class="span_lable_css">{{item[
+                        `purchasePrice${
+                          userData.userType === "0"
+                            ? 0
+                            : Number(
+                                userData.userType === "5"
+                                  ? "4"
+                                  : userData.userType
+                              ) - 1
+                        }`
+                      ]}}</span>
+                      <span class="span_lable_css">市场价：</span>
+                      <span class="span_lable_css">{{item.marketPrice?item.marketPrice:"—"}}</span>
+                    </div>
+                    <div class="dis_row_between_center">
+                      <div class="dis_row_between_center" @click="detailClick(item)">                      
+                        <span class="span_lable_css" style="width:15vw">颜色：</span>
+                        <span class="span_lable_css color_css" :style="{ 'background-color': item.color }"></span>
+                      </div>
+                      <div class="dis_row_between_center" style="width:22vw" v-if="shows">
+                        <span class="butt_css"  @click="delGoods(item)">删除</span>
+                        <span class="butt_css"  @click="editClick(item)">编辑</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="zhuang_css" v-if="loading">加载中...</div>
+              <div class="zhuang_css" v-if="pagination.total !== data.length && !loading"
+                  @click="pageClick">点击加载更多</div>
+            </div>
           </div>
         </div>
       </el-tab-pane>
     </el-tabs>
-    <div class="mengceng_css dis_row_center_center" v-if="searchShow">
+    </div>
+    <div class="mengceng_css dis_row_center_center" v-if="searchShow"> 
       <div class="neirong_box_css">
         <span class="cha_css">货品查询</span>
         <el-form
@@ -153,20 +209,23 @@
             ></el-input>
           </el-form-item>
         </el-form>
-        <el-button type="primary" class="button_css" @click="search"
+        <el-button type="primary" class="button_css but_color_css" @click="search"
           >确认搜索</el-button
         >
         <div class="dis_row_between_center button_css">
           <el-button class="bottom_but_css" plain @click="searchShow = false"
             >关闭</el-button
           >
-          <el-button class="bottom_but_css" plain @click="resetForm"
+          <el-button class="bottom_but_css but_color_css" plain @click="resetForm"
             >重置</el-button
           >
         </div>
       </div>
     </div>
     <span id="spanid">{{ wechatMumber }}</span>
+    <transition name="slide-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -177,7 +236,13 @@ export default {
   name: "",
   data() {
     return {
-      goodsTypeList: [],
+      showStatus: 'div',
+      goodsTypeList: [
+        {
+          goodsTypename: "其他",
+          goodsType: '99'
+        }
+      ],
       userData: {
         accountName: null,
         userType: null,
@@ -228,6 +293,15 @@ export default {
     }
   },
   methods: {
+    showStatusClick(){
+      if(this.showStatus === 'table'){
+        this.showStatus = 'div'
+      }else{
+        this.showStatus = 'table'
+      }
+      this.loading = false;
+      this.resetForm();
+    },
     //删除货品
     delGoods(row) {
       let that = this;
@@ -262,6 +336,17 @@ export default {
     dbClick(row) {
       console.log(row);
     },
+    //编辑
+    editClick(row){
+      let that = this;
+      that.$router.push({
+        path: "/indexApp/addGoods",
+        query: {
+          goodsType: row.goodsType,
+          goodsId: row.goodsId,
+        },
+      });
+    },
     caozuoClick(row) {
       let that = this;
       that
@@ -278,13 +363,7 @@ export default {
           }
         )
         .then(() => {
-          that.$router.push({
-            path: "/addGoods",
-            query: {
-              goodsType: row.goodsType,
-              goodsId: row.goodsId,
-            },
-          });
+          this.editClick(row)
           return;
         })
         .catch((err) => {
@@ -295,14 +374,14 @@ export default {
     },
     goodsPath() {
       this.$router.push({
-        path: "/addGoods",
+        path: "/indexApp/addGoods",
         query: {
           goodsType: this.form.goodsType,
         },
       });
     },
     accountPath() {
-      this.$router.push({ path: "/adminApp" });
+      this.$router.push({ path: "/indexApp/adminApp" });
     },
     //复制微信号
     caigouClick() {
@@ -413,7 +492,7 @@ export default {
     //详情
     detailClick(data) {
       this.$router.push({
-        path: "/detailApp",
+        path: "/indexApp/detailApp",
         query: {
           goodsId: data.goodsId,
         },
@@ -438,7 +517,15 @@ export default {
               if (this.userData.userType === "5") {
                 item.purchasePrice3 = Number(item.purchasePrice3) + 10;
               }
-              item.goodsImg = item.goodsImg.split(" ");
+              if (item.goodsImg) {
+                if (item.goodsImg.indexOf(",")) {
+                  item.goodsImg = item.goodsImg.split(",");
+                } else {
+                  item.goodsImg = item.goodsImg.split(" ");
+                }
+              } else {
+                item.goodsImg = [];
+              }
             });
             this.pagination.total = res.data.total;
             this.data = this.data.concat(res.data.records);
@@ -468,9 +555,13 @@ export default {
 };
 </script>
 <style scoped>
+>>> .el-image-viewer__actions {
+  display: none;
+}
 #spanid {
   position: absolute;
   left: -10000px;
+  opacity: 0;
 }
 >>> .el-form-item__label {
   font-size: 3.74vw;
@@ -491,7 +582,7 @@ export default {
 >>> .el-tabs__nav-prev,
 >>> .el-tabs__nav-next {
   line-height: 12vw;
-  background-color: #000;
+  background-color: #FB1099;
   color: #fff;
   width: 10vw;
   text-align: center;
@@ -499,14 +590,14 @@ export default {
   z-index: 100;
   animation: dong 1s infinite;
   /* transform: scale(1.1); */
-  transition: 0.5s;
+  transition: 0.3s;
 }
 @keyframes dong {
   0% {
     font-size: 3.74vw;
   }
   50% {
-    font-size: 4.5vw;
+    font-size: 5vw;
   }
   100% {
     font-size: 3.74vw;
@@ -515,8 +606,17 @@ export default {
 >>> .el-tabs--border-card {
   border: 0;
 }
+>>>.el-button--primary{
+  color:#fff!important;
+  background-color: #FB1099!important;
+  border: 0!important;
+}
+>>>.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
+  background-color: #FDDBEF;
+}
 >>> .el-tabs__item.is-active {
   font-weight: bold;
+  color: #FB1099!important;
 }
 >>> .el-tabs__content {
   padding: 0;
@@ -558,8 +658,10 @@ export default {
   width: 100vw;
   height: 7vw;
   text-align: center;
-  color: #38f;
-  margin: 2vw 0;
+  color: #000;
+  padding: 2vw 0;
+  border-bottom: 1px solid #FB1099;
+  background-color: #FDDBEF;
 }
 .mengceng_css {
   position: fixed;
@@ -596,7 +698,7 @@ export default {
 .my_box {
   width: 94vw;
   height: 6vw;
-  background-color: #000;
+  background-color: #FB1099;
   padding: 3vw;
   text-align: right;
   font-size: 3.74vw;
@@ -613,5 +715,70 @@ export default {
   width: 100vw;
   height: calc(100vh - 46vw);
   overflow-y: scroll;
+  background-color: #FDF2F9;
+}
+.shangpin_css{
+  width: 98vw;
+  height: 30vw;
+  margin: 0 auto;
+  background-color: #fafafa;
+  border-radius: 2vw;
+  margin-top: 3vw;
+}
+.shangpin_css_img_css{
+  width: 26vw;
+  height: 26vw;
+  margin: 2vw;
+  margin-right: 0;
+  border:1px solid #fff
+}
+.shangpin_css_neirongbox_css{
+  width: 64vw;
+  margin: 2vw;
+  height: 24vw;
+  background-color: #fff;
+  border-radius: 2vw;
+  font-size: 3.74vw;
+  color: #555;
+  padding: 1vw;
+}
+.span_lable_css{
+  display: block;
+  width: 19vw;
+  height: 5.5vw;
+  line-height: 5.5vw;
+  font-size: 3.3vw;
+}
+.butt_css{
+  width: 10vw;  
+}
+.butt_css:first-child{  
+  color: red;
+}
+.butt_css:last-child{  
+  color: #38f;
+}
+.color_css{
+  width: 5vw;
+  height: 5vw;
+  border-radius: 1vw;
+}
+.zhuang_css{
+  width: 98vw;
+  height: 10vw;
+  line-height: 10vw;
+  text-align: center;
+  background-color: #fff;
+  margin: 1vw auto;
+  border-radius: 2vw;
+}
+.title_css{
+  font-size: 3.7vw;
+  width:62vw;
+  height:7vw;
+  line-height:7vw;
+  overflow: hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
 }
 </style>

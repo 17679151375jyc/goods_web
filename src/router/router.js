@@ -48,43 +48,45 @@ const router = new Router({
                 title: '手机端主页',
             },
             component: () => import('@/view/indexApp'),
-        },{
-            path: '/addApp',
-            name: 'addApp',
-            meta: {
-                title: '添加账号',
-            },
-            component: () => import('@/view/addApp'),
-        },{
-            path: '/adminApp',
-            name: 'adminApp',
-            meta: {
-                title: '账号管理',
-            },
-            component: () => import('@/view/adminApp'),
-        },{
-            path: '/detailApp',
-            name: 'detailApp',
-            meta: {
-                title: '账号详情',
-            },
-            component: () => import('@/view/detailApp'),
-        },
-        {
-            path: '/accountEdit',
-            name: 'accountEdit',
-            meta: {
-                title: '手机账号详情页',
-            },
-            component: () => import('@/view/accountEdit'),
-        },
-        {
-            path: '/addGoods',
-            name: 'addGoods',
-            meta: {
-                title: '添加货品',
-            },
-            component: () => import('@/view/addGoods'),
+            children: [
+                {
+                    path: '/indexApp/detailApp',
+                    name: 'detailApp',
+                    meta: {
+                        title: '账号详情',
+                    },
+                    component: () => import('@/view/detailApp'),
+                }, {
+                    path: '/indexApp/addApp',
+                    name: 'addApp',
+                    meta: {
+                        title: '添加账号',
+                    },
+                    component: () => import('@/view/addApp'),
+                }, {
+                    path: '/indexApp/adminApp',
+                    name: 'adminApp',
+                    meta: {
+                        title: '账号管理',
+                    },
+                    component: () => import('@/view/adminApp'),
+                }, {
+                    path: '/indexApp/adminApp',
+                    name: 'adminApp',
+                    meta: {
+                        title: '账号管理',
+                    },
+                    component: () => import('@/view/adminApp'),
+                },
+                {
+                    path: '/indexApp/addGoods',
+                    name: 'addGoods',
+                    meta: {
+                        title: '添加货品',
+                    },
+                    component: () => import('@/view/addGoods'),
+                }
+            ]
         }]
 })
 router.beforeEach((to, from, next) => {

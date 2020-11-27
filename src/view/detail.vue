@@ -138,14 +138,14 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button
+        <!-- <el-button
           size="small"
           @click="download"
           type="primary"
           :loading="loading"
           v-if="form.goodsImg && form.goodsImg.length > 0"
           >一键下载图片</el-button
-        >
+        > -->
         <el-button size="small" @click="handleClose">关闭</el-button>
       </span>
     </el-dialog>

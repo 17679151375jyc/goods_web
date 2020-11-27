@@ -1,7 +1,12 @@
 .page_css {
   width: 100vw;
   height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff;
   overflow-y: scroll;
+  z-index: 10000;
 }
 .slide-fade-enter-active {
     transition: all .3s ease;

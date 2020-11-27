@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dis_row_between_center header_box">
-      <span class="color_text">JYCYL货源管理系统 </span>
+      <span class="color_text">JYCYL货源仓库 </span>
       <div class="dis_row_between_center out_box_css">
         <span v-if="userData.userType != '5'"
           ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i

@@ -68,7 +68,7 @@
       <el-form-item>
         <div class="dis_column_center_center box_but_css">
           <el-button
-            class="but_css"
+            class="but_css but_color_css"
             type="primary"
             @click="comfirm"
             round

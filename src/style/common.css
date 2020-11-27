@@ -26,3 +26,8 @@
 .el-icon-circle-close{
   color: #fff;
 }
+.but_color_css{
+  color:#fff!important;
+  background-color: #FB1099!important;
+  border: 0!important;
+}
