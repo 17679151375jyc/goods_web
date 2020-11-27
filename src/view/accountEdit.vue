@@ -26,7 +26,7 @@
           placeholder="请输入账号"
         />
       </el-form-item>
-      <el-form-item label="账号身份：" prop="userType">
+      <el-form-item label="账号身份：" prop="userType" id="shenfen">
         <el-select
           v-model="form.userType"
           placeholder="请选择"
@@ -206,6 +206,9 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+>>>#shenfen .el-input__suffix{
+  right: 40px!important;
 }
 .input_css {
   width: 65vw;

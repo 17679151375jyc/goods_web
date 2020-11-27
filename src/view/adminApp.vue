@@ -197,7 +197,7 @@ export default {
       if (this.time === 0) {
         let accountId = row.accountId;
         this.addAdminShow = true;
-        this.$router.push({ path: "/indexApp/accountEdit", query: { accountId } });
+        this.$router.push({ path: "/indexApp/adminApp/accountEdit", query: { accountId } });
       }
       this.time = 0;
     },
@@ -247,6 +247,7 @@ export default {
   width: calc(100vw - 15px);
   border-collapse: collapse;
   margin: 2vw auto;
+  margin-bottom: 20vw;
 }
 .table_width_css td {
   border: 1px solid #cbcbcb;

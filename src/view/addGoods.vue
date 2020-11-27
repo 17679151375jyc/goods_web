@@ -193,7 +193,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="货品图片：">
-        <div class="input_css">
+        <div class="input_css" style="width:45vw">
           <div class="img_tupian" v-for="(item, index) in imgList" :key="index">
             <el-image
               v-if="imgList.length > 0"
@@ -201,6 +201,7 @@
               style="width: 100%; height: 100%"
               :src="item"
               :preview-src-list="imgList"
+              @click.stop="handleClickItem"
             ></el-image>
             <i
               class="el-icon-circle-close del_css"

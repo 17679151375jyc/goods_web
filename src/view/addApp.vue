@@ -141,6 +141,9 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
+>>>#shenfen .el-input__suffix{
+  right: 40px!important;
+}
 .input_css {
   width: 65vw;
   height: 9vw;

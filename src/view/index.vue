@@ -269,6 +269,7 @@
                     class="img_tupian"
                     :src="scope.row.goodsImg[0]"
                     :preview-src-list="scope.row.goodsImg"
+                    @click.stop="handleClickItem"
                   >
                   </el-image>
                   <span class="dian_css" v-if="scope.row.goodsImg.length > 1"

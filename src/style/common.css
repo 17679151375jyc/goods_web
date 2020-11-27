@@ -31,3 +31,10 @@
   background-color: #FB1099!important;
   border: 0!important;
 }
+.color_css_css{
+  color:#FB1099!important;
+  width: 33vw!important;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

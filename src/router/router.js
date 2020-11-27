@@ -77,6 +77,14 @@ const router = new Router({
                         title: '账号管理',
                     },
                     component: () => import('@/view/adminApp'),
+                    children: [{
+                        path: '/indexApp/adminApp/accountEdit',
+                        name: 'accountEdit',
+                        meta: {
+                            title: '账号详情',
+                        },
+                        component: () => import('@/view/accountEdit'),
+                    }]
                 },
                 {
                     path: '/indexApp/addGoods',

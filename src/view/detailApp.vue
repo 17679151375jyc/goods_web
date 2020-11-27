@@ -102,6 +102,7 @@
               :key="index"
             >
               <el-image
+                @click.stop="handleClickItem"
                 :src="item"
                 fit="scale-down"
                 :preview-src-list="form.goodsImg"

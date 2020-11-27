@@ -121,22 +121,24 @@
                     class="shangpin_css_img_css"
                     :src="item.goodsImg[0]"
                     :preview-src-list="item.goodsImg"
+                    @click.stop="handleClickItem"
                   >
                   </el-image>
                 <div class="shangpin_css_neirongbox_css">
-                  <div class="dis_row_start_center "  @click="detailClick(item)">
-                    <span class="span_lable_css title_css">货品名称：{{item.goodsName}}</span>
+                  <div class="dis_row_between_center" style="width:65vw"  @click="detailClick(item)">
+                    <span class="title_css">货品名称：</span>
+                    <div class="goodsName_css">{{item.goodsName}}</div>
                   </div>
                   <div>
                     <div class="dis_row_start_center" @click="detailClick(item)">
                       <span class="span_lable_css">品牌：</span>
-                      <span class="span_lable_css">{{item.brandName}}</span>
+                      <span class="span_lable_css color_css_css">{{item.brandName}}</span>
                       <span class="span_lable_css">型号：</span>
-                      <span class="span_lable_css">{{item.modelName}}</span>
+                      <span class="span_lable_css color_css_css">{{item.modelName}}</span>
                     </div>
                     <div class="dis_row_start_center" @click="detailClick(item)">
                       <span class="span_lable_css">进货价：</span>
-                      <span class="span_lable_css">{{item[
+                      <span class="span_lable_css color_css_css">{{item[
                         `purchasePrice${
                           userData.userType === "0"
                             ? 0
@@ -148,7 +150,7 @@
                         }`
                       ]}}</span>
                       <span class="span_lable_css">市场价：</span>
-                      <span class="span_lable_css">{{item.marketPrice?item.marketPrice:"—"}}</span>
+                      <span class="span_lable_css color_css_css">{{item.marketPrice?item.marketPrice:"—"}}</span>
                     </div>
                     <div class="dis_row_between_center">
                       <div class="dis_row_between_center" @click="detailClick(item)">                      
@@ -163,8 +165,8 @@
                   </div>
                 </div>
               </div>
-              <div class="zhuang_css" v-if="loading">加载中...</div>
-              <div class="zhuang_css" v-if="pagination.total !== data.length && !loading"
+              <div class="zhuang_css" style="margin-bottom:20vw" v-if="loading">加载中...</div>
+              <div class="zhuang_css" v-if="pagination.total !== data.length && !loading" style="margin-bottom:20vw"
                   @click="pageClick">点击加载更多</div>
             </div>
           </div>
@@ -237,12 +239,7 @@ export default {
   data() {
     return {
       showStatus: 'div',
-      goodsTypeList: [
-        {
-          goodsTypename: "其他",
-          goodsType: '99'
-        }
-      ],
+      goodsTypeList: [],
       userData: {
         accountName: null,
         userType: null,
@@ -631,6 +628,7 @@ export default {
   width: calc(100vw - 15px);
   border-collapse: collapse;
   margin: 2vw auto;
+  margin-bottom: 20vw;
 }
 .table_width_css td {
   border: 1px solid #cbcbcb;
@@ -713,7 +711,7 @@ export default {
 }
 .sco_css {
   width: 100vw;
-  height: calc(100vh - 46vw);
+  height: calc(100vh - 35vw);
   overflow-y: scroll;
   background-color: #FDF2F9;
 }
@@ -724,6 +722,9 @@ export default {
   background-color: #ffffff;
   border-radius: 2vw;
   margin-top: 3vw;
+}
+.shangpin_css:last-child{
+  margin-bottom: 20vw;
 }
 .shangpin_css_img_css{
   width: 26vw;
@@ -744,7 +745,7 @@ export default {
 }
 .span_lable_css{
   display: block;
-  width: 19vw;
+  width: 15vw;
   height: 5.5vw;
   line-height: 5.5vw;
   font-size: 3.3vw;
@@ -774,11 +775,17 @@ export default {
 }
 .title_css{
   font-size: 3.7vw;
-  width:62vw;
+  width:20vw;
   height:7vw;
   line-height:7vw;
-  overflow: hidden;
+}
+.shangpin_css_neirongbox_css .goodsName_css{
+  width: 50vw;
+  height: 5vw;
+  font-weight: bold;
+  color: #000;
   white-space:nowrap;
-  text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

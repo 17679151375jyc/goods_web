@@ -132,6 +132,7 @@
               :preview-src-list="form.goodsImg"
               v-for="(item, index) in form.goodsImg"
               :key="index"
+              @click.stop="handleClickItem"
             ></el-image>
           </div>
           <img :src="require('@/img/zanwu.jpg')" class="myimg_css" v-else />

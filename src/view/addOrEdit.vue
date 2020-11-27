@@ -230,6 +230,7 @@
                 style="width: 100%; height: 100%"
                 :src="item"
                 :preview-src-list="imgList"
+                @click.stop="handleClickItem"
               ></el-image>
               <i
                 class="el-icon-circle-close del_css"
