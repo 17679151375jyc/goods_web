@@ -55,28 +55,28 @@ Vue.prototype.rules = {
     purchasePrice0: [
         {
             required: true,
-            message: "一级进货价不能为空！",
+            message: "一级拿货价不能为空！",
             trigger: "blur",
         }
     ],
     purchasePrice1: [
         {
             required: true,
-            message: "二级进货价不能为空！",
+            message: "二级拿货价不能为空！",
             trigger: "blur",
         }
     ],
     purchasePrice2: [
         {
             required: true,
-            message: "三级进货价不能为空！",
+            message: "三级拿货价不能为空！",
             trigger: "blur",
         }
     ],
     purchasePrice3: [
         {
             required: true,
-            message: "四级进货价不能为空！",
+            message: "四级拿货价不能为空！",
             trigger: "blur",
         }
     ],

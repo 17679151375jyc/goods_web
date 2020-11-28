@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="dis_row_between_center my_box" v-if="userData.userType !== '5'">
-      <span  @click="showStatusClick"><i class="iconfont icongerenmingpian"></i>
+      <span @click="showStatusClick"
+        ><i class="iconfont icongerenmingpian"></i>
         {{ userTypeList[Number(userData.userType)].name }}</span
       >
       <span class="phone_css"
@@ -9,7 +10,7 @@
       >
     </div>
     <div class="dis_row_between_center my_box">
-      <span class="phone_css" @click="logouts"  v-if="userData.userType !== '5'"
+      <span class="phone_css" @click="logouts" v-if="userData.userType !== '5'"
         ><i class="iconfont icon084tuichu"></i>退出</span
       >
       <span v-if="userData.userType === '5'" @click="showStatusClick"
@@ -32,91 +33,111 @@
       <span @click="resetForm"><i class="iconfont iconshuaxin"></i>刷新</span>
     </div>
     <div>
-    <el-tabs
-      v-model="form.goodsType"
-      @tab-click="handleClick"
-      type="border-card"
-    >
-      <el-tab-pane
-        :label="item.goodsTypename"
-        :name="item.goodsType"
-        v-for="(item, index) in goodsTypeList"
-        :key="index"
+      <el-tabs
+        v-model="form.goodsType"
+        @tab-click="handleClick"
+        type="border-card"
       >
-        <div>
-          <div class="sousuo_css">
-            <div
-              @click="searchShow = true"
-              v-if="form.brandName || form.goodsName || prValue"
-            >
-              <span class="span_sou_css" v-if="form.brandName">{{
-                form.brandName
-              }}</span>
-              <span>-</span>
-              <span class="span_sou_css" v-if="form.goodsName">{{
-                form.goodsName
-              }}</span>
-              <span>-</span>
-              <span class="span_sou_css" v-if="prValue">{{ prValue }}</span>
+        <el-tab-pane
+          :label="item.goodsTypename"
+          :name="item.goodsType"
+          v-for="(item, index) in goodsTypeList"
+          :key="index"
+        >
+          <div>
+            <div class="sousuo_css">
+              <div
+                @click="searchShow = true"
+                v-if="form.brandName || form.goodsName || prValue"
+              >
+                <span class="span_sou_css" v-if="form.brandName">{{
+                  form.brandName
+                }}</span>
+                <span>-</span>
+                <span class="span_sou_css" v-if="form.goodsName">{{
+                  form.goodsName
+                }}</span>
+                <span>-</span>
+                <span class="span_sou_css" v-if="prValue">{{ prValue }}</span>
+              </div>
+              <span v-else @click="searchShow = true">点击搜索</span>
             </div>
-            <span v-else @click="searchShow = true">点击搜索</span>
-          </div>
-          <div class="sco_css">
-            <table class="table_width_css" v-if="showStatus === 'table'">
-              <tr>
-                <td style="width: 9vw">序号</td>
-                <td style="width: 13vw">品牌</td>
-                <td>型号</td>
-                <td style="width: 12vw">颜色</td>
-                <td style="width: 15vw">拿货价</td>
-                <td v-if="shows" style="width: 12vw; padding: 1vw; font-size: 3.74vw">操作</td>
-              </tr>
-              <tr v-if="data.length === 0 && !loading">
-                <td colspan="6">暂无数据</td>
-              </tr>
-              <tbody v-if="data.length > 0">
-                <tr v-for="(item, index) in data" :key="index">
-                  <td @click="detailClick(item)">{{ index + 1 }}</td>
-                  <td @click="detailClick(item)">{{ item.brandName }}</td>
-                  <td @click="detailClick(item)">{{ item.goodsName }}</td>
-                  <td @click="detailClick(item)">
-                    <span :style="{ 'background-color': item.color }"></span>
-                  </td>
-                  <td>
-                    {{
-                      item[
-                        `purchasePrice${
-                          userData.userType === "0"
-                            ? 0
-                            : Number(
-                                userData.userType === "5"
-                                  ? "4"
-                                  : userData.userType
-                              ) - 1
-                        }`
-                      ]
-                    }}
-                  </td>
-                  <td style="width: 10vw; padding: 0vw; font-size: 3.74vw" v-if="shows">
-                    <div style="color: #38f" @click="caozuoClick(item)">操作</div>
+            <div class="sco_css">
+              <table class="table_width_css" v-if="showStatus === 'table'">
+                <tr>
+                  <td style="width: 9vw">序号</td>
+                  <td style="width: 13vw">品牌</td>
+                  <td>型号</td>
+                  <td style="width: 12vw">颜色</td>
+                  <td style="width: 15vw">拿货价</td>
+                  <td
+                    v-if="shows"
+                    style="width: 12vw; padding: 1vw; font-size: 3.74vw"
+                  >
+                    操作
                   </td>
                 </tr>
-              </tbody>
-              <tr v-if="loading">
-                <td colspan="6">加载中...</td>
-              </tr>
-              <tr
-                v-if="pagination.total !== data.length && !loading"
-                @click="pageClick"
-              >
-                <td colspan="6">点击加载更多</td>
-              </tr>
-            </table>
-            <div v-if="showStatus === 'div'">
-              <div class="zhuang_css"  v-if="data.length === 0 && !loading">暂无数据</div>
-              <div class="dis_row_between_center shangpin_css" v-for="(item, index) in data" :key="index">
-                <img :src="require('@/img/zanwu.jpg')"class="shangpin_css_img_css" v-if="item.goodsImg.length === 0">
-                <el-image
+                <tr v-if="data.length === 0 && !loading">
+                  <td colspan="6">暂无数据</td>
+                </tr>
+                <tbody v-if="data.length > 0">
+                  <tr v-for="(item, index) in data" :key="index">
+                    <td @click="detailClick(item)">{{ index + 1 }}</td>
+                    <td @click="detailClick(item)">{{ item.brandName }}</td>
+                    <td @click="detailClick(item)">{{ item.goodsName }}</td>
+                    <td @click="detailClick(item)">
+                      <span :style="{ 'background-color': item.color }"></span>
+                    </td>
+                    <td>
+                      {{
+                        item[
+                          `purchasePrice${
+                            userData.userType === "0"
+                              ? 0
+                              : Number(
+                                  userData.userType === "5"
+                                    ? "4"
+                                    : userData.userType
+                                ) - 1
+                          }`
+                        ]
+                      }}
+                    </td>
+                    <td
+                      style="width: 10vw; padding: 0vw; font-size: 3.74vw"
+                      v-if="shows"
+                    >
+                      <div style="color: #38f" @click="caozuoClick(item)">
+                        操作
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tr v-if="loading">
+                  <td colspan="6">加载中...</td>
+                </tr>
+                <tr
+                  v-if="pagination.total !== data.length && !loading"
+                  @click="pageClick"
+                >
+                  <td colspan="6">点击加载更多</td>
+                </tr>
+              </table>
+              <div v-if="showStatus === 'div'">
+                <div class="zhuang_css" v-if="data.length === 0 && !loading">
+                  暂无数据
+                </div>
+                <div
+                  class="dis_row_between_center shangpin_css"
+                  v-for="(item, index) in data"
+                  :key="index"
+                >
+                  <img
+                    :src="require('@/img/zanwu.jpg')"
+                    class="shangpin_css_img_css"
+                    v-if="item.goodsImg.length === 0"
+                  />
+                  <el-image
                     v-if="item.goodsImg.length > 0"
                     class="shangpin_css_img_css"
                     :src="item.goodsImg[0]"
@@ -124,57 +145,124 @@
                     @click.stop="handleClickItem"
                   >
                   </el-image>
-                <div class="shangpin_css_neirongbox_css">
-                  <div class="dis_row_between_center" style="width:65vw"  @click="detailClick(item)">
-                    <span class="title_css">货品名称：</span>
-                    <div class="goodsName_css">{{item.goodsName}}</div>
-                  </div>
-                  <div>
-                    <div class="dis_row_start_center" @click="detailClick(item)">
-                      <span class="span_lable_css">品牌：</span>
-                      <span class="span_lable_css color_css_css">{{item.brandName}}</span>
-                      <span class="span_lable_css">型号：</span>
-                      <span class="span_lable_css color_css_css">{{item.modelName}}</span>
+                  <div class="shangpin_css_neirongbox_css">
+                    <div
+                      class="dis_row_between_center"
+                      style="width: 65vw"
+                      @click="detailClick(item)"
+                    >
+                      <span class="title_css">货品名称：</span>
+                      <div class="goodsName_css">{{ item.goodsName }}</div>
                     </div>
-                    <div class="dis_row_start_center" @click="detailClick(item)">
-                      <span class="span_lable_css">进货价：</span>
-                      <span class="span_lable_css color_css_css">{{item[
-                        `purchasePrice${
-                          userData.userType === "0"
-                            ? 0
-                            : Number(
-                                userData.userType === "5"
-                                  ? "4"
-                                  : userData.userType
-                              ) - 1
-                        }`
-                      ]}}</span>
-                      <span class="span_lable_css">市场价：</span>
-                      <span class="span_lable_css color_css_css">{{item.marketPrice?item.marketPrice:"—"}}</span>
-                    </div>
-                    <div class="dis_row_between_center">
-                      <div class="dis_row_between_center" @click="detailClick(item)">                      
-                        <span class="span_lable_css" style="width:15vw">颜色：</span>
-                        <span class="span_lable_css color_css" :style="{ 'background-color': item.color }"></span>
+                    <div>
+                      <div
+                        class="dis_row_start_center"
+                        @click="detailClick(item)"
+                      >
+                        <span class="span_lable_css">品牌：</span>
+                        <span class="span_lable_css color_css_css">{{
+                          item.brandName
+                        }}</span>
+                        <span class="span_lable_css">型号：</span>
+                        <span class="span_lable_css color_css_css">{{
+                          item.modelName
+                        }}</span>
                       </div>
-                      <div class="dis_row_between_center" style="width:22vw" v-if="shows">
-                        <span class="butt_css"  @click="delGoods(item)">删除</span>
-                        <span class="butt_css"  @click="editClick(item)">编辑</span>
+                      <div
+                        class="dis_row_start_center"
+                        @click="detailClick(item)"
+                      >
+                        <span class="span_lable_css">拿货价：</span>
+                        <span
+                          class="span_lable_css color_css_css"
+                          style="
+                            color: red !important;
+                            font-size: 3.4vw;
+                            font-weight: bold;
+                          "
+                          >{{
+                            item[
+                              `purchasePrice${
+                                userData.userType === "0"
+                                  ? 0
+                                  : Number(
+                                      userData.userType === "5"
+                                        ? "4"
+                                        : userData.userType
+                                    ) - 1
+                              }`
+                            ]
+                          }}</span
+                        >
+                        <span class="span_lable_css">市场价：</span>
+                        <span class="span_lable_css color_css_css">{{
+                          item.marketPrice ? item.marketPrice : "—"
+                        }}</span>
+                      </div>
+                      <div class="dis_row_between_center">
+                        <div
+                          class="dis_row_between_center"
+                          @click="detailClick(item)"
+                        >
+                          <span class="span_lable_css" style="width: 15vw"
+                            >颜色：</span
+                          >
+                          <div class="span_lable_css" style="width: 17vw">
+                            <span
+                              class="span_lable_css color_css"
+                              :style="{ 'background-color': item.color }"
+                            ></span>
+                          </div>
+                          <span
+                            class="span_lable_css"
+                            style="width: 14vw"
+                            v-if="!shows"
+                            >库存：</span
+                          >
+                          <span
+                            class="span_lable_css color_css_css"
+                            v-if="!shows"
+                            >{{ item.stockNum }}</span
+                          >
+                        </div>
+                        <div
+                          class="dis_row_between_center"
+                          style="width: 22vw"
+                          v-if="shows"
+                        >
+                          <span class="butt_css" @click="delGoods(item)"
+                            >删除</span
+                          >
+                          <span class="butt_css" @click="editClick(item)"
+                            >编辑</span
+                          >
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div
+                  class="zhuang_css"
+                  style="margin-bottom: 20vw"
+                  v-if="loading"
+                >
+                  加载中...
+                </div>
+                <div
+                  class="zhuang_css"
+                  v-if="pagination.total !== data.length && !loading"
+                  style="margin-bottom: 20vw"
+                  @click="pageClick"
+                >
+                  点击加载更多
+                </div>
               </div>
-              <div class="zhuang_css" style="margin-bottom:20vw" v-if="loading">加载中...</div>
-              <div class="zhuang_css" v-if="pagination.total !== data.length && !loading" style="margin-bottom:20vw"
-                  @click="pageClick">点击加载更多</div>
             </div>
           </div>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+        </el-tab-pane>
+      </el-tabs>
     </div>
-    <div class="mengceng_css dis_row_center_center" v-if="searchShow"> 
+    <div class="mengceng_css dis_row_center_center" v-if="searchShow">
       <div class="neirong_box_css">
         <span class="cha_css">货品查询</span>
         <el-form
@@ -184,14 +272,6 @@
           :model="dataForm"
           class="demo-form-inline"
         >
-          <el-form-item label="品牌：">
-            <el-input
-              clearable
-              v-model="dataForm.brandName"
-              placeholder="请输入品牌名称"
-              size="small"
-            ></el-input>
-          </el-form-item>
           <el-form-item label="货品名：">
             <el-input
               clearable
@@ -200,25 +280,39 @@
               size="small"
             ></el-input>
           </el-form-item>
-          <el-form-item label="进货价：">
+          <el-form-item label="品牌：">
+            <el-input
+              clearable
+              v-model="dataForm.brandName"
+              placeholder="请输入品牌名称"
+              size="small"
+            ></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="拿货价：">
             <el-input
               clearable
               type="number"
               :maxlength="4"
               v-model="dataForm.purchasePrice"
-              placeholder="请输入进货价"
+              placeholder="请输入拿货价"
               size="small"
             ></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
-        <el-button type="primary" class="button_css but_color_css" @click="search"
+        <el-button
+          type="primary"
+          class="button_css but_color_css"
+          @click="search"
           >确认搜索</el-button
         >
         <div class="dis_row_between_center button_css">
           <el-button class="bottom_but_css" plain @click="searchShow = false"
             >关闭</el-button
           >
-          <el-button class="bottom_but_css but_color_css" plain @click="resetForm"
+          <el-button
+            class="bottom_but_css but_color_css"
+            plain
+            @click="resetForm"
             >重置</el-button
           >
         </div>
@@ -238,7 +332,7 @@ export default {
   name: "",
   data() {
     return {
-      showStatus: 'div',
+      showStatus: "div",
       goodsTypeList: [],
       userData: {
         accountName: null,
@@ -281,20 +375,20 @@ export default {
         }`
       ];
     },
-    shows:function(){
+    shows: function () {
       let show = false;
-      if(this.userData.userType === '0'|| this.userData.userType === '1'){
-        show = true
+      if (this.userData.userType === "0" || this.userData.userType === "1") {
+        show = true;
       }
       return show;
-    }
+    },
   },
   methods: {
-    showStatusClick(){
-      if(this.showStatus === 'table'){
-        this.showStatus = 'div'
-      }else{
-        this.showStatus = 'table'
+    showStatusClick() {
+      if (this.showStatus === "table") {
+        this.showStatus = "div";
+      } else {
+        this.showStatus = "table";
       }
       this.loading = false;
       this.resetForm();
@@ -334,7 +428,7 @@ export default {
       console.log(row);
     },
     //编辑
-    editClick(row){
+    editClick(row) {
       let that = this;
       that.$router.push({
         path: "/indexApp/addGoods",
@@ -356,15 +450,15 @@ export default {
             type: "warning",
             customClass: "el-message-box1",
             // showClose: false,
-            distinguishCancelAndClose: true
+            distinguishCancelAndClose: true,
           }
         )
         .then(() => {
-          this.editClick(row)
+          this.editClick(row);
           return;
         })
         .catch((err) => {
-          if(err === 'cancel'){
+          if (err === "cancel") {
             that.delGoods(row);
           }
         });
@@ -579,7 +673,7 @@ export default {
 >>> .el-tabs__nav-prev,
 >>> .el-tabs__nav-next {
   line-height: 12vw;
-  background-color: #FB1099;
+  background-color: #fb1099;
   color: #fff;
   width: 10vw;
   text-align: center;
@@ -603,17 +697,17 @@ export default {
 >>> .el-tabs--border-card {
   border: 0;
 }
->>>.el-button--primary{
-  color:#fff!important;
-  background-color: #FB1099!important;
-  border: 0!important;
+>>> .el-button--primary {
+  color: #fff !important;
+  background-color: #fb1099 !important;
+  border: 0 !important;
 }
->>>.el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{
-  background-color: #FDDBEF;
+>>> .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+  background-color: #fddbef;
 }
 >>> .el-tabs__item.is-active {
   font-weight: bold;
-  color: #FB1099!important;
+  color: #fb1099 !important;
 }
 >>> .el-tabs__content {
   padding: 0;
@@ -623,6 +717,9 @@ export default {
 }
 >>> .el-form-item {
   margin-bottom: 2vw;
+}
+>>> .el-tabs__item {
+  padding: 0 8px;
 }
 .table_width_css {
   width: calc(100vw - 15px);
@@ -658,8 +755,8 @@ export default {
   text-align: center;
   color: #000;
   padding: 2vw 0;
-  border-bottom: 1px solid #FB1099;
-  background-color: #FDDBEF;
+  border-bottom: 1px solid #fb1099;
+  background-color: #fddbef;
 }
 .mengceng_css {
   position: fixed;
@@ -672,7 +769,7 @@ export default {
 }
 .neirong_box_css {
   width: 80vw;
-  height: 95vw;
+  height: 80vw;
   background-color: #fff;
   margin: 0 auto;
   padding: 2vw;
@@ -696,7 +793,7 @@ export default {
 .my_box {
   width: 94vw;
   height: 6vw;
-  background-color: #FB1099;
+  background-color: #fb1099;
   padding: 3vw;
   text-align: right;
   font-size: 3.74vw;
@@ -713,9 +810,9 @@ export default {
   width: 100vw;
   height: calc(100vh - 35vw);
   overflow-y: scroll;
-  background-color: #FDF2F9;
+  background-color: #fdf2f9;
 }
-.shangpin_css{
+.shangpin_css {
   width: 98vw;
   height: 30vw;
   margin: 0 auto;
@@ -723,17 +820,17 @@ export default {
   border-radius: 2vw;
   margin-top: 3vw;
 }
-.shangpin_css:last-child{
+.shangpin_css:last-child {
   margin-bottom: 20vw;
 }
-.shangpin_css_img_css{
+.shangpin_css_img_css {
   width: 26vw;
   height: 26vw;
   margin: 2vw;
   margin-right: 0;
-  border:1px solid #fff
+  border: 1px solid #fff;
 }
-.shangpin_css_neirongbox_css{
+.shangpin_css_neirongbox_css {
   width: 64vw;
   margin: 2vw;
   height: 24vw;
@@ -743,28 +840,33 @@ export default {
   color: #555;
   padding: 1vw;
 }
-.span_lable_css{
+.span_lable_css {
   display: block;
-  width: 15vw;
-  height: 5.5vw;
-  line-height: 5.5vw;
+  width: 24vw;
+  height: 6vw;
+  line-height: 6vw;
   font-size: 3.3vw;
 }
-.butt_css{
-  width: 10vw;  
+.butt_css {
+  width: 10vw;
+  font-size: 3vw;
+  line-height: 5vw;
+  text-align: center;
+  border-radius: 1vw;
+  color: #fff;
 }
-.butt_css:first-child{  
-  color: red;
+.butt_css:first-child {
+  background-color: red;
 }
-.butt_css:last-child{  
-  color: #38f;
+.butt_css:last-child {
+  background-color: #38f;
 }
-.color_css{
+.color_css {
   width: 5vw;
   height: 5vw;
   border-radius: 1vw;
 }
-.zhuang_css{
+.zhuang_css {
   width: 98vw;
   height: 10vw;
   line-height: 10vw;
@@ -773,19 +875,21 @@ export default {
   margin: 1vw auto;
   border-radius: 2vw;
 }
-.title_css{
+.title_css {
   font-size: 3.7vw;
-  width:20vw;
-  height:7vw;
-  line-height:7vw;
+  width: 20vw;
+  max-height: 10vw;
 }
-.shangpin_css_neirongbox_css .goodsName_css{
+.shangpin_css_neirongbox_css .goodsName_css {
   width: 50vw;
-  height: 5vw;
+  max-height: 10vw;
+  font-size: 3.3vw;
   font-weight: bold;
-  color: #000;
-  white-space:nowrap;
+  color: #333;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
+  -webkit-line-clamp: 2; /* 控制最多显示几行 */
+  -webkit-box-orient: vertical; /* 设置或检索伸缩盒对象的子元素的排列方式 */
 }
 </style>

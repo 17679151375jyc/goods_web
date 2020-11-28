@@ -72,7 +72,6 @@
               v-model="form.color"
               placeholder="请输入颜色"
               size="small"
-              readonly
             ></el-input>
             <!-- <span
               class="span_color"
@@ -91,43 +90,43 @@
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice0" label="一级进货价：">
+        <el-form-item prop="purchasePrice0" label="一级拿货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice0"
-            placeholder="请输入一级进货价"
+            placeholder="请输入一级拿货价"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice1" label="二级进货价：">
+        <el-form-item prop="purchasePrice1" label="二级拿货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice1"
-            placeholder="请输入二级进货价"
+            placeholder="请输入二级拿货价"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice2" label="三级进货价：">
+        <el-form-item prop="purchasePrice2" label="三级拿货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice2"
-            placeholder="请输入三级进货价"
+            placeholder="请输入三级拿货价"
             size="small"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="purchasePrice3" label="四级进货价：">
+        <el-form-item prop="purchasePrice3" label="四级拿货价：">
           <el-input
             clearable
             type="number"
             style="width: 200px"
             v-model="form.purchasePrice3"
-            placeholder="请输入四级进货价"
+            placeholder="请输入四级拿货价"
             size="small"
           ></el-input>
         </el-form-item>
@@ -289,16 +288,16 @@ export default {
         goodsType: "",
         brandName: "",
         modelName: "",
-        specifications: "",
-        color: "",
+        specifications: "常规",
+        color: "#000000",
         goodsName: "",
         purchasePrice0: "",
-        purchasePrice1: "",
-        purchasePrice2: "",
-        purchasePrice3: "",
-        marketPrice: "",
+        purchasePrice1: "0",
+        purchasePrice2: "0",
+        purchasePrice3: "0",
+        marketPrice: "0",
         expressPrice: "",
-        buyerName: "",
+        buyerName: "一秀美妆",
         samplePrice: "",
         sampleSpecifications: "",
         stockNum: "99",

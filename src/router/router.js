@@ -55,7 +55,15 @@ const router = new Router({
                     meta: {
                         title: '账号详情',
                     },
-                    component: () => import('@/view/detailApp'),
+                    component: () => import('@/view/detailApp'), 
+                    children: [{
+                        path: '/indexApp/detailApp/xiadan',
+                        name: 'xiadan',
+                        meta: {
+                            title: '一键下单',
+                        },
+                        component: () => import('@/view/xiadan'),
+                    }]
                 }, {
                     path: '/indexApp/addApp',
                     name: 'addApp',

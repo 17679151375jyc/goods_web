@@ -2,7 +2,7 @@
   <div>
     <div class="dis_column_center_center box_loginPage_css">
       <img class="logo_css" :src="require('@/img/logo.png')" alt="" />
-      <div class="title_css">JYCYL货源仓库</div>
+      <div class="title_css">JYCYL商品仓库</div>
       <div class="dis_column_center_center input_box_css">
         <el-form ref="form" :model="form" label-width="21vw" :rules="addrules">
           <el-form-item label="账号：" prop="account">

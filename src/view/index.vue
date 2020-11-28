@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dis_row_between_center header_box">
-      <span class="color_text">JYCYL货源仓库 </span>
+      <span class="color_text">JYCYL商品仓库 </span>
       <div class="dis_row_between_center out_box_css">
         <span v-if="userData.userType != '5'"
           ><i class="iconfont icongerenmingpian" style="margin-right: 0.5vw"></i
@@ -96,7 +96,7 @@
               ></el-input>
             </el-form-item>
             <el-form-item
-              label="进货价(元)："
+              label="拿货价(元)："
               :prop="`purchasePrice${
                 userData.userType === '0' ? 0 : Number(userData.userType==='5'?'4':userData.userType) - 1
               }`"
@@ -115,7 +115,7 @@
                     }`
                   ]
                 "
-                placeholder="请输入进货价"
+                placeholder="请输入拿货价"
                 size="small"
               ></el-input>
             </el-form-item>
@@ -228,7 +228,7 @@
               width="150px"
             ></el-table-column>
             <el-table-column
-              label="进货价"
+              label="拿货价"
               :prop="`purchasePrice${
                 userData.userType === '0' ? 0 : Number(userData.userType==='5'?'4':userData.userType) - 1
               }`"

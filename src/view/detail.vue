@@ -40,19 +40,19 @@
             ></span>
           </div>
         </el-form-item>
-        <el-form-item label="一级进货价：" v-if="userData.userType === '0'">
+        <el-form-item label="一级拿货价：" v-if="userData.userType === '0'">
           <div class="div_width">{{ form.purchasePrice0 }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="二级进货价：" v-if="userData.userType === '0'">
+        <el-form-item label="二级拿货价：" v-if="userData.userType === '0'">
           <div class="div_width">{{ form.purchasePrice1 }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="三级进货价：" v-if="userData.userType === '0'">
+        <el-form-item label="三级拿货价：" v-if="userData.userType === '0'">
           <div class="div_width">{{ form.purchasePrice2 }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="四级进货价：" v-if="userData.userType === '0'">
+        <el-form-item label="四级拿货价：" v-if="userData.userType === '0'">
           <div class="div_width">{{ form.purchasePrice3 }}（元/件）</div>
         </el-form-item>
-        <el-form-item label="进货价：" v-if="userData.userType !== '0'">
+        <el-form-item label="拿货价：" v-if="userData.userType !== '0'">
           <div class="div_width">
             {{
               form[
