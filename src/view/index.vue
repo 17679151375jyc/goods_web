@@ -189,6 +189,13 @@
             ></el-table-column>
             <el-table-column
               :show-overflow-tooltip="true"
+              prop="goodsName"
+              label="货品名称"
+              align="center"
+              width="220px"
+            ></el-table-column>
+            <el-table-column
+              :show-overflow-tooltip="true"
               prop="brandName"
               label="品牌"
               align="center"
@@ -220,13 +227,6 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column
-              :show-overflow-tooltip="true"
-              prop="goodsName"
-              label="货品名称"
-              align="center"
-              width="200px"
-            ></el-table-column>
             <el-table-column
               label="拿货价"
               :prop="`purchasePrice${

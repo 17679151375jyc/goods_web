@@ -148,7 +148,7 @@
                   <div class="shangpin_css_neirongbox_css">
                     <div
                       class="dis_row_between_center"
-                      style="width: 65vw"
+                      style="width: 60vw"
                       @click="detailClick(item)"
                     >
                       <span class="title_css">货品名称：</span>
@@ -159,12 +159,17 @@
                         class="dis_row_start_center"
                         @click="detailClick(item)"
                       >
-                        <span class="span_lable_css">品牌：</span>
-                        <span class="span_lable_css color_css_css">{{
+                        <span class="span_lable_css" style="width:15vw">品牌：</span>
+                        <span class="color_css_css" style="width:42vw!important">{{
                           item.brandName
                         }}</span>
-                        <span class="span_lable_css">型号：</span>
-                        <span class="span_lable_css color_css_css">{{
+                      </div>
+                      <div
+                        class="dis_row_start_center"
+                        @click="detailClick(item)"
+                      >
+                        <span class="span_lable_css" style="width:15vw">型号：</span>
+                        <span class="color_css_css" style="width:42vw!important">{{
                           item.modelName
                         }}</span>
                       </div>
@@ -201,33 +206,18 @@
                       </div>
                       <div class="dis_row_between_center">
                         <div
-                          class="dis_row_between_center"
+                          class="dis_row_start_center"
+                          style="width:70vw"
                           @click="detailClick(item)"
                         >
-                          <span class="span_lable_css" style="width: 15vw"
-                            >颜色：</span
-                          >
-                          <div class="span_lable_css" style="width: 17vw">
-                            <span
-                              class="span_lable_css color_css"
-                              :style="{ 'background-color': item.color }"
-                            ></span>
-                          </div>
-                          <span
-                            class="span_lable_css"
-                            style="width: 14vw"
-                            v-if="!shows"
-                            >库存：</span
-                          >
-                          <span
-                            class="span_lable_css color_css_css"
-                            v-if="!shows"
-                            >{{ item.stockNum }}</span
-                          >
+                          <span style="width:15vw">规格：</span>
+                          <span>{{
+                            item.specifications
+                          }}</span>
                         </div>
                         <div
-                          class="dis_row_between_center"
-                          style="width: 22vw"
+                          class="dis_row_end_center"
+                          style="width: 100%"
                           v-if="shows"
                         >
                           <span class="butt_css" @click="delGoods(item)"
@@ -541,17 +531,6 @@ export default {
       this.searchShow = false;
       this.form.brandName = this.dataForm.brandName;
       this.form.goodsName = this.dataForm.goodsName;
-      if (this.userData.userType === "5") {
-        this.form.purchasePrice3 = Number(this.dataForm.purchasePrice) - 10;
-      } else {
-        this.form[
-          `purchasePrice${
-            this.userData.userType === "0"
-              ? 0
-              : Number(this.userData.userType) - 1
-          }`
-        ] = this.dataForm.purchasePrice;
-      }
       this.pagination.page = 1;
       this.data = [];
       this.getData();
@@ -815,7 +794,7 @@ export default {
 }
 .shangpin_css {
   width: 98vw;
-  height: 30vw;
+  min-height: 35vw;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: 2vw;
@@ -825,8 +804,8 @@ export default {
   margin-bottom: 20vw;
 }
 .shangpin_css_img_css {
-  width: 26vw;
-  height: 26vw;
+  width: 30vw;
+  height: 30vw;
   margin: 2vw;
   margin-right: 0;
   border: 1px solid #fff;
@@ -834,8 +813,7 @@ export default {
 .shangpin_css_neirongbox_css {
   width: 64vw;
   margin: 2vw;
-  height: 24vw;
-  background-color: #fff;
+  min-height: 24vw;
   border-radius: 2vw;
   font-size: 3.74vw;
   color: #555;
@@ -843,7 +821,7 @@ export default {
 }
 .span_lable_css {
   display: block;
-  width: 24vw;
+  width: 30vw;
   height: 6vw;
   line-height: 6vw;
   font-size: 3.3vw;
@@ -855,6 +833,7 @@ export default {
   text-align: center;
   border-radius: 1vw;
   color: #fff;
+  margin-right: 3vw;
 }
 .butt_css:first-child {
   background-color: red;
@@ -875,14 +854,16 @@ export default {
   background-color: #fff;
   margin: 1vw auto;
   border-radius: 2vw;
+  font-size: 3.74vw;
+  color: #555;
 }
 .title_css {
   font-size: 3.7vw;
-  width: 20vw;
+  width: 22vw;
   max-height: 10vw;
 }
 .shangpin_css_neirongbox_css .goodsName_css {
-  width: 50vw;
+  width: 45vw;
   max-height: 10vw;
   font-size: 3.3vw;
   font-weight: bold;

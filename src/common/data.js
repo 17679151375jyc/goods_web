@@ -45,5 +45,8 @@ Vue.prototype.userTypeList = [{
 }, {
     name: '团队成员',
     userType: "4"
+}, {
+    name: '游客',
+    userType: "5"
 }]
 Vue.prototype.wechatMumber = "15570317331"

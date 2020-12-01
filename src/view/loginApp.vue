@@ -28,16 +28,16 @@
           </el-form-item>
           <div class="but_box_css">
             <div class="dis_row_between_center" style="width: 100%">
-              <el-button
+              <!-- <el-button
                 :loading="loading"
                 style="width: 47%"
                 @click="youkeClick"
                 >游客</el-button
-              >
+              > -->
               <el-button
                 type="primary"
                 :loading="loading"
-                style="width: 47%"
+                style="width: 100%"
                 @click="onSubmit"
                 >登录</el-button
               >

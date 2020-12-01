@@ -31,14 +31,14 @@
         </el-form-item>
         <el-form-item>
           <div class="dis_row_between_center" style="width: 100%">
-            <el-button
+            <!-- <el-button
               style="width: 45%"
               :loading="loading"
               @click="youkeClick"
               >游客</el-button
-            >
+            > -->
             <el-button
-              style="width: 45%"
+              style="width: 100%"
               :loading="loading"
               type="primary"
               @click="onSubmit"

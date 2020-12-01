@@ -64,7 +64,7 @@
             maxlength="10"
           ></el-input>
         </el-form-item>
-        <el-form-item label="手机号：" prop="accountPhone">
+        <el-form-item label="手机号：" prop="accountPhone" v-if="form.userType!=='5'">
           <el-input
             clearable
             v-model="form.accountPhone"
