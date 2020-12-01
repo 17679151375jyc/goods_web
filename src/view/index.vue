@@ -51,7 +51,7 @@
             <div class="dis_row_between_center">
               <span>{{ item.goodsTypename }}</span>
               <i
-                v-if="delLbShow && item.goodsTypename !== '其他'"
+                v-if="delLbShow && item.goodsTypename !== '其他' && item.goodsTypename !== '全部'"
                 class="el-icon-error"
                 style="color: red"
                 @click="delLbClick(item.goodsType, item.goodsTypename)"
@@ -68,7 +68,7 @@
             ref="formData"
             class="demo-form-inline"
           >
-            <el-form-item label="品牌：" prop="brandName">
+            <!-- <el-form-item label="品牌：" prop="brandName">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
@@ -85,7 +85,7 @@
                 placeholder="请输入型号名称"
                 size="small"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="货品名称：" prop="goodsName">
               <el-input
                 clearable
@@ -192,27 +192,27 @@
               prop="brandName"
               label="品牌"
               align="center"
-              width="100px"
+              width="180px"
             ></el-table-column>
             <el-table-column
               :show-overflow-tooltip="true"
               prop="modelName"
               label="型号"
               align="center"
-              width="100px"
+              width="130px"
             ></el-table-column>
             <el-table-column
               :show-overflow-tooltip="true"
               prop="specifications"
               label="规格"
               align="center"
-              width="100px"
+              width="80px"
             ></el-table-column>
             <el-table-column
               prop="color"
               label="颜色"
               align="center"
-              width="100px"
+              width="80px"
             >
               <template slot-scope="scope">
                 <div class="dis_row_center_center wid">
@@ -225,7 +225,7 @@
               prop="goodsName"
               label="货品名称"
               align="center"
-              width="150px"
+              width="200px"
             ></el-table-column>
             <el-table-column
               label="拿货价"

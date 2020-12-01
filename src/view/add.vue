@@ -41,7 +41,7 @@
             placeholder="请输入账号"
             size="small"
             maxlength="20"
-            style="width: 220px"
+            style="width: 225px"
           ></el-input>
         </el-form-item>
         <el-form-item label="密码：" prop="password">

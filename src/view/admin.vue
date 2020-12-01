@@ -81,7 +81,7 @@
           prop="account"
           label="账号"
           align="center"
-          width="130px"
+          width="140px"
         ></el-table-column>
         <!-- <el-table-column
           label="密码"

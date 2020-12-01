@@ -811,6 +811,7 @@ export default {
   height: calc(100vh - 35vw);
   overflow-y: scroll;
   background-color: #fdf2f9;
+  overflow-x: hidden;
 }
 .shangpin_css {
   width: 98vw;

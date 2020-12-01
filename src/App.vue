@@ -10,7 +10,9 @@ export default {
     return {};
   },
   created() {
+    //禁用f12
     document.oncontextmenu = new Function("return false;");
+    //禁用浏览器右键
     document.onkeydown = document.onkeyup = document.onkeypress = function (
       event
     ) {
@@ -20,6 +22,26 @@ export default {
         return false;
       }
     };
+    //禁止浏览器缩放
+    window.addEventListener(
+      "mousewheel",
+      function (event) {
+        if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+        }
+      },
+      { passive: false }
+    );
+    //firefox
+    window.addEventListener(
+      "DOMMouseScroll",
+      function (event) {
+        if (event.ctrlKey === true || event.metaKey) {
+          event.preventDefault();
+        }
+      },
+      { passive: false }
+    );
   },
 };
 </script>

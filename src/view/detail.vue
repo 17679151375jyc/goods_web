@@ -40,6 +40,9 @@
             ></span>
           </div>
         </el-form-item>
+        <el-form-item label="货品名称：">
+          <div class="div_width">{{ form.goodsName }}</div>
+        </el-form-item>
         <el-form-item label="一级拿货价：" v-if="userData.userType === '0'">
           <div class="div_width">{{ form.purchasePrice0 }}（元/件）</div>
         </el-form-item>
@@ -72,9 +75,6 @@
         </el-form-item>
         <el-form-item label="邮费：">
           <div class="div_width">{{ form.expressPrice }}（元/件）</div>
-        </el-form-item>
-        <el-form-item label="货品名称：">
-          <div class="div_width">{{ form.goodsName }}</div>
         </el-form-item>
         <el-form-item
           label="进货商家名称："
