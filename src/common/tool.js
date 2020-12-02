@@ -54,3 +54,23 @@ Vue.prototype.handleClickItem = () => {
     });
   }, 100);
 }
+Vue.prototype.getOrders = (data) => {
+  let frist = null;
+  let last = null;
+  data.forEach(item => {
+    if (item.goodsTypename === '全部') {
+      frist = item
+    } else if (item.goodsTypename === '其他') {
+      last = item
+    }
+  })
+  data = data.filter(item => {
+    return item.goodsTypename !== '全部' && item.goodsTypename !== '其他'
+  })
+  data.unshift(frist)
+  data.push(last)
+  console.log("data")
+  console.log(data)
+  console.log("data")
+  return data
+}

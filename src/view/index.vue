@@ -316,7 +316,8 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="footer">
+        <div class="dis_row_between_center footer">
+          <span style="color:#606266">共找到 {{pagination.total}} 条数据</span>
           <el-pagination
             background
             @current-change="handleCurrentChange"
@@ -416,6 +417,7 @@ export default {
       getTypelist()
         .then((res) => {
           if (res.code === 0) {
+            res.data = this.getOrders(res.data);
             this.goodsTypeList = res.data;
             this.form.goodsType = res.data[0].goodsType;
             this.butClick(res.data[0].goodsType);

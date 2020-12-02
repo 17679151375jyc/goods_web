@@ -130,8 +130,9 @@
                   :key="index"
                 >
                   <img
-                    :src="require('@/img/zanwu.jpg')"
+                    :src="require('@/img/logo1.png')"
                     class="shangpin_css_img_css"
+                    style="width:27vw"
                     v-if="item.goodsImg.length === 0"
                   />
                   <el-image
@@ -429,6 +430,7 @@ export default {
       getTypelist()
         .then((res) => {
           if (res.code === 0) {
+            res.data = this.getOrders(res.data);
             this.goodsTypeList = res.data;
             let SgoodsType = storage_get("goodsType");
             this.form.goodsType = SgoodsType
@@ -579,7 +581,6 @@ export default {
   font-weight: bold;
   z-index: 100;
   animation: dong 1s infinite;
-  /* transform: scale(1.1); */
   transition: 0.3s;
 }
 @keyframes dong {
