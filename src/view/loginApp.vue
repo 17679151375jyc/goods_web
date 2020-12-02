@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dis_column_center_center box_loginPage_css">
-      <img class="logo_css" :src="require('@/img/logo.png')" alt="" />
+      <img class="logo_css" :src="require('@/img/logo1.png')" alt="" />
       <div class="title_css">JYCYL商品仓库</div>
       <div class="dis_column_center_center input_box_css">
         <el-form ref="form" :model="form" label-width="21vw" :rules="addrules">
@@ -37,7 +37,7 @@
               <el-button
                 type="primary"
                 :loading="loading"
-                style="width: 100%"
+                style="width: 100%;"
                 @click="onSubmit"
                 >登录</el-button
               >
@@ -137,6 +137,10 @@ export default {
 >>> .el-form-item {
   margin-bottom: 5vw;
 }
+>>>.el-button--primary{
+  background-color: #FB1099;
+  border: #FB1099;
+}
 .box_loginPage_css {
   width: 96vw;
   margin: 0 auto;
@@ -160,7 +164,7 @@ export default {
   width: 100%;
   font-size: 5vw;
   font-weight: bold;
-  color: #38f;
+  color: #FB1099;
   text-align: center;
   margin-top: 3vw;
 }

@@ -58,5 +58,6 @@ export default {
   overflow-y: hidden;
   overflow-x: hidden;
   z-index: 1;
+  background-color: #FDF2F9;
 }
 </style>

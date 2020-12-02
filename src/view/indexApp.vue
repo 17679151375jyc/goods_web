@@ -45,22 +45,19 @@
           :key="index"
         >
           <div>
-            <div class="sousuo_css">
-              <div
-                @click="searchShow = true"
-                v-if="form.brandName || form.goodsName || prValue"
+            <div class="dis_row_between_center sousuo_css" v-if="data.length>0">                
+              <input
+                clearable
+                v-model="form.goodsName"
+                placeholder="请输入货品名称"
+                size="small"
+                class="input_css"/>
+              <span
+                type="primary"
+                class="button_css"
+                @click="search"
+                >搜索</span
               >
-                <span class="span_sou_css" v-if="form.brandName">{{
-                  form.brandName
-                }}</span>
-                <span>-</span>
-                <span class="span_sou_css" v-if="form.goodsName">{{
-                  form.goodsName
-                }}</span>
-                <span>-</span>
-                <span class="span_sou_css" v-if="prValue">{{ prValue }}</span>
-              </div>
-              <span v-else @click="searchShow = true">点击搜索</span>
             </div>
             <div class="sco_css">
               <table class="table_width_css" v-if="showStatus === 'table'">
@@ -148,10 +145,9 @@
                   <div class="shangpin_css_neirongbox_css">
                     <div
                       class="dis_row_between_center"
-                      style="width: 60vw"
+                      style="width: 60vw;margin-bottom: 1vw;"
                       @click="detailClick(item)"
                     >
-                      <span class="title_css">货品名称：</span>
                       <div class="goodsName_css">{{ item.goodsName }}</div>
                     </div>
                     <div>
@@ -160,7 +156,7 @@
                         @click="detailClick(item)"
                       >
                         <span class="span_lable_css" style="width:15vw">品牌：</span>
-                        <span class="color_css_css" style="width:42vw!important">{{
+                        <span style="width:42vw;color:#AFB40B" >{{
                           item.brandName
                         }}</span>
                       </div>
@@ -169,7 +165,7 @@
                         @click="detailClick(item)"
                       >
                         <span class="span_lable_css" style="width:15vw">型号：</span>
-                        <span class="color_css_css" style="width:42vw!important">{{
+                        <span style="width:42vw!important;color:#AFB40B">{{
                           item.modelName
                         }}</span>
                       </div>
@@ -177,9 +173,13 @@
                         class="dis_row_start_center"
                         @click="detailClick(item)"
                       >
+                        <span class="span_lable_css">市场价：</span>
+                        <span class="span_lable_css" style="color:#AFB40B">{{
+                          item.marketPrice ? item.marketPrice : "—"
+                        }}</span>
                         <span class="span_lable_css">拿货价：</span>
                         <span
-                          class="span_lable_css color_css_css"
+                          class="span_lable_css"
                           style="
                             color: red !important;
                             font-size: 3.4vw;
@@ -199,19 +199,15 @@
                             ]
                           }}</span
                         >
-                        <span class="span_lable_css">市场价：</span>
-                        <span class="span_lable_css color_css_css">{{
-                          item.marketPrice ? item.marketPrice : "—"
-                        }}</span>
                       </div>
                       <div class="dis_row_between_center">
                         <div
                           class="dis_row_start_center"
-                          style="width:70vw"
+                          style="width:75vw"
                           @click="detailClick(item)"
                         >
-                          <span style="width:15vw">规格：</span>
-                          <span>{{
+                          <span style="width:15vw;color:#AFAEAE">规格：</span>
+                          <span  style="color:#AFB40B">{{
                             item.specifications
                           }}</span>
                         </div>
@@ -252,62 +248,6 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div class="mengceng_css dis_row_center_center" v-if="searchShow">
-      <div class="neirong_box_css">
-        <span class="cha_css">货品查询</span>
-        <el-form
-          ref="formData"
-          label-width="20vw"
-          :inline="true"
-          :model="dataForm"
-          class="demo-form-inline"
-        >
-          <el-form-item label="货品名：">
-            <el-input
-              clearable
-              v-model="dataForm.goodsName"
-              placeholder="请输入货品名称"
-              size="small"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="品牌：">
-            <el-input
-              clearable
-              v-model="dataForm.brandName"
-              placeholder="请输入品牌名称"
-              size="small"
-            ></el-input>
-          </el-form-item>
-          <!-- <el-form-item label="拿货价：">
-            <el-input
-              clearable
-              type="number"
-              :maxlength="4"
-              v-model="dataForm.purchasePrice"
-              placeholder="请输入拿货价"
-              size="small"
-            ></el-input>
-          </el-form-item> -->
-        </el-form>
-        <el-button
-          type="primary"
-          class="button_css but_color_css"
-          @click="search"
-          >确认搜索</el-button
-        >
-        <div class="dis_row_between_center button_css">
-          <el-button class="bottom_but_css" plain @click="searchShow = false"
-            >关闭</el-button
-          >
-          <el-button
-            class="bottom_but_css but_color_css"
-            plain
-            @click="resetForm"
-            >重置</el-button
-          >
-        </div>
-      </div>
-    </div>
     <span id="spanid">{{ wechatMumber }}</span>
     <transition name="slide-fade">
       <router-view></router-view>
@@ -329,17 +269,11 @@ export default {
         userType: null,
         accountPhone: null,
       },
-      searchShow: false,
       loading: false,
       pagination: {
         page: 1,
         size: 20,
         total: 0,
-      },
-      dataForm: {
-        brandName: "",
-        goodsName: "",
-        purchasePrice: "",
       },
       form: {
         brandName: "",
@@ -354,17 +288,6 @@ export default {
     };
   },
   computed: {
-    prValue: function () {
-      return this.form[
-        `purchasePrice${
-          this.userData.userType === "0"
-            ? 0
-            : Number(
-                this.userData.userType === "5" ? "4" : this.userData.userType
-              ) - 1
-        }`
-      ];
-    },
     shows: function () {
       let show = false;
       if (this.userData.userType === "0" || this.userData.userType === "1") {
@@ -374,6 +297,7 @@ export default {
     },
   },
   methods: {
+    //展示形式
     showStatusClick() {
       if (this.showStatus === "table") {
         this.showStatus = "div";
@@ -428,6 +352,7 @@ export default {
         },
       });
     },
+    //表格形式的操作按钮
     caozuoClick(row) {
       let that = this;
       that
@@ -453,6 +378,7 @@ export default {
           }
         });
     },
+    //添加货品
     goodsPath() {
       this.$router.push({
         path: "/indexApp/addGoods",
@@ -461,6 +387,7 @@ export default {
         },
       });
     },
+    //账号管理
     accountPath() {
       this.$router.push({ path: "/indexApp/adminApp" });
     },
@@ -528,9 +455,6 @@ export default {
     },
     //点击搜索
     search() {
-      this.searchShow = false;
-      this.form.brandName = this.dataForm.brandName;
-      this.form.goodsName = this.dataForm.goodsName;
       this.pagination.page = 1;
       this.data = [];
       this.getData();
@@ -547,11 +471,6 @@ export default {
       this.form.purchasePrice1 = "";
       this.form.purchasePrice2 = "";
       this.form.purchasePrice3 = "";
-      this.dataForm = {
-        brandName: "",
-        goodsName: "",
-        purchasePrice: "",
-      };
       this.searchShow = false;
       this.getData();
     },
@@ -609,6 +528,7 @@ export default {
     //tab页切换
     handleClick(tab) {
       storage_set("goodsType", tab.name);
+      this.form.goodsName = "";
       this.data = [];
       this.pagination.page = 1;
       this.form.goodsType = tab.name;
@@ -683,10 +603,9 @@ export default {
 }
 >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
   background-color: #fddbef;
-}
->>> .el-tabs__item.is-active {
   font-weight: bold;
   color: #fb1099 !important;
+  padding-left: 10px;
 }
 >>> .el-tabs__content {
   padding: 0;
@@ -698,7 +617,7 @@ export default {
   margin-bottom: 2vw;
 }
 >>> .el-tabs__item {
-  padding: 0 8px;
+  padding: 0 10px;
 }
 .table_width_css {
   width: calc(100vw - 15px);
@@ -729,45 +648,32 @@ export default {
   margin: 0 auto;
 }
 .sousuo_css {
-  width: 100vw;
+  width: 96vw;
   height: 7vw;
   text-align: center;
   color: #000;
-  padding: 2vw 0;
+  padding: 2vw 2vw;
   border-bottom: 1px solid #fb1099;
   background-color: #fddbef;
 }
-.mengceng_css {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 3000;
-  background: rgba(0, 0, 0, 0.5);
-}
-.neirong_box_css {
-  width: 80vw;
-  height: 80vw;
-  background-color: #fff;
-  margin: 0 auto;
-  padding: 2vw;
-  border-radius: 4vw;
-}
-.cha_css {
-  width: 100%;
-  border-bottom: 1px solid #e7e7e7;
-  margin: 3vw auto;
-  display: block;
-  height: 10vw;
-  text-align: center;
+.input_css{
+  width: 72vw;
+  height: 7.5vw;
+  padding: 0 2vw;
+  border: 0;
+  font-size: 3.3vw;
+  outline: none;
+  border-radius: 1vw;
 }
 .button_css {
-  width: 72vw;
-  margin: 1vw 4vw;
-  margin-bottom: 3vw;
-  border-radius: 10vw;
-  font-size: 3.74vw;
+  display: block;
+  width: 18vw;
+  height: 7.5vw;
+  line-height: 7.5vw;
+  border-radius: 1vw;
+  font-size: 3.3vw;
+  background-color:  #fb1099;
+  color:#ffffff;
 }
 .my_box {
   width: 94vw;
@@ -794,7 +700,7 @@ export default {
 }
 .shangpin_css {
   width: 98vw;
-  min-height: 35vw;
+  min-height: 34vw;
   margin: 0 auto;
   background-color: #ffffff;
   border-radius: 2vw;
@@ -804,15 +710,15 @@ export default {
   margin-bottom: 20vw;
 }
 .shangpin_css_img_css {
-  width: 30vw;
-  height: 30vw;
+  width: 28vw;
+  height: 28vw;
   margin: 2vw;
   margin-right: 0;
   border: 1px solid #fff;
 }
 .shangpin_css_neirongbox_css {
-  width: 64vw;
-  margin: 2vw;
+  width: 63vw;
+  margin: 1vw;
   min-height: 24vw;
   border-radius: 2vw;
   font-size: 3.74vw;
@@ -824,7 +730,8 @@ export default {
   width: 30vw;
   height: 6vw;
   line-height: 6vw;
-  font-size: 3.3vw;
+  font-size: 3vw;
+  color: #AFAEAE;
 }
 .butt_css {
   width: 10vw;
@@ -863,7 +770,7 @@ export default {
   max-height: 10vw;
 }
 .shangpin_css_neirongbox_css .goodsName_css {
-  width: 45vw;
+  width: 60vw;
   max-height: 10vw;
   font-size: 3.3vw;
   font-weight: bold;

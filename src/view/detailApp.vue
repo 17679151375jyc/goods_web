@@ -322,11 +322,11 @@ export default {
   font-size: 3.74vw;
 }
 .but_box_css span {
-  width: 25vw;
-  height: 8vw;
+  width: 40vw;
+  height: 10vw;
+  line-height: 10vw;
   border-radius: 10vw;
   display: block;
-  line-height: 8vw;
   text-align: center;
   background-color: #fff;
   color: #888;
