@@ -174,9 +174,9 @@
                         class="dis_row_start_center"
                         @click="detailClick(item)"
                       >
-                        <span class="span_lable_css">市场价：</span>
+                        <span class="span_lable_css">邮费：</span>
                         <span class="span_lable_css" style="color:#AFB40B">{{
-                          item.marketPrice ? item.marketPrice : "—"
+                          item.expressPrice ? item.expressPrice : "包邮试用"
                         }}</span>
                         <span class="span_lable_css">拿货价：</span>
                         <span

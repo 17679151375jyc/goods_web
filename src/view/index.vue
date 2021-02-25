@@ -68,7 +68,7 @@
             ref="formData"
             class="demo-form-inline"
           >
-            <!-- <el-form-item label="品牌：" prop="brandName">
+            <el-form-item label="品牌：" prop="brandName">
               <el-input
                 clearable
                 @keyup.enter.native="onSubmit"
@@ -85,7 +85,7 @@
                 placeholder="请输入型号名称"
                 size="small"
               ></el-input>
-            </el-form-item> -->
+            </el-form-item>
             <el-form-item label="货品名称：" prop="goodsName">
               <el-input
                 clearable
@@ -455,7 +455,7 @@ export default {
             res.data.records.forEach((item) => {
               if(this.userData.userType === '5'){
                 item.purchasePrice3 = Number(item.purchasePrice3) + 10
-              };
+              }
               if (item.goodsImg) {
                 if (item.goodsImg.indexOf(",")) {
                   item.goodsImg = item.goodsImg.split(",");
@@ -559,6 +559,13 @@ export default {
       this.delLbShow = false;
       let index = this.goodsTypeList[0].goodsType;
       let title = this.goodsTypeList[0].goodsTypename;
+      this.delLbShow = false;
+      this.pagination.page = 1;
+      this.pagination.size = 10;
+      this.$refs["formData"].resetFields();
+      this.form.startTime = "";
+      this.form.endTime = "";
+      this.times = [];
       this.goodsTypeList.forEach((item) => {
         if (item.goodsType === id) {
           index = item.goodsType;
@@ -567,6 +574,9 @@ export default {
       });
       this.leftName = title + "类货品列表";
       this.form.goodsType = index;
+      console.log(this.leftName)
+      console.log(this.form.goodsType)
+      this.$forceUpdate();
       this.getData();
     },
     //关闭新增
